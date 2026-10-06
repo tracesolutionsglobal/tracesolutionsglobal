@@ -1,0 +1,2009 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trace Solutions Global</title>
+<link rel="canonical" href="https://tracesolutionsglobal.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Trace Solutions Global">
+<meta property="og:title" content="Trace Solutions Global">
+<meta property="og:description" content="Modern websites for businesses all over the world. Build your website concept in minutes and see it before we write a line of code.">
+<meta property="og:url" content="https://tracesolutionsglobal.com/">
+<meta name="description" content="Trace Solutions Global designs and builds modern websites for businesses all over the world. Build your website concept in minutes and see it before we write a line of code.">
+<meta name="theme-color" content="#012228">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@500&family=Montserrat:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* =========================================================
+   Trace Solutions Global: brand tokens
+   Every colour, font and spacing value lives here.
+   Change the brand in this one file.
+   Layout concept: a calm off-white studio page where a
+   navy browser window "traces" each client's site to life.
+   ========================================================= */
+:root {
+  /* Brand colours (sampled from the poster) */
+  --navy: #012228;          /* logo ink: headings, main text, browser bar */
+  --navy-2: #0B3A40;        /* hover / raised navy */
+  --ink-soft: #4A5D60;      /* secondary text */
+  --green: #158A49;         /* text-safe brand green: links, highlights */
+  --green-deep: #0C5A31;    /* logo shadow, pressed states */
+  --green-bright: #2DBE6C;  /* small accents on navy */
+  --mint: #CDEFD9;          /* soft shapes, section tints */
+  --mint-soft: #EAF7EF;     /* lightest tint */
+  --logo-green: #1FA75A;   /* exact green from the logo */
+  --coral: #FB7250;         /* brand coral: underline, dots, loop */
+  --coral-btn: #E4572E;     /* coral for buttons (better text contrast) */
+  --coral-soft: #FFE6DD;
+  --paper: #FCFBF6;         /* page background */
+  --white: #FFFFFF;
+  --line: #E4E7E1;          /* hairlines on paper */
+  --line-navy: rgba(255, 255, 255, 0.12);
+
+  /* Type */
+  --f-display: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-body: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-logo: "Montserrat", "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --f-serif: "DM Serif Display", Georgia, "Times New Roman", serif; /* used by "Elegant" previews */
+
+  /* Type scale */
+  --t-xs: 0.78rem;
+  --t-sm: 0.9rem;
+  --t-md: 1.05rem;
+  --t-lg: 1.25rem;
+  --t-xl: clamp(1.6rem, 3vw, 2.1rem);
+  --t-2xl: clamp(2.1rem, 4.4vw, 3.2rem);
+  --t-hero: clamp(2.5rem, 5.2vw, 4.4rem);
+
+  /* Spacing & shape */
+  --gutter: clamp(16px, 4vw, 48px);
+  --max: 1200px;
+  --section: clamp(4.5rem, 9vw, 7.5rem);
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-pill: 999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(1, 34, 40, 0.06), 0 2px 8px rgba(1, 34, 40, 0.05);
+  --shadow-md: 0 10px 30px -10px rgba(1, 34, 40, 0.22);
+  --shadow-lg: 0 30px 70px -24px rgba(1, 34, 40, 0.35);
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: light;
+}
+
+</style>
+<style>
+/* =========================================================
+   Base: reset, typography, layout primitives
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--navy);
+  font-family: var(--f-body);
+  font-size: var(--t-md);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { max-width: 100%; }
+h1, h2, h3, h4 {
+  font-family: var(--f-display);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  margin: 0;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; border-radius: 6px; }
+::selection { background: var(--mint); color: var(--navy); }
+
+.container { max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+.section { padding-block: var(--section); position: relative; }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-family: var(--f-mono); font-size: var(--t-xs); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.14em; color: var(--green);
+}
+.eyebrow::before { content: ""; width: 18px; height: 2px; background: var(--coral); border-radius: 2px; }
+
+.h2 { font-size: var(--t-2xl); margin-top: 0.9rem; }
+.lede { font-size: var(--t-lg); line-height: 1.55; color: var(--ink-soft); max-width: 56ch; margin-top: 1.1rem; }
+.section-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1.5rem 3rem; }
+.section-head .lede { max-width: 44ch; }
+
+[hidden] { display: none !important; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  html { scroll-behavior: auto; }
+}
+
+</style>
+<style>
+/* =========================================================
+   Components: shared across every page
+   ========================================================= */
+
+/* ---------- Logo ---------- */
+.logo { display: inline-flex; align-items: center; gap: 0.65rem; text-decoration: none; color: var(--navy); min-width: 0; }
+.logo svg.mark { width: 34px; height: 26px; flex: none; color: var(--navy); }
+.logo .word { font-family: var(--f-logo); font-weight: 600; font-size: 0.98rem; letter-spacing: 0.12em; line-height: 1; white-space: nowrap; color: var(--navy); }
+.logo .word .g { color: var(--logo-green); }
+.logo--light, .logo--light .word, .logo--light svg.mark { color: var(--white); }
+.logo--light .word .g { color: var(--green-bright); }
+@media (max-width: 400px) { .logo .word { font-size: 0.82rem; letter-spacing: 0.08em; } .logo svg.mark { width: 30px; height: 23px; } }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+  padding: 0.95rem 1.5rem; border-radius: var(--r-pill); border: 0; cursor: pointer;
+  font-family: var(--f-display); font-weight: 700; font-size: 1.02rem; line-height: 1.1;
+  text-decoration: none; white-space: nowrap;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.2s, color 0.2s;
+}
+.btn .arrow { transition: transform 0.25s var(--ease); }
+.btn:hover .arrow { transform: translateX(4px); }
+.btn--coral { background: var(--coral-btn); color: var(--white); box-shadow: 0 8px 22px -8px rgba(228, 87, 46, 0.65); }
+.btn--coral:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -10px rgba(228, 87, 46, 0.7); }
+.btn--navy { background: var(--navy); color: var(--white); }
+.btn--navy:hover { background: var(--navy-2); transform: translateY(-2px); }
+.btn--outline { background: transparent; color: var(--navy); box-shadow: inset 0 0 0 2px var(--navy); }
+.btn--outline:hover { background: var(--navy); color: var(--white); }
+.btn--ghost-light { background: transparent; color: var(--white); box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35); }
+.btn--ghost-light:hover { box-shadow: inset 0 0 0 2px var(--white); }
+.btn--sm { padding: 0.7rem 1.1rem; font-size: 0.95rem; }
+
+.link-arrow { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 700; color: var(--green); text-decoration: none; }
+.link-arrow:hover { color: var(--green-deep); }
+.link-arrow:hover span { transform: translateX(3px); }
+.link-arrow span { transition: transform 0.2s var(--ease); }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
+  background: rgba(252, 251, 246, 0.86);
+  backdrop-filter: saturate(1.4) blur(12px); -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom: 1px solid transparent; transition: border-color 0.3s;
+}
+.site-header.is-scrolled { border-bottom-color: var(--line); }
+.site-header .container { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding-block: 0.9rem; }
+.nav-links { display: flex; align-items: center; gap: 1.7rem; white-space: nowrap; list-style: none; margin: 0; padding: 0; font-weight: 600; font-size: 0.97rem; }
+.nav-links a { text-decoration: none; color: var(--navy); position: relative; padding-block: 0.3rem; }
+.nav-links a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -2px; height: 2px; background: var(--coral); border-radius: 2px; transition: right 0.3s var(--ease); }
+.nav-links a:hover::after { right: 0; }
+.nav-actions { display: flex; align-items: center; gap: 0.6rem; }
+.menu-toggle { display: none; width: 44px; height: 44px; border-radius: 12px; border: 0; background: var(--mint-soft); cursor: pointer; place-items: center; }
+.menu-toggle span, .menu-toggle span::before, .menu-toggle span::after { display: block; width: 18px; height: 2px; background: var(--navy); border-radius: 2px; position: relative; transition: transform 0.3s var(--ease); }
+.menu-toggle span::before, .menu-toggle span::after { content: ""; position: absolute; left: 0; }
+.menu-toggle span::before { top: -6px; }
+.menu-toggle span::after { top: 6px; }
+.menu-open .menu-toggle span { background: transparent; }
+.menu-open .menu-toggle span::before { transform: translateY(6px) rotate(45deg); }
+.menu-open .menu-toggle span::after { transform: translateY(-6px) rotate(-45deg); }
+
+@media (max-width: 1100px) {
+  .menu-toggle { display: grid; }
+  .nav-actions .btn { display: none; }
+  .nav-links {
+    position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0;
+    background: var(--paper); border-bottom: 1px solid var(--line); padding: 0.5rem var(--gutter) 1.2rem;
+    display: none;
+  }
+  .menu-open .nav-links { display: flex; }
+  .nav-links a { display: block; padding: 0.85rem 0; border-bottom: 1px solid var(--line); }
+  .nav-links a::after { display: none; }
+  .nav-links .mobile-cta { display: block; margin-top: 1rem; }
+  .nav-links .mobile-cta .btn { width: 100%; }
+}
+@media (min-width: 1101px) { .nav-links .mobile-cta { display: none; } }
+
+/* ---------- Browser frame (used by hero, teaser, portfolio) ---------- */
+.browser { background: var(--white); border-radius: var(--r-md); overflow: hidden; box-shadow: var(--shadow-lg); position: relative; }
+.browser-bar { display: flex; align-items: center; gap: 0.9rem; background: var(--navy); padding: 0.65rem 0.9rem; }
+.browser-dots { display: flex; gap: 6px; flex: none; }
+.browser-dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--coral); }
+.browser-dots i:nth-child(2) { background: var(--green-bright); }
+.browser-dots i:nth-child(3) { background: var(--white); }
+.browser-url {
+  flex: 1; min-width: 0; background: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.85);
+  border-radius: var(--r-pill); padding: 0.28rem 0.8rem; font-family: var(--f-mono); font-size: 0.72rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.browser-url .lock { color: rgba(255, 255, 255, 0.45); }
+.browser-body { position: relative; container-type: inline-size; }
+.browser--sm .browser-bar { padding: 0.45rem 0.7rem; }
+.browser--sm .browser-dots i { width: 7px; height: 7px; }
+.browser--sm .browser-url { font-size: 0.62rem; padding: 0.18rem 0.6rem; }
+
+/* ---------- Chips & segmented controls ---------- */
+.chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip {
+  display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.55rem 0.95rem; border-radius: var(--r-pill);
+  border: 1.5px solid var(--line); background: var(--white); cursor: pointer; font-weight: 600; font-size: 0.92rem;
+  transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.2s var(--ease);
+}
+.chip:hover { border-color: var(--green); transform: translateY(-1px); }
+.chip[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--white); }
+.chip svg { width: 16px; height: 16px; flex: none; }
+
+.tag { display: inline-block; font-size: var(--t-xs); font-weight: 700; padding: 0.22rem 0.65rem; border-radius: var(--r-pill); background: var(--mint-soft); color: var(--green-deep); }
+.tag--coral { background: var(--coral-soft); color: #B23E1B; }
+
+/* ---------- Forms ---------- */
+.field { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
+.field label { font-weight: 700; font-size: 0.88rem; }
+.field input, .field select, .field textarea {
+  width: 100%; padding: 0.85rem 1rem; border-radius: var(--r-sm); border: 1.5px solid var(--line); background: var(--white);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field input::placeholder, .field textarea::placeholder { color: #9AA6B2; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 4px rgba(13, 139, 118, 0.15); }
+.field textarea { min-height: 120px; resize: vertical; }
+.field .err { color: #B3261E; font-size: 0.82rem; font-weight: 600; }
+.field.has-error input, .field.has-error textarea { border-color: #B3261E; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; } /* spam honeypot */
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); z-index: 100;
+  transform: translate(-50%, 160%); max-width: calc(100% - 32px);
+  background: var(--navy); color: var(--white); padding: 0.85rem 1.3rem; border-radius: var(--r-pill);
+  font-weight: 600; font-size: 0.95rem; box-shadow: var(--shadow-lg); text-align: center;
+  visibility: hidden; transition: transform 0.4s var(--ease), visibility 0s linear 0.4s;
+}
+.toast.show { transform: translate(-50%, 0); visibility: visible; transition: transform 0.4s var(--ease); }
+
+/* ---------- Footer ---------- */
+.site-footer { background: var(--navy); color: rgba(255, 255, 255, 0.78); padding-block: 4rem 2rem; }
+.footer-grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 2.5rem; }
+@media (max-width: 860px) { .footer-grid { grid-template-columns: 1fr 1fr; } .footer-brand { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+.footer-brand p { margin-top: 1rem; max-width: 34ch; font-size: 0.95rem; }
+.footer-brand .tagline { font-family: var(--f-mono); font-size: var(--t-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-bright); margin-top: 1.2rem; }
+.site-footer h4 { color: var(--white); font-size: 0.95rem; letter-spacing: 0; font-weight: 700; margin-bottom: 1rem; }
+.site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.55rem; font-size: 0.95rem; }
+.site-footer a { text-decoration: none; }
+.site-footer a:hover { color: var(--white); }
+.footer-bottom { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line-navy); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; font-size: 0.85rem; }
+
+</style>
+<style>
+/* =========================================================
+   Live website preview ("mini site") renderer styles
+   Used by: hero, concept teaser, portfolio thumbnails,
+   and later the full Concept Builder.
+   Sizes are in em, and the base size follows the browser
+   frame width (container query units), so one preview
+   scales from a small card to a large hero.
+   ========================================================= */
+.pv {
+  --pv-radius: 0.9em;
+  --pv-head: var(--f-display);
+  --pv-head-weight: 800;
+  font-size: clamp(3.6px, 1.42cqw, 11px);
+  font-family: var(--f-body);
+  background: var(--pv-bg);
+  color: var(--pv-ink);
+  padding: 2.2em 2.4em 2.6em;
+  display: grid;
+  gap: 1.9em;
+  line-height: 1.35;
+  transition: background 0.5s var(--ease), color 0.5s var(--ease);
+}
+.pv--bold { --pv-radius: 0.25em; --pv-head-weight: 800; }
+.pv--elegant { --pv-radius: 0.35em; --pv-head: var(--f-serif); --pv-head-weight: 400; }
+
+.pv h4, .pv .pv-name { font-family: var(--pv-head); font-weight: var(--pv-head-weight); }
+
+/* nav */
+.pv-nav { display: flex; align-items: center; justify-content: space-between; gap: 1.5em; }
+.pv-logo { display: inline-flex; align-items: center; gap: 0.6em; font-size: 1.3em; font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; }
+.pv-logo i { width: 1.25em; height: 1.25em; border-radius: 50%; background: var(--pv-primary); box-shadow: 0.45em -0.25em 0 -0.25em var(--pv-accent); }
+.pv--elegant .pv-logo { font-weight: 400; }
+.pv--elegant .pv-logo i { border-radius: 0.2em; transform: rotate(45deg) scale(0.8); }
+.pv-links { display: flex; gap: 1.9em; font-size: 1.05em; color: var(--pv-muted); white-space: nowrap; }
+.pv-links b { font-weight: 600; }
+.pv-links b:first-child { color: var(--pv-ink); }
+.pv-cta { background: var(--pv-primary); color: var(--pv-on-primary); padding: 0.65em 1.25em; border-radius: 999px; font-weight: 700; font-size: 1em; white-space: nowrap; }
+.pv--bold .pv-cta, .pv--bold .pv-btn { border-radius: var(--pv-radius); text-transform: uppercase; letter-spacing: 0.06em; }
+.pv--elegant .pv-cta, .pv--elegant .pv-btn { border-radius: 0; background: transparent; color: var(--pv-ink); box-shadow: inset 0 0 0 0.12em var(--pv-ink); }
+
+/* hero */
+.pv-hero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 2em; align-items: center; background: var(--pv-soft); border-radius: var(--pv-radius); padding: 2.6em 2.6em 2.6em 3em; overflow: hidden; }
+.pv-copy small { display: block; font-size: 0.85em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--pv-accent-text); }
+.pv-copy h4 { font-size: 3.1em; line-height: 1.04; letter-spacing: -0.03em; margin: 0.35em 0 0.45em; color: var(--pv-ink); text-wrap: balance; }
+.pv--bold .pv-copy h4 { text-transform: uppercase; font-size: 3.3em; letter-spacing: -0.02em; line-height: 0.98; }
+.pv--elegant .pv-copy h4 { letter-spacing: -0.01em; font-size: 3.3em; }
+.pv-copy p { font-size: 1.15em; color: var(--pv-muted); max-width: 30ch; }
+.pv-btn { display: inline-flex; margin-top: 1.5em; background: var(--pv-primary); color: var(--pv-on-primary); padding: 0.85em 1.5em; border-radius: 999px; font-weight: 700; font-size: 1.05em; }
+.pv-art svg { display: block; width: 100%; height: auto; border-radius: calc(var(--pv-radius) * 0.8); }
+
+/* cards */
+.pv-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4em; }
+.pv-card { background: var(--pv-surface); border-radius: var(--pv-radius); padding: 1.5em; display: grid; gap: 0.7em; box-shadow: 0 0 0 0.1em var(--pv-line); }
+.pv-ic { width: 3.3em; height: 3.3em; border-radius: 50%; background: var(--pv-soft); color: var(--pv-primary-text); display: grid; place-items: center; }
+.pv--bold .pv-ic { border-radius: var(--pv-radius); }
+.pv-ic svg { width: 1.7em; height: 1.7em; }
+.pv-card b { font-size: 1.2em; font-weight: 700; }
+.pv-card i, .pv-strip i { display: block; height: 0.55em; border-radius: 1em; background: var(--pv-line); }
+.pv-card i:last-child { width: 62%; }
+
+/* proof strip */
+.pv-strip { display: flex; align-items: center; gap: 1.3em; background: var(--pv-surface); border-radius: var(--pv-radius); padding: 1.3em 1.5em; box-shadow: 0 0 0 0.1em var(--pv-line); }
+.pv-check { width: 2.8em; height: 2.8em; flex: none; border-radius: 50%; background: var(--pv-primary); color: var(--pv-on-primary); display: grid; place-items: center; font-weight: 800; font-size: 1.05em; }
+.pv-strip b { font-size: 1.15em; white-space: nowrap; }
+.pv-strip .bars { flex: 1; display: grid; gap: 0.5em; }
+.pv-strip .bars i:last-child { width: 55%; }
+
+/* ---------- Trace animation ----------
+   JS measures each [data-t] block, draws an SVG outline over it,
+   then the block fills in. */
+.trace-layer { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: visible; }
+.trace-layer rect {
+  fill: none; stroke: var(--coral); stroke-width: 1.6; stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: trace-draw 0.75s var(--ease) forwards, trace-fade 0.5s ease forwards;
+  animation-delay: var(--d, 0s), calc(var(--d, 0s) + 1.2s);
+}
+@keyframes trace-draw { to { stroke-dashoffset: 0; } }
+@keyframes trace-fade { to { opacity: 0; } }
+.is-tracing [data-t] { animation: trace-fill 0.7s var(--ease) both; animation-delay: calc(var(--d, 0s) + 0.45s); }
+@keyframes trace-fill { from { opacity: 0.12; filter: saturate(0) blur(1px); } }
+
+/* Cursor that "draws" the site */
+.trace-pen {
+  position: absolute; z-index: 3; width: 14px; height: 14px; border-radius: 50%; background: var(--coral);
+  box-shadow: 0 0 0 5px rgba(251, 114, 80, 0.22); pointer-events: none; opacity: 0;
+  transition: left 0.55s var(--ease), top 0.55s var(--ease), opacity 0.3s;
+}
+.is-tracing .trace-pen { opacity: 1; }
+
+@media (max-width: 520px) {
+  .pv-links b:nth-child(n+3) { display: none; }
+}
+
+/* =========================================================
+   Feature blocks (Concept Builder)
+   ========================================================= */
+.pv { position: relative; }
+.pv-burger { display: none; flex-direction: column; gap: 0.32em; }
+.pv-burger i { display: block; width: 1.9em; height: 0.25em; border-radius: 1em; background: var(--pv-ink); }
+.pv-lang { font-size: 0.9em; font-weight: 700; color: var(--pv-muted); white-space: nowrap; border: 0.1em solid var(--pv-line); border-radius: 999px; padding: 0.35em 0.8em; }
+.pv-block { background: var(--pv-surface); border-radius: var(--pv-radius); padding: 1.6em; box-shadow: 0 0 0 0.1em var(--pv-line); display: grid; gap: 1.1em; }
+.pv-h { font-family: var(--pv-head); font-weight: var(--pv-head-weight); font-size: 1.55em; letter-spacing: -0.02em; color: var(--pv-ink); }
+.pv-row { display: flex; align-items: center; justify-content: space-between; gap: 1em; }
+.pv-btn--sm { margin-top: 0; padding: 0.75em 1.3em; font-size: 1em; justify-content: center; white-space: nowrap; }
+.pv-field { display: grid; gap: 0.4em; background: var(--pv-soft); border-radius: calc(var(--pv-radius) * 0.6); padding: 0.7em 0.9em; min-width: 0; }
+.pv-field small { font-size: 0.85em; color: var(--pv-muted); font-weight: 600; }
+.pv-field i { display: block; height: 0.55em; width: 70%; border-radius: 1em; background: var(--pv-line); }
+.pv-field--tall { grid-column: 1 / -1; }
+.pv-field--tall i { height: 2.4em; width: 100%; border-radius: 0.4em; }
+
+.pv-book { background: var(--pv-soft); box-shadow: none; }
+.pv-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: 0.8em; align-items: end; }
+.pv-book .pv-field { background: var(--pv-surface); }
+
+.pv-cart { position: relative; color: var(--pv-ink); width: 2.4em; height: 2.4em; display: grid; place-items: center; }
+.pv-cart svg { width: 2em; height: 2em; }
+.pv-cart em { position: absolute; top: -0.2em; right: -0.3em; font-style: normal; font-size: 0.85em; font-weight: 800; background: var(--pv-primary); color: var(--pv-on-primary); border-radius: 999px; min-width: 1.5em; height: 1.5em; display: grid; place-items: center; }
+.pv-grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1em; }
+.pv-prod { display: grid; gap: 0.5em; }
+.pv-prod .pv-ph { aspect-ratio: 1; }
+.pv-prod i { display: block; height: 0.55em; width: 80%; border-radius: 1em; background: var(--pv-line); }
+.pv-prod b { font-size: 1.1em; }
+.pv-pay { display: flex; flex-wrap: wrap; gap: 0.6em; }
+.pv-pay span { font-size: 0.85em; font-weight: 800; letter-spacing: 0.04em; padding: 0.35em 0.8em; border-radius: 0.4em; box-shadow: 0 0 0 0.1em var(--pv-line); color: var(--pv-muted); }
+
+.pv-ph { display: block; position: relative; overflow: hidden; border-radius: calc(var(--pv-radius) * 0.7); background: var(--pv-soft); min-height: 4em; }
+.pv-ph::before { content: ""; position: absolute; width: 38%; aspect-ratio: 1; border-radius: 50%; right: 12%; top: 14%; background: var(--pv-accent-text); opacity: calc(0.25 + var(--i, 0) * 0.08); }
+.pv-ph::after { content: ""; position: absolute; left: -10%; right: -10%; bottom: -30%; height: 75%; border-radius: 50% 50% 0 0; background: var(--pv-primary-text); opacity: calc(0.35 + var(--i, 0) * 0.1); transform: translateX(calc(var(--i, 0) * 7% - 10%)); }
+.pv-gallery { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 6em 6em; gap: 0.8em; }
+.pv-gallery .pv-ph:first-child { grid-row: span 2; }
+
+.pv-g { font-size: 1em; color: var(--pv-muted); white-space: nowrap; }
+.pv-g b { color: var(--pv-ink); }
+.pv-cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1em; }
+.pv-review { display: grid; gap: 0.6em; padding: 1.1em; border-radius: calc(var(--pv-radius) * 0.7); background: var(--pv-soft); }
+.pv-review i { display: block; height: 0.5em; border-radius: 1em; background: var(--pv-line); }
+.pv-review i:nth-of-type(2) { width: 70%; }
+.pv-review small { font-weight: 700; font-size: 0.95em; }
+.pv-stars { color: #F5A524; letter-spacing: 0.1em; font-size: 1.05em; }
+
+.pv-enq { grid-template-columns: 0.8fr 1.2fr; align-items: start; gap: 2em; }
+.pv-enq p { color: var(--pv-muted); font-size: 1.1em; margin-top: 0.5em; }
+.pv-form { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em; }
+.pv-form .pv-btn { grid-column: 1 / -1; }
+
+.pv-cards2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2em; }
+.pv-post { display: grid; gap: 0.6em; }
+.pv-post .pv-ph { height: 7em; }
+.pv-post b { font-size: 1.15em; }
+.pv-post i { display: block; height: 0.5em; width: 75%; border-radius: 1em; background: var(--pv-line); }
+
+.pv-mapblock { grid-template-columns: 1.3fr 1fr; gap: 1.6em; align-items: stretch; }
+.pv-map { position: relative; min-height: 11em; border-radius: calc(var(--pv-radius) * 0.7); background-color: var(--pv-soft);
+  background-image: linear-gradient(var(--pv-line) 0.12em, transparent 0.12em), linear-gradient(90deg, var(--pv-line) 0.12em, transparent 0.12em),
+    linear-gradient(35deg, transparent 46%, var(--pv-surface) 46%, var(--pv-surface) 52%, transparent 52%);
+  background-size: 3em 3em, 3em 3em, 100% 100%; }
+.pv-pin { position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%); width: 3.2em; height: 3.2em; border-radius: 50%; display: grid; place-items: center; background: var(--pv-primary); color: var(--pv-on-primary); box-shadow: 0 0 0 0.6em color-mix(in srgb, var(--pv-primary) 25%, transparent); }
+.pv-pin svg { width: 1.7em; height: 1.7em; }
+.pv-hours { display: grid; gap: 0.7em; align-content: start; }
+.pv-hours span { display: flex; justify-content: space-between; font-size: 1.05em; color: var(--pv-muted); border-bottom: 0.1em solid var(--pv-line); padding-bottom: 0.5em; }
+.pv-hours .pv-dir { border: 0; color: var(--pv-primary-text); font-weight: 700; }
+
+.pv-news { grid-template-columns: auto 1fr auto; align-items: center; background: var(--pv-soft); box-shadow: none; }
+.pv-input { background: var(--pv-surface); border-radius: 999px; padding: 0.95em 1.2em; box-shadow: 0 0 0 0.1em var(--pv-line); }
+.pv-input i { display: block; width: 45%; height: 0.55em; border-radius: 1em; background: var(--pv-line); }
+
+.pv-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1em 2em; padding: 1.6em 0.4em 0.2em; border-top: 0.1em solid var(--pv-line); }
+.pv-foot .pv-logo { font-size: 1.15em; }
+.pv-foot-links { display: flex; flex-wrap: wrap; gap: 0.5em 1.4em; }
+.pv-foot-links small { font-size: 1em; color: var(--pv-muted); }
+
+.pv-wa { position: absolute; right: 2em; bottom: 2em; width: 4.6em; height: 4.6em; border-radius: 50%; background: #25D366; color: #fff; display: grid; place-items: center; box-shadow: 0 0.8em 1.6em -0.6em rgba(0, 0, 0, 0.45); z-index: 1; }
+.pv-wa svg { width: 2.6em; height: 2.6em; }
+
+/* ---------- Phone-width previews ---------- */
+@container (max-width: 520px) {
+  .pv { font-size: 2.55cqw; padding: 2em 1.8em 2.4em; gap: 1.6em; }
+  .pv-links, .pv-nav .pv-cta, .pv-lang { display: none; }
+  .pv-burger { display: flex; }
+  .pv-hero { grid-template-columns: 1fr; padding: 2.2em; }
+  .pv-copy h4 { font-size: 3.4em; }
+  .pv-cards, .pv-cards3, .pv-cards2 { grid-template-columns: 1fr; }
+  .pv-grid4 { grid-template-columns: 1fr 1fr; }
+  .pv-fields { grid-template-columns: 1fr 1fr; }
+  .pv-fields .pv-btn { grid-column: 1 / -1; }
+  .pv-enq, .pv-mapblock, .pv-news { grid-template-columns: 1fr; }
+  .pv-foot { flex-direction: column; align-items: flex-start; }
+}
+
+</style>
+<style>
+/* =========================================================
+   Homepage sections
+   ========================================================= */
+
+/* ---------- Hero ---------- */
+.hero { padding-block: clamp(2.5rem, 6vw, 5rem) clamp(4rem, 8vw, 6.5rem); overflow: hidden; position: relative; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+@media (max-width: 980px) { .hero-grid { grid-template-columns: 1fr; } }
+.hero-copy { position: relative; z-index: 2; min-width: 0; }
+.hero h1 { font-size: var(--t-hero); margin-top: 1.2rem; }
+.hero h1 .accent-word { position: relative; white-space: nowrap; }
+.hero h1 .accent-word svg { position: absolute; left: -2%; bottom: -0.2em; width: 104%; height: 0.32em; overflow: visible; }
+.hero h1 .accent-word path { fill: none; stroke: var(--coral); stroke-width: 5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw-line 1s var(--ease) 0.5s forwards; }
+@keyframes draw-line { to { stroke-dashoffset: 0; } }
+.hero .lede { margin-top: 1.6rem; }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+.hero-points { display: flex; flex-wrap: wrap; gap: 0.6rem 1.6rem; margin: 2.2rem 0 0; padding: 0; list-style: none; font-size: 0.93rem; font-weight: 600; color: var(--ink-soft); }
+.hero-points li { display: inline-flex; align-items: center; gap: 0.5rem; }
+.hero-points svg { width: 18px; height: 18px; color: var(--green); flex: none; }
+
+.hero-stage { position: relative; min-width: 0; padding: 1.5rem 0 2.5rem; }
+.hero-stage .blob { position: absolute; width: 78%; aspect-ratio: 1; border-radius: 50%; background: var(--mint); top: -18%; right: -22%; z-index: 0; }
+.hero-stage .dots { position: absolute; top: 2%; right: 4%; width: 120px; height: 120px; z-index: 1; background-image: radial-gradient(var(--green) 2.2px, transparent 2.7px); background-size: 24px 24px; opacity: 0.45; }
+.hero-stage .browser { z-index: 2; }
+.hero-loop { position: absolute; left: -26%; bottom: 4%; width: 46%; z-index: 1; overflow: visible; }
+.hero-loop path { fill: none; stroke: var(--coral); stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw-line 2s var(--ease) 0.8s forwards; }
+@media (max-width: 980px) { .hero-loop { display: none; } }
+
+.tracing-label {
+  position: absolute; left: 1.2rem; bottom: 0; z-index: 3;
+  display: inline-flex; align-items: center; gap: 0.6rem; background: var(--white); border-radius: var(--r-pill);
+  padding: 0.6rem 1rem 0.6rem 0.8rem; box-shadow: var(--shadow-md); font-size: 0.9rem; font-weight: 600;
+}
+.tracing-label .pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--coral); box-shadow: 0 0 0 0 rgba(251, 114, 80, 0.5); animation: pulse 1.8s infinite; }
+@keyframes pulse { 70% { box-shadow: 0 0 0 10px rgba(251, 114, 80, 0); } 100% { box-shadow: 0 0 0 0 rgba(251, 114, 80, 0); } }
+.tracing-label b { color: var(--green); }
+.hero-switch { position: absolute; right: 1.2rem; bottom: 0.35rem; z-index: 3; display: flex; gap: 6px; }
+.hero-switch button { width: 26px; height: 6px; border-radius: 6px; border: 0; background: rgba(1, 34, 40, 0.15); cursor: pointer; padding: 0; transition: background 0.3s, width 0.3s var(--ease); }
+.hero-switch button[aria-current="true"] { background: var(--navy); width: 40px; }
+
+/* ---------- How it works ---------- */
+.how { background: var(--white); border-block: 1px solid var(--line); }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3.5rem; list-style: none; padding: 0; counter-reset: step; position: relative; }
+.steps::before { content: ""; position: absolute; top: 27px; left: 28px; right: 28px; height: 0; border-top: 2px dashed var(--mint); z-index: 0; }
+@media (max-width: 820px) { .steps { grid-template-columns: 1fr; gap: 2.2rem; } .steps::before { top: 28px; bottom: 28px; left: 27px; right: auto; border-top: 0; border-left: 2px dashed var(--mint); height: auto; } }
+.step { position: relative; z-index: 1; display: grid; gap: 0.7rem; min-width: 0; }
+@media (max-width: 820px) { .step { grid-template-columns: 56px 1fr; column-gap: 1.2rem; } .step > *:not(.step-num) { grid-column: 2; } .step-num { grid-row: 1 / span 3; } }
+.step-num { width: 56px; height: 56px; border-radius: 50%; background: var(--paper); border: 2px solid var(--navy); display: grid; place-items: center; font-family: var(--f-mono); font-weight: 500; font-size: 0.95rem; }
+.step:first-child .step-num { background: var(--coral-btn); border-color: var(--coral-btn); color: var(--white); }
+.step h3 { font-size: 1.35rem; letter-spacing: -0.02em; margin-top: 0.6rem; }
+.step p { color: var(--ink-soft); max-width: 34ch; }
+.step .meta { font-family: var(--f-mono); font-size: var(--t-xs); color: var(--green); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ---------- Concept teaser ---------- */
+.teaser { background: var(--navy); color: var(--white); overflow: hidden; }
+.teaser .eyebrow { color: var(--green-bright); }
+.teaser .h2 { color: var(--white); }
+.teaser .lede { color: rgba(255, 255, 255, 0.72); }
+.teaser-grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+@media (max-width: 980px) { .teaser-grid { grid-template-columns: 1fr; } }
+.teaser-controls { display: grid; gap: 1.6rem; margin-top: 2.2rem; }
+.control-label { font-family: var(--f-mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.7rem; display: flex; gap: 0.6rem; align-items: baseline; }
+.control-label b { color: var(--coral); font-weight: 500; }
+.teaser .chip { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.14); color: var(--white); }
+.teaser .chip:hover { border-color: var(--green-bright); }
+.teaser .chip[aria-pressed="true"] { background: var(--white); border-color: var(--white); color: var(--navy); }
+.teaser .chip[aria-pressed="true"] svg { color: var(--green); }
+.teaser-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.4rem; margin-top: 0.4rem; }
+.teaser-cta small { color: rgba(255, 255, 255, 0.6); font-size: 0.88rem; }
+.teaser-stage { position: relative; min-width: 0; }
+.teaser-stage::before { content: ""; position: absolute; inset: -12% -20% -12% 10%; background: radial-gradient(closest-side, rgba(45, 190, 108, 0.30), transparent); z-index: 0; }
+.teaser-stage .browser { z-index: 1; }
+
+/* ---------- Work ---------- */
+.work-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.4rem, 3vw, 2.2rem); margin-top: 3rem; }
+@media (max-width: 760px) { .work-grid { grid-template-columns: 1fr; } }
+.project { display: grid; gap: 1.3rem; align-content: start; min-width: 0; }
+.project-visual { position: relative; border-radius: var(--r-lg); padding: clamp(1.2rem, 3.5vw, 2.4rem); overflow: hidden; background: var(--tint, var(--mint-soft)); }
+.project-visual .browser { box-shadow: var(--shadow-md); transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease); }
+.project:hover .project-visual .browser { transform: translateY(-6px) rotate(-0.4deg); box-shadow: var(--shadow-lg); }
+.project-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.project h3 { font-size: 1.55rem; letter-spacing: -0.025em; }
+.project p { color: var(--ink-soft); max-width: 58ch; }
+.project .features { display: flex; flex-wrap: wrap; gap: 0.4rem 0.9rem; list-style: none; padding: 0; margin: 0; font-size: 0.9rem; font-weight: 600; }
+.project .features li { display: inline-flex; align-items: center; gap: 0.35rem; }
+.redacted-note { display: flex; gap: 0.55rem; align-items: flex-start; font-size: 0.85rem; color: var(--ink-soft); background: var(--coral-soft); border-radius: var(--r-sm); padding: 0.65rem 0.85rem; max-width: 58ch; }
+.redacted-note span { color: var(--coral-btn); font-weight: 700; line-height: 1.5; }
+.project .features li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--coral); }
+.project--featured { grid-column: 1 / -1; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: center; gap: clamp(1.5rem, 4vw, 3.5rem); }
+.project--featured h3 { font-size: var(--t-xl); }
+.project-info { display: grid; gap: 1rem; min-width: 0; }
+@media (max-width: 860px) { .project--featured { grid-template-columns: 1fr; } }
+
+/* ---------- Services ---------- */
+.services { background: var(--white); border-block: 1px solid var(--line); }
+.service-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 3rem; border-top: 1px solid var(--line); }
+@media (max-width: 900px) { .service-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .service-list { grid-template-columns: 1fr; } }
+.service { padding: 2rem 2rem 2.2rem 0; border-bottom: 1px solid var(--line); display: grid; gap: 0.75rem; align-content: start; min-width: 0; }
+.service:not(:nth-child(3n + 1)) { padding-left: 2rem; border-left: 1px solid var(--line); }
+@media (max-width: 900px) {
+  .service:not(:nth-child(3n + 1)) { padding-left: 0; border-left: 0; }
+  .service:nth-child(2n) { padding-left: 2rem; border-left: 1px solid var(--line); }
+}
+@media (max-width: 560px) { .service:nth-child(2n) { padding-left: 0; border-left: 0; } .service { padding-right: 0; } }
+.service .ic { width: 48px; height: 48px; border-radius: 14px; background: var(--mint-soft); color: var(--green); display: grid; place-items: center; transition: background 0.3s, color 0.3s, transform 0.3s var(--ease); }
+.service:hover .ic { background: var(--green); color: var(--white); transform: rotate(-6deg); }
+.service .ic svg { width: 24px; height: 24px; }
+.service h3 { font-size: 1.2rem; letter-spacing: -0.02em; margin-top: 0.4rem; }
+.service p { color: var(--ink-soft); font-size: 0.97rem; }
+.service .group { font-family: var(--f-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--coral-btn); }
+
+/* ---------- Industries marquee ---------- */
+.industries { background: var(--mint); padding-block: 1.3rem; overflow: hidden; }
+.marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+.industries:hover .marquee { animation-play-state: paused; }
+.marquee ul { display: flex; gap: 2.8rem; list-style: none; margin: 0; padding: 0 1.4rem; }
+.marquee li { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--f-display); font-weight: 700; font-size: 1.15rem; white-space: nowrap; color: var(--green-deep); }
+.marquee li svg { width: 22px; height: 22px; color: var(--green); }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* ---------- Why / About ---------- */
+.why-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+@media (max-width: 900px) { .why-grid { grid-template-columns: 1fr; } }
+.why-copy .lede + .lede { margin-top: 1rem; }
+.why-copy .link-arrow { margin-top: 1.6rem; }
+.principles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
+@media (max-width: 560px) { .principles { grid-template-columns: 1fr; } }
+.principle { background: var(--white); border: 1px solid var(--line); border-radius: var(--r-md); padding: 1.6rem; display: grid; gap: 0.6rem; align-content: start; }
+.principle:first-child { background: var(--navy); border-color: var(--navy); color: var(--white); }
+.principle:first-child p { color: rgba(255, 255, 255, 0.72); }
+.principle:first-child .ic { background: var(--coral-btn); color: var(--white); }
+.principle .ic { width: 40px; height: 40px; border-radius: 12px; background: var(--mint-soft); color: var(--green); display: grid; place-items: center; }
+.principle .ic svg { width: 20px; height: 20px; }
+.principle h3 { font-size: 1.12rem; letter-spacing: -0.015em; margin-top: 0.3rem; }
+.principle p { color: var(--ink-soft); font-size: 0.95rem; }
+
+
+/* ---------- Talk to a real person ---------- */
+.live { padding-block: clamp(3.5rem, 7vw, 5.5rem); background: var(--mint-soft); border-block: 1px solid var(--mint); }
+.live-grid { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+@media (max-width: 900px) { .live-grid { grid-template-columns: 1fr; } }
+.live-copy { min-width: 0; }
+.live-badge { display: inline-flex; align-items: center; gap: 0.55rem; background: var(--white); border: 1px solid var(--mint); border-radius: var(--r-pill); padding: 0.35rem 0.85rem 0.35rem 0.7rem; font-weight: 700; font-size: 0.85rem; color: var(--green-deep); }
+.live-badge .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green-bright); box-shadow: 0 0 0 0 rgba(45, 190, 108, 0.5); animation: live-pulse 1.8s infinite; }
+@keyframes live-pulse { 70% { box-shadow: 0 0 0 9px rgba(45, 190, 108, 0); } 100% { box-shadow: 0 0 0 0 rgba(45, 190, 108, 0); } }
+.live .h2 { margin-top: 1rem; }
+.live-number { margin-top: 1.8rem; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 0.1rem 1rem; background: var(--navy); color: var(--white); border-radius: var(--r-md); padding: 1.1rem 1.3rem; max-width: 460px; }
+.live-number small { grid-column: 1 / -1; font-family: var(--f-mono); font-size: var(--t-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-bright); }
+.live-number b { font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 800; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; white-space: nowrap; user-select: all; }
+.live-copy-btn { border: 0; border-radius: var(--r-pill); background: rgba(255, 255, 255, 0.1); color: var(--white); font-weight: 700; font-size: 0.82rem; padding: 0.5rem 0.9rem; cursor: pointer; white-space: nowrap; }
+.live-copy-btn:hover { background: rgba(255, 255, 255, 0.18); }
+@media (max-width: 420px) { .live-number { grid-template-columns: 1fr; } .live-copy-btn { justify-self: start; margin-top: 0.5rem; } }
+.live-ways { display: grid; gap: 0.7rem; min-width: 0; }
+.live-way { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 1rem; padding: 1rem 1.2rem; border-radius: var(--r-md); background: var(--white); border: 1px solid var(--line); text-decoration: none; color: var(--navy); transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.2s; }
+.live-way:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--green); }
+.live-way .ic { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; background: var(--mint-soft); color: var(--green); flex: none; }
+.live-way .ic svg { width: 22px; height: 22px; }
+.live-way--wa .ic { background: #25D366; color: #06331A; }
+.live-way .txt { display: grid; gap: 0.1rem; min-width: 0; }
+.live-way .txt b { font-size: 1.02rem; }
+.live-way .txt small { color: var(--ink-soft); font-size: 0.86rem; overflow-wrap: anywhere; }
+.live-way .go { font-weight: 700; color: var(--green); transition: transform 0.25s var(--ease); }
+.live-way:hover .go { transform: translateX(4px); }
+.live-note { display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; color: var(--ink-soft); margin-top: 0.2rem; }
+.live-note .ic-sm svg { width: 16px; height: 16px; color: var(--green); display: block; }
+
+
+/* ---------- Offices (inside "Talk to a real person") ---------- */
+.offices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-items: start; margin-top: clamp(2rem, 4vw, 3rem); }
+@media (max-width: 900px) { .offices { grid-template-columns: 1fr; } }
+.office { background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 1.3rem 1.4rem; display: grid; gap: 1rem; align-content: start; min-width: 0; }
+.office--dark { background: var(--navy); border-color: var(--navy); color: var(--white); }
+.office-head { display: flex; align-items: center; gap: 0.9rem; }
+.office-head h3 { font-size: 1.15rem; letter-spacing: -0.015em; }
+.office-head small { display: block; font-size: 0.84rem; color: var(--ink-soft); }
+.office--dark .office-head small { color: rgba(255, 255, 255, 0.65); }
+.office-code { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-family: var(--f-mono); font-weight: 500; font-size: 0.85rem; letter-spacing: 0.06em; background: var(--mint-soft); color: var(--green-deep); flex: none; }
+.office--dark .office-code { background: var(--coral-btn); color: var(--white); }
+.office-people { list-style: none; margin: 0; padding: 0; display: grid; }
+.office-people li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem 1rem; padding: 0.8rem 0; border-top: 1px solid var(--line); }
+.office--dark .office-people li { border-top-color: rgba(255, 255, 255, 0.12); }
+.office-people .who { display: grid; min-width: 0; }
+.office-people .who b { font-size: 0.95rem; }
+.office-people .num { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; white-space: nowrap; user-select: all; }
+.office-people .acts { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.act { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.75rem; border-radius: var(--r-pill); border: 1.5px solid var(--line); background: var(--white); color: var(--navy); text-decoration: none; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: border-color 0.2s, transform 0.2s var(--ease); }
+.act:hover { border-color: var(--green); transform: translateY(-1px); }
+.act svg { width: 15px; height: 15px; }
+.act--wa { background: #25D366; border-color: #25D366; color: #06331A; }
+.act--icon { padding: 0.45rem 0.55rem; }
+.office--dark .act { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.16); color: var(--white); }
+.office--dark .act--wa { background: #25D366; border-color: #25D366; color: #06331A; }
+.live .live-note { margin-top: 1.1rem; }
+
+/* ---------- Reviews ---------- */
+.reviews { padding-top: 0; }
+.rev-score { display: flex; align-items: center; gap: 0.7rem; background: var(--white); border: 1px solid var(--line); border-radius: var(--r-pill); padding: 0.6rem 1.1rem; }
+.rev-score b { font-size: 1.4rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.rev-score span:last-child { color: var(--ink-soft); font-size: 0.9rem; }
+.stars { display: inline-flex; gap: 2px; }
+.stars svg { width: 18px; height: 18px; fill: var(--line); }
+.stars svg.on { fill: #F5A524; }
+.stars.lg svg { width: 22px; height: 22px; }
+.rev-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 1rem; margin-top: 2.5rem; }
+.rev-card { margin: 0; background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 1.4rem 1.5rem; display: grid; gap: 0.9rem; align-content: start; }
+.rev-card blockquote { margin: 0; font-size: 1rem; line-height: 1.6; color: var(--navy); }
+.rev-card blockquote::before { content: "\201C"; } .rev-card blockquote::after { content: "\201D"; }
+.rev-card figcaption { display: flex; align-items: center; gap: 0.75rem; padding-top: 0.9rem; border-top: 1px solid var(--line); }
+.rev-card .av { width: 40px; height: 40px; border-radius: 50%; background: var(--mint-soft); color: var(--green-deep); display: grid; place-items: center; font-weight: 800; font-size: 0.85rem; flex: none; }
+.rev-card figcaption b { display: block; font-size: 0.95rem; }
+.rev-card figcaption small { color: var(--ink-soft); font-size: 0.82rem; }
+.rev-empty { grid-column: 1 / -1; display: grid; justify-items: center; gap: 0.5rem; text-align: center; padding: 2.4rem 1.4rem; background: var(--white); border: 1px dashed var(--line); border-radius: var(--r-lg); color: var(--ink-soft); }
+.rev-empty b { color: var(--navy); font-size: 1.1rem; }
+.rev-empty span { max-width: 46ch; }
+.rev-write { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(1.5rem, 4vw, 3rem); margin-top: 2rem; background: var(--mint-soft); border-radius: calc(var(--r-lg) + 4px); padding: clamp(1.4rem, 4vw, 2.6rem); }
+@media (max-width: 900px) { .rev-write { grid-template-columns: 1fr; } }
+.rev-write-copy h3 { font-size: 1.4rem; letter-spacing: -0.02em; }
+.rev-write-copy p { color: var(--ink-soft); margin-top: 0.6rem; max-width: 40ch; }
+.rev-form { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.9rem; align-content: start; }
+.rev-form .full, .rev-form .rev-stars-input { grid-column: 1 / -1; }
+@media (max-width: 640px) { .rev-form { grid-template-columns: 1fr; } }
+.rev-form .opt { font-weight: 500; color: var(--ink-soft); }
+.rev-form textarea { min-height: 130px; }
+.rev-form .form-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+.rev-form .form-foot small { color: var(--ink-soft); font-size: 0.85rem; }
+.rev-stars-input { border: 0; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+.rev-stars-input legend { font-weight: 700; font-size: 0.88rem; padding: 0; margin-bottom: 0.4rem; }
+.stars-pick { display: inline-flex; flex-direction: row-reverse; justify-content: flex-end; gap: 4px; }
+.stars-pick input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.stars-pick label { cursor: pointer; line-height: 0; }
+.stars-pick svg { width: 32px; height: 32px; fill: var(--line); transition: fill 0.15s, transform 0.15s var(--ease); }
+.stars-pick input:checked ~ label svg, .stars-pick label:hover svg, .stars-pick label:hover ~ label svg { fill: #F5A524; }
+.stars-pick label:hover svg { transform: scale(1.08); }
+.stars-pick input:focus-visible + label svg { outline: 3px solid var(--coral); outline-offset: 2px; border-radius: 4px; }
+
+/* Floating WhatsApp button */
+.wa-float { position: fixed; right: calc(18px + env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 60; display: inline-flex; align-items: center; gap: 0.55rem; background: #25D366; color: #06331A; text-decoration: none; font-weight: 800; font-size: 0.95rem; padding: 0.75rem 1.1rem 0.75rem 0.85rem; border-radius: var(--r-pill); box-shadow: 0 12px 28px -10px rgba(1, 34, 40, 0.45); transition: transform 0.25s var(--ease); }
+.wa-float:hover { transform: translateY(-2px); }
+.wa-float svg { width: 24px; height: 24px; }
+@media (max-width: 560px) { .site-footer { padding-bottom: 5.5rem; } .wa-float { padding: 0.8rem; } .wa-float span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } }
+
+/* ---------- Contact ---------- */
+.contact-panel { background: var(--navy); color: var(--white); border-radius: calc(var(--r-lg) + 8px); padding: clamp(1.6rem, 5vw, 4rem); display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(2rem, 5vw, 4rem); position: relative; overflow: hidden; }
+@media (max-width: 900px) { .contact-panel { grid-template-columns: 1fr; } }
+.contact-panel::before { content: ""; position: absolute; width: 420px; height: 420px; border-radius: 50%; background: var(--green); opacity: 0.25; left: -160px; bottom: -220px; }
+.contact-panel > * { position: relative; }
+.contact-panel .eyebrow { color: var(--green-bright); }
+.contact-panel .h2 { color: var(--white); }
+.contact-panel .lede { color: rgba(255, 255, 255, 0.72); }
+.contact-ways { display: grid; gap: 0.8rem; margin-top: 2rem; }
+.contact-way { display: flex; align-items: center; gap: 0.9rem; padding: 0.9rem 1rem; border-radius: var(--r-md); background: rgba(255, 255, 255, 0.06); text-decoration: none; transition: background 0.2s; min-width: 0; }
+.contact-way:hover { background: rgba(255, 255, 255, 0.11); }
+.contact-way .ic { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: rgba(255, 255, 255, 0.1); flex: none; }
+.contact-way .ic svg { width: 20px; height: 20px; }
+.contact-way--wa .ic { background: #25D366; color: #06331A; }
+.contact-way small { display: block; font-size: 0.78rem; color: rgba(255, 255, 255, 0.6); }
+.contact-way b { font-weight: 700; overflow-wrap: anywhere; }
+.contact-form { background: var(--white); color: var(--navy); border-radius: var(--r-lg); padding: clamp(1.3rem, 3vw, 2.2rem); display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-content: start; }
+@media (max-width: 560px) { .contact-form { grid-template-columns: 1fr; } }
+.contact-form h3 { grid-column: 1 / -1; font-size: 1.35rem; letter-spacing: -0.02em; }
+.contact-form .full { grid-column: 1 / -1; }
+.contact-form .form-foot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+.contact-form .form-foot small { color: var(--ink-soft); font-size: 0.85rem; }
+.form-status { grid-column: 1 / -1; border-radius: var(--r-sm); padding: 0.9rem 1rem; font-weight: 600; font-size: 0.95rem; background: var(--mint-soft); color: var(--green-deep); }
+.form-status.is-error { background: var(--coral-soft); color: #9A3412; }
+
+</style>
+
+
+
+<!-- Logo mark, defined once and reused with <use href="#ts-mark"> -->
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ts-mark" viewBox="0 0 322 244">
+    <g fill="currentColor" stroke-linejoin="round">
+    <path d="M4 4h314l-36 56H39z"/>
+    <path d="M68 93h59l62 123-48 24z"/>
+    <path d="M168 93h87l-45 87z" fill="#1FA75A"/>
+    </g>
+  </symbol>
+</svg>
+
+<header class="site-header" id="siteHeader">
+  <div class="container">
+    <a class="logo" href="#top" aria-label="Trace Solutions Global, home">
+      <svg class="mark" aria-hidden="true"><use href="#ts-mark"/></svg>
+      <span class="word">TRACE SOLUTIONS <span class="g">G</span>LOBAL</span>
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav-links" id="navLinks">
+        <li><a href="work.html">Our Work</a></li>
+        <li><a href="#try">Concept Builder</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li class="mobile-cta"><a class="btn btn--coral" href="build.html">Build Your Website Concept</a></li>
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn--coral btn--sm" href="build.html">Build Your Concept <span class="arrow">→</span></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Your vision, built line by line</span>
+        <h1>Websites made for
+          <span class="accent-word">your business<svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 14C70 6 170 4 296 10"/></svg></span></h1>
+        <p class="lede">We design and build modern websites for restaurants, hotels, clinics and growing businesses, wherever they are in the world. Pick your business and style, and watch your website take shape before we write a single line of code.</p>
+        <div class="hero-ctas">
+          <a class="btn btn--coral" href="build.html">Build Your Website Concept <span class="arrow">→</span></a>
+          <a class="btn btn--outline" href="work.html">View Our Work</a>
+        </div>
+        <ul class="hero-points">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Concept in about 2 minutes</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Proposal within 24 hours</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Mobile-first by default</li>
+        </ul>
+      </div>
+
+      <div class="hero-stage" id="heroStage">
+        <span class="blob" aria-hidden="true"></span>
+        <span class="dots" aria-hidden="true"></span>
+        <svg class="hero-loop" viewBox="0 0 300 160" aria-hidden="true"><path pathLength="1" d="M4 150C60 120 110 60 150 40c40-20 70 0 60 30s-60 30-60 0 40-60 146-50"/></svg>
+        <div class="browser" role="img" aria-label="Animated example of a website being traced for a sample business">
+          <div class="browser-bar">
+            <span class="browser-dots"><i></i><i></i><i></i></span>
+            <span class="browser-url" id="heroUrl"></span>
+          </div>
+          <div class="browser-body" id="heroBody"></div>
+        </div>
+        <div class="tracing-label" aria-live="polite"><span class="pulse"></span>Now tracing: <b id="heroType">Restaurant</b></div>
+        <div class="hero-switch" id="heroSwitch" aria-label="Choose example"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="section how" id="how">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">How it works</span>
+          <h2 class="h2">From idea to live website,<br>in three clear steps</h2>
+        </div>
+        <p class="lede">Most agencies start with a long call and a vague quote. We start by showing you something.</p>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          <span class="step-num">01</span>
+          <span class="meta">About 2 minutes</span>
+          <h3>Build your concept</h3>
+          <p>Choose your business type, style, pages and features. Your website preview updates as you go.</p>
+        </li>
+        <li class="step">
+          <span class="step-num">02</span>
+          <span class="meta">Within 24 hours</span>
+          <h3>Get your proposal</h3>
+          <p>We turn your concept into a clear plan with pages, features, timeline and a fixed price in US dollars.</p>
+        </li>
+        <li class="step">
+          <span class="step-num">03</span>
+          <span class="meta">Typically 1 to 4 weeks</span>
+          <h3>We design, build &amp; launch</h3>
+          <p>You review every stage. We handle hosting, your domain and a handover session for your team.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ CONCEPT TEASER ============ -->
+  <section class="section teaser" id="try">
+    <div class="container teaser-grid">
+      <div>
+        <span class="eyebrow">Try it now</span>
+        <h2 class="h2">Pick a business. Watch its website appear.</h2>
+        <p class="lede">This is a taste of our Concept Builder. Tap a business type and a style to see a first draft of the website.</p>
+        <div class="teaser-controls">
+          <div>
+            <div class="control-label">Business type <b id="teaserTypeName">Restaurant</b></div>
+            <div class="chip-row" id="teaserTypes" role="group" aria-label="Business type"></div>
+          </div>
+          <div>
+            <div class="control-label">Visual style</div>
+            <div class="chip-row" id="teaserStyles" role="group" aria-label="Visual style"></div>
+          </div>
+          <div class="teaser-cta">
+            <a class="btn btn--coral" href="build.html" id="teaserCta">Build Your Website Concept <span class="arrow">→</span></a>
+            <small>Pages, features and your details come next. No sign-up needed.</small>
+          </div>
+        </div>
+      </div>
+      <div class="teaser-stage">
+        <div class="browser" role="img" aria-label="Live preview of a sample website for the selected business type and style">
+          <div class="browser-bar">
+            <span class="browser-dots"><i></i><i></i><i></i></span>
+            <span class="browser-url" id="teaserUrl"></span>
+          </div>
+          <div class="browser-body" id="teaserBody"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="section services" id="services">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Services</span>
+          <h2 class="h2">Websites. Social media. Ads.</h2>
+        </div>
+        <p class="lede">We build the website, then help the right people find it. One team, one plan, one point of contact.</p>
+      </div>
+      <div class="service-list">
+        <article class="service">
+          <span class="ic" data-icon="globe"></span>
+          <span class="group">Build</span>
+          <h3>Business websites</h3>
+          <p>Fast, mobile-first websites for restaurants, clinics, hotels and service businesses, written and designed around your customers.</p>
+        </article>
+        <article class="service">
+          <span class="ic" data-icon="cart"></span>
+          <span class="group">Build</span>
+          <h3>Online stores</h3>
+          <p>Product catalogues, carts and checkout with trusted payment gateways such as Stripe and PayPal, plus delivery zones and international shipping.</p>
+        </article>
+        <article class="service">
+          <span class="ic" data-icon="calendar"></span>
+          <span class="group">Build</span>
+          <h3>Booking &amp; web apps</h3>
+          <p>Table reservations, doctor channelling, room bookings and simple dashboards that save your team hours every week.</p>
+        </article>
+        <article class="service">
+          <span class="ic" data-icon="grid"></span>
+          <span class="group">Grow</span>
+          <h3>Social media</h3>
+          <p>Content calendars, post and reel design, and page management for Facebook, Instagram and TikTok.</p>
+        </article>
+        <article class="service">
+          <span class="ic" data-icon="megaphone"></span>
+          <span class="group">Grow</span>
+          <h3>Google &amp; Meta ads</h3>
+          <p>Campaigns set up, tracked and reported in plain language, so you know what every dollar brought back.</p>
+        </article>
+        <article class="service">
+          <span class="ic" data-icon="server"></span>
+          <span class="group">Care</span>
+          <h3>Hosting, care &amp; SEO</h3>
+          <p>Domains, hosting, SSL, backups, monthly updates and a Google Business Profile that actually shows up in search.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INDUSTRIES ============ -->
+  <div class="industries" aria-label="Industries we build for">
+    <div class="marquee" id="marquee"></div>
+  </div>
+
+  <!-- ============ ABOUT / WHY ============ -->
+  <section class="section" id="about">
+    <div class="container why-grid">
+      <div class="why-copy">
+        <span class="eyebrow">About us</span>
+        <h2 class="h2">A studio that shows you, instead of telling you</h2>
+        <p class="lede">Trace Solutions Global is a web studio with offices in the United Kingdom and Sri Lanka, building websites for businesses all over the world. Wherever you are, you get the same care: a team that listens, works around your time zone and treats your business with the respect it deserves.</p>
+        <p class="lede">Our name comes from the first step of any good design: tracing the outline before filling in the detail. We work the same way with every client, in every country. Agree on the shape first, then build exactly what you need.</p>
+        <a class="link-arrow" href="#contact">Talk to the team <span>→</span></a>
+      </div>
+      <div class="principles">
+        <article class="principle">
+          <span class="ic" data-icon="layers"></span>
+          <h3>See it before you commit</h3>
+          <p>The Concept Builder shows your website's direction in minutes, so our first conversation starts from something real.</p>
+        </article>
+        <article class="principle">
+          <span class="ic" data-icon="pin"></span>
+          <h3>Built for anywhere in the world</h3>
+          <p>Clear pricing in US dollars, international payment gateways, WhatsApp ordering and multi-language websites ready for customers in any country.</p>
+        </article>
+        <article class="principle">
+          <span class="ic" data-icon="phone"></span>
+          <h3>Mobile-first, always</h3>
+          <p>Most of your customers will find you on a phone. We design for that screen first, then scale up.</p>
+        </article>
+        <article class="principle">
+          <span class="ic" data-icon="key"></span>
+          <h3>Yours to keep</h3>
+          <p>You own your domain, your content and your website. No lock-in and no surprise renewal fees.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TALK TO A REAL PERSON ============ -->
+  <section class="section live" id="live" aria-labelledby="liveTitle">
+    <div class="container">
+      <div class="live-grid">
+        <div class="live-copy">
+          <span class="live-badge"><span class="dot" aria-hidden="true"></span>Real people, not bots</span>
+          <h2 class="h2" id="liveTitle">Talk to a real person</h2>
+          <p class="lede">Questions before you start? Call, WhatsApp or text our team directly. We have offices in the United Kingdom and Sri Lanka, and a real member of the team picks up every message, wherever you are in the world.</p>
+        </div>
+        <div class="live-ways">
+          <a class="live-way live-way--wa" data-site-link="whatsapp" href="#" target="_blank" rel="noopener">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg></span>
+            <span class="txt"><b>Chat on WhatsApp</b><small>Message our UK team and a real person picks it up</small></span>
+            <span class="go" aria-hidden="true">→</span>
+          </a>
+          <a class="live-way" data-site-link="whatsappCall" href="#" target="_blank" rel="noopener">
+            <span class="ic" data-icon="phone"></span>
+            <span class="txt"><b>Call us on WhatsApp</b><small>Open the chat, then tap the call button to talk to us</small></span>
+            <span class="go" aria-hidden="true">→</span>
+          </a>
+          <a class="live-way" data-site-link="email" href="#">
+            <span class="ic" data-icon="mail"></span>
+            <span class="txt"><b>Email the team</b><small data-site="email"></small></span>
+            <span class="go" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="offices" id="offices" aria-label="Our offices and phone numbers"></div>
+      <p class="live-note"><span data-icon="timer" class="ic-sm"></span>Call, WhatsApp or send a normal text message to any number above. We reply within one working day, usually much sooner.</p>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="section" id="contact" style="padding-top:0">
+    <div class="container">
+      <div class="contact-panel">
+        <div>
+          <span class="eyebrow">Contact</span>
+          <h2 class="h2">Let's build something great together</h2>
+          <p class="lede">Tell us a little about your business, wherever in the world it is. We reply within one working day, usually much sooner.</p>
+          <div class="contact-ways">
+            <a class="contact-way contact-way--wa" data-site-link="whatsapp" href="#" target="_blank" rel="noopener">
+              <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg></span>
+              <span><small>WhatsApp (fastest)</small><b data-site="phoneDisplay"></b></span>
+            </a>
+            <a class="contact-way" data-site-link="email" href="#">
+              <span class="ic" data-icon="chat"></span>
+              <span><small>Email</small><b data-site="email"></b></span>
+            </a>
+            <div class="contact-way">
+              <span class="ic" data-icon="pin"></span>
+              <span><small>Where we work</small><b><span data-site="location"></span> · <span data-site="hours"></span></b></span>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contactForm" action="api/contact.php" method="post" novalidate>
+          <h3>Send us a message</h3>
+          <div class="field"><label for="c-name">Your name</label><input id="c-name" name="name" autocomplete="name" required placeholder="Alex Morgan"></div>
+          <div class="field"><label for="c-business">Business name</label><input id="c-business" name="business" autocomplete="organization" placeholder="Spice Route Kitchen"></div>
+          <div class="field"><label for="c-phone">Phone / WhatsApp</label><input id="c-phone" name="phone" type="tel" autocomplete="tel" placeholder="+1 555 123 4567"></div>
+          <div class="field"><label for="c-email">Email</label><input id="c-email" name="email" type="email" autocomplete="email" placeholder="you@business.com"></div>
+          <div class="field full">
+            <label for="c-type">Business type</label>
+            <select id="c-type" name="business_type"></select>
+          </div>
+          <div class="field full"><label for="c-message">How can we help?</label><textarea id="c-message" name="message" placeholder="We need a website with online table booking and a menu…"></textarea></div>
+          <div class="hp" aria-hidden="true"><label for="c-website">Leave this empty</label><input id="c-website" name="website" tabindex="-1" autocomplete="off"></div>
+          <div class="form-foot">
+            <small>We'll only use your details to reply to you.</small>
+            <button class="btn btn--coral" type="submit">Send message <span class="arrow">→</span></button>
+          </div>
+          <div class="form-status" id="formStatus" role="status" hidden></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REVIEWS ============ -->
+  <section class="section reviews" id="reviews" aria-labelledby="reviewsTitle">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Reviews</span>
+          <h2 class="h2" id="reviewsTitle">What our clients say</h2>
+        </div>
+        <div class="rev-score" id="revScore" hidden></div>
+      </div>
+      <div class="rev-grid" id="revGrid"></div>
+
+      <div class="rev-write">
+        <div class="rev-write-copy">
+          <h3>Worked with us? Leave a review</h3>
+          <p>Tell other business owners how it went. Our team reads every review before it appears here, so the page only ever shows genuine clients.</p>
+        </div>
+        <form class="rev-form" id="revForm" novalidate>
+          <fieldset class="rev-stars-input">
+            <legend>Your rating</legend>
+            <div class="stars-pick" id="starsPick">
+              <input type="radio" name="rating" id="r5" value="5" checked><label for="r5" title="5 stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg><span class="visually-hidden">5 stars</span></label><input type="radio" name="rating" id="r4" value="4"><label for="r4" title="4 stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg><span class="visually-hidden">4 stars</span></label><input type="radio" name="rating" id="r3" value="3"><label for="r3" title="3 stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg><span class="visually-hidden">3 stars</span></label><input type="radio" name="rating" id="r2" value="2"><label for="r2" title="2 stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg><span class="visually-hidden">2 stars</span></label><input type="radio" name="rating" id="r1" value="1"><label for="r1" title="1 star"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg><span class="visually-hidden">1 star</span></label>
+            </div>
+          </fieldset>
+          <div class="field"><label for="rv-name">Your name</label><input id="rv-name" name="name" autocomplete="name" maxlength="80" placeholder="Alex Morgan"></div>
+          <div class="field"><label for="rv-business">Business <span class="opt">(optional)</span></label><input id="rv-business" name="business" autocomplete="organization" maxlength="120" placeholder="Spice Route Kitchen"></div>
+          <div class="field"><label for="rv-country">Country <span class="opt">(optional)</span></label><input id="rv-country" name="country" autocomplete="country-name" maxlength="60" placeholder="United Kingdom"></div>
+          <div class="field full"><label for="rv-text">Your review</label><textarea id="rv-text" name="text" maxlength="1200" placeholder="What did we build for you, and how was working with us?"></textarea></div>
+          <div class="hp" aria-hidden="true"><label for="rv-website">Leave this empty</label><input id="rv-website" name="website" tabindex="-1" autocomplete="off"></div>
+          <div class="form-foot full">
+            <small>Reviews appear after a quick check by our team.</small>
+            <button class="btn btn--coral" type="submit">Send review <span class="arrow">→</span></button>
+          </div>
+          <div class="form-status full" id="revStatus" role="status" hidden></div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo logo--light" href="#top" aria-label="Trace Solutions Global, back to top">
+          <svg class="mark" aria-hidden="true"><use href="#ts-mark"/></svg>
+          <span class="word">TRACE SOLUTIONS <span class="g">G</span>LOBAL</span>
+        </a>
+        <p>Modern websites for businesses worldwide, designed so you can see them before we build them.</p>
+        <div class="tagline">Your vision, built line by line.</div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="work.html">Our work</a></li>
+          <li><a href="build.html">Concept Builder</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#live">Talk to a real person</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li>Business websites</li>
+          <li>Online stores</li>
+          <li>Social media</li>
+          <li>Google &amp; Meta ads</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a data-site-link="whatsapp" href="#" target="_blank" rel="noopener" data-site="phoneDisplay"></a></li>
+          <li><a data-site-link="email" href="#" data-site="email"></a></li>
+          <li><a data-site-link="instagram" href="#" target="_blank" rel="noopener">Instagram</a> · <a data-site-link="facebook" href="#" target="_blank" rel="noopener">Facebook</a></li>
+          <li data-site="location"></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Trace Solutions Global. All rights reserved.</span>
+      <span>Websites · Social media · Ads</span>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" data-site-link="whatsapp" href="#" target="_blank" rel="noopener" aria-label="Chat with our team on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg><span>Chat with us</span>
+</a>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =========================================================
+   Company details, used everywhere on the site.
+   Replace the placeholders with your real details.
+   (Keep api/config.php in sync for the email address.)
+   ========================================================= */
+window.TS = window.TS || {};
+
+TS.site = {
+  name: "Trace Solutions Global",
+  tagline: "Your vision, built line by line.",
+  whatsapp: "447548692972",         // international format, no + or spaces
+  phoneDisplay: "+44 7548 692972",
+  email: "hello@tracesolutionsglobal.com", // PLACEHOLDER
+  salesEmail: "sales@tsg.com",
+  /* Access key from https://app.web3forms.com. Paste the same value in
+     build.html and api/config.php. Leave blank to send through PHP mail. */
+  web3formsKey: "57dfc7a2-d684-46b0-ac8c-216d41f22f88",
+  instagram: "tracesolutionsglobal", // PLACEHOLDER
+  facebook: "tracesolutionsglobal",   // PLACEHOLDER
+  location: "Offices in the UK and Sri Lanka",
+  hours: "Replies within one working day",
+  website: "tracesolutionsglobal.com",
+
+  /* Offices and direct numbers shown in "Talk to a real person".
+     Each number gets Call, WhatsApp and Text buttons. */
+  offices: [
+    { country: "United Kingdom", code: "UK", note: "WhatsApp, calls and texts", people: [
+      { name: "UK team", phone: "+44 7548 692972" }
+    ] },
+    { country: "Sri Lanka", code: "LK", note: "Calls, WhatsApp and texts", people: [
+      { name: "Azzy", phone: "+94 76 831 0321" },
+      { name: "Ocean", phone: "+94 77 723 4441" },
+      { name: "Mandy", phone: "+94 77 780 9199" }
+    ] }
+  ]
+};
+
+/* Real client reviews to show on the homepage (in addition to reviews
+   approved in the back office on the live site). Only add genuine
+   reviews, with the client's permission. One per client, for example:
+   { name: "Client name", business: "Business", country: "United Kingdom",
+     rating: 5, text: "What they said", date: "2026-10" } */
+TS.reviews = [];
+
+</script>
+<script>
+/* =========================================================
+   Icon set (24×24, stroked). Shared by previews and UI.
+   Add an icon: give it a key and its SVG path data.
+   ========================================================= */
+window.TS = window.TS || {};
+
+(function () {
+  // Helper: circle as path data (so every icon is one <path>)
+  const c = (cx, cy, r) => `M${cx + r} ${cy}a${r} ${r} 0 1 1 ${-2 * r} 0a${r} ${r} 0 1 1 ${2 * r} 0z`;
+
+  TS.icons = {
+    menu: "M4 6h16M4 12h16M4 18h10",
+    calendar: "M4 6h16v14H4zM4 10h16M8 3v4M16 3v4",
+    bag: "M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2",
+    bed: "M3 19V7M3 15h18v4M21 15v-2a3 3 0 0 0-3-3h-7v5" + c(7, 11.5, 1.8),
+    fork: "M7 3v7a2 2 0 0 0 2 2v9M11 3v7M9 3v7M17 21V3c-2.5 1.5-3 6-3 9h3",
+    star: "M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z",
+    doctor: c(12, 8, 4) + "M4 21a8 8 0 0 1 16 0M12 15v4M10 17h4",
+    file: "M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6",
+    heart: "M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z",
+    plus: "M12 5v14M5 12h14",
+    code: "M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14",
+    cloud: "M7 18a4 4 0 0 1-.5-8 6 6 0 0 1 11.5 1.5A3.3 3.3 0 0 1 17.5 18z",
+    phone: "M8 3h8v18H8zM11 18h2",
+    hammer: "M14 3l6 6-3 3-6-6zM11 9l-8 8 3 3 8-8",
+    ruler: "M3 17L17 3l4 4L7 21zM7 13l2 2M10 10l2 2M13 7l2 2",
+    shield: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z",
+    home: "M3 11l9-7 9 7M5 10v10h14V10M10 20v-6h4v6",
+    key: c(8, 14, 4) + "M11 11l9-9M17 5l3 3M14 8l2 2",
+    pin: "M12 21s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z" + c(12, 9, 2.5),
+    scissors: c(6, 6, 3) + c(6, 18, 3) + "M8.5 7.5L20 18M8.5 16.5L20 6",
+    sparkle: "M12 3v5M12 16v5M3 12h5M16 12h5M6 6l3 3M15 15l3 3M18 6l-3 3M9 15l-3 3",
+    truck: "M3 6h11v10H3zM14 10h4l3 3v3h-7" + c(7, 18.5, 1.8) + c(17, 18.5, 1.8),
+    card: "M3 6h18v12H3zM3 10h18M7 15h4",
+    chart: "M5 20V11M11 20V5M17 20v-7M3 20h18",
+    chat: "M4 5h16v11H9l-5 4z",
+    mic: "M9 3h6v10H9zM5 11a7 7 0 0 0 14 0M12 18v3",
+    book: "M4 5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0-2 2zM4 21V5",
+    cake: "M4 20h16v-7H4zM6 13v-3h12v3M12 10V7M4 16.5c2 1.5 4 1.5 5.3 0 1.4 1.5 4 1.5 5.4 0 1.3 1.5 3.3 1.5 5.3 0",
+    shirt: "M8 3l4 2 4-2 5 4-3 3-2-1v12H8V9l-2 1-3-3z",
+    bottle: "M10 3h4v3h-4zM7 8h10v13H7zM10 13h4",
+    basket: "M3 10h18l-2 10H5zM8 10l3-6M16 10l-3-6M9 14v3M15 14v3",
+    tyre: c(12, 12, 9) + c(12, 12, 4) + "M12 3v5M12 16v5M3 12h5M16 12h5",
+    wrench: "M15 4a4.5 4.5 0 0 0 5 5.5l-10 10-3.5-3.5 10-10",
+    bolt: "M13 3L5 14h6l-1 7 8-11h-6z",
+    gift: "M4 10h16v10H4zM3 7h18v3H3zM12 7v13M12 7c-2-4-6-3-5 0M12 7c2-4 6-3 5 0",
+    leaf: "M5 19c0-9 6-14 15-14 0 9-5 15-14 15M5 19l7-7",
+    timer: c(12, 13, 8) + "M12 13V9M9 2h6",
+    grid: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",
+    check: "M5 12l5 5 9-10",
+    globe: c(12, 12, 9) + "M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18",
+    megaphone: "M3 10v4h4l8 5V5L7 10zM18 9c1.5 1.5 1.5 4.5 0 6",
+    search: c(11, 11, 7) + "M16 16l5 5",
+    layers: "M12 3l9 5-9 5-9-5zM3 13l9 5 9-5",
+    server: "M4 4h16v6H4zM4 14h16v6H4zM8 7h.01M8 17h.01",
+    cart: "M3 4h3l2 11h11l2-8H7" + c(9, 19.5, 1.5) + c(18, 19.5, 1.5),
+    mail: "M3 6h18v12H3zM3 7l9 6 9-6",
+    sms: "M4 5h16v11H9l-5 4zM8 9.5h8M8 12.5h5",
+    copy: "M9 9h11v11H9zM5 15H4V4h11v1"
+  };
+
+  /** Returns an inline <svg> for an icon key. */
+  TS.icon = function (key, extraClass) {
+    const d = TS.icons[key] || TS.icons.star;
+    return `<svg class="${extraClass || ""}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+  };
+})();
+
+</script>
+<script>
+/* =========================================================
+   Business types: the single source of truth for the
+   hero animation, the homepage teaser and (next step)
+   the full Concept Builder.
+
+   To add a business type, copy one block and edit it.
+   - colors.primary : main brand colour of the sample site
+   - colors.accent  : secondary pop colour
+   - colors.soft    : light tint for hero backgrounds
+   - colors.dark    : deep colour (text, "Bold" style background)
+   - art            : icon key shown in the hero illustration
+   - cards          : three feature cards [icon key, title]
+   ========================================================= */
+window.TS = window.TS || {};
+
+TS.businessTypes = [
+  {
+    id: "restaurant", label: "Restaurant", icon: "fork",
+    name: "Spice Route Kitchen", domain: "spiceroutekitchen.com",
+    kicker: "Downtown · Open till 11 pm",
+    headline: "Bold flavours, served fresh every day",
+    sub: "Small plates, slow-cooked favourites and fresh bread, made from scratch.",
+    cta: "Book a table", links: ["Menu", "Reserve", "Order"],
+    cards: [["menu", "Full menu"], ["calendar", "Table booking"], ["bag", "Order online"]],
+    proof: "4.8★ from 900+ diners", art: "fork",
+    colors: { primary: "#C2410C", accent: "#F59E0B", soft: "#FFF1E6", dark: "#2A1206" }
+  },
+  {
+    id: "hotel", label: "Hotel", icon: "bed",
+    name: "Lagoon Bay Hotel", domain: "lagoonbay.co",
+    kicker: "Seafront · Ocean views",
+    headline: "Wake up to the sound of the ocean",
+    sub: "38 rooms, a lagoon-view pool and dinners on the sand.",
+    cta: "Check availability", links: ["Rooms", "Dining", "Offers"],
+    cards: [["bed", "Rooms & suites"], ["fork", "Dining"], ["star", "Experiences"]],
+    proof: "Rated 9.2 by recent guests", art: "bed",
+    colors: { primary: "#0E7490", accent: "#F4A261", soft: "#E6F4F7", dark: "#06262E" }
+  },
+  {
+    id: "clinic", label: "Clinic", icon: "doctor",
+    name: "CarePoint Medical", domain: "carepoint.health",
+    kicker: "Channelling · 7 days a week",
+    headline: "Care you can count on, close to home",
+    sub: "Book a specialist in under a minute and get lab reports online.",
+    cta: "Book appointment", links: ["Doctors", "Services", "Reports"],
+    cards: [["doctor", "Find a doctor"], ["calendar", "Channel online"], ["file", "Lab reports"]],
+    proof: "40+ specialists on call", art: "plus",
+    colors: { primary: "#1D4ED8", accent: "#10B981", soft: "#EAF1FF", dark: "#0B1B3F" }
+  },
+  {
+    id: "hospital", label: "Hospital", icon: "heart",
+    name: "Central City Hospital", domain: "centralcity.org",
+    kicker: "24/7 Emergency · 250 beds",
+    headline: "Advanced care for every family",
+    sub: "Specialist units, emergency care and health packages under one roof.",
+    cta: "Find a specialist", links: ["Departments", "Doctors", "Packages"],
+    cards: [["heart", "Cardiology"], ["plus", "Emergency 24/7"], ["file", "Health checks"]],
+    proof: "Open 24 hours, every day", art: "heart",
+    colors: { primary: "#0F766E", accent: "#E11D48", soft: "#E7F6F4", dark: "#062B28" }
+  },
+  {
+    id: "it", label: "IT Company", icon: "code",
+    name: "Nexa Labs", domain: "nexalabs.io",
+    kicker: "Software studio · Remote, worldwide",
+    headline: "Software that scales with your ambition",
+    sub: "Web platforms, mobile apps and cloud for growing teams.",
+    cta: "Start a project", links: ["Services", "Work", "Careers"],
+    cards: [["code", "Custom software"], ["cloud", "Cloud & DevOps"], ["phone", "Mobile apps"]],
+    proof: "120+ products shipped", art: "code",
+    colors: { primary: "#6D28D9", accent: "#22D3EE", soft: "#F1ECFF", dark: "#140A2E" }
+  },
+  {
+    id: "construction", label: "Construction", icon: "hammer",
+    name: "Stonebridge Builders", domain: "stonebridge.build",
+    kicker: "Residential · Commercial",
+    headline: "Built right, on time, on budget",
+    sub: "Homes, offices and renovations, delivered on schedule.",
+    cta: "Get a quote", links: ["Projects", "Services", "About"],
+    cards: [["hammer", "Construction"], ["ruler", "Design & plans"], ["shield", "Renovations"]],
+    proof: "350+ projects handed over", art: "hammer",
+    colors: { primary: "#B45309", accent: "#FACC15", soft: "#FFF7E0", dark: "#1F1A12" }
+  },
+  {
+    id: "realestate", label: "Real Estate", icon: "home",
+    name: "Palm Grove Properties", domain: "palmgrove.homes",
+    kicker: "Buy · Sell · Rent",
+    headline: "Find your next home in the city",
+    sub: "Apartments, houses and land, checked and ready to view.",
+    cta: "View listings", links: ["Buy", "Rent", "Sell"],
+    cards: [["home", "Homes for sale"], ["key", "Rentals"], ["pin", "Area guides"]],
+    proof: "1,200 verified listings", art: "home",
+    colors: { primary: "#047857", accent: "#D4A017", soft: "#E8F5EF", dark: "#0A2A20" }
+  },
+  {
+    id: "salon", label: "Salon", icon: "scissors",
+    name: "Glow Studio", domain: "glowstudio.salon",
+    kicker: "Hair · Skin · Nails",
+    headline: "Look good, feel better, every visit",
+    sub: "Cuts, colour and facials by stylists who listen.",
+    cta: "Book a slot", links: ["Services", "Stylists", "Prices"],
+    cards: [["scissors", "Hair styling"], ["sparkle", "Skin & facials"], ["calendar", "Online booking"]],
+    proof: "4.9★ from 600+ clients", art: "scissors",
+    colors: { primary: "#BE185D", accent: "#F9A8D4", soft: "#FDECF3", dark: "#2E0A1C" }
+  },
+  {
+    id: "ecommerce", label: "E-commerce", icon: "cart",
+    name: "Kade.store", domain: "kade.store",
+    kicker: "Worldwide shipping",
+    headline: "Everything you love, delivered",
+    sub: "Shop fashion, home and gadgets with cash on delivery.",
+    cta: "Shop now", links: ["Shop", "Deals", "Track order"],
+    cards: [["bag", "Shop by category"], ["truck", "Fast delivery"], ["card", "Secure checkout"]],
+    proof: "Free delivery over $50", art: "cart",
+    colors: { primary: "#EA580C", accent: "#0EA5E9", soft: "#FFF0E6", dark: "#1C1208" }
+  },
+  {
+    id: "services", label: "Professional Services", icon: "chart",
+    name: "Hart & Co.", domain: "hartco.com",
+    kicker: "Tax · Audit · Advisory",
+    headline: "Clear numbers. Confident decisions.",
+    sub: "Accounting and tax support for growing businesses.",
+    cta: "Book a consultation", links: ["Services", "Team", "Insights"],
+    cards: [["chart", "Bookkeeping"], ["file", "Tax filing"], ["chat", "Advisory"]],
+    proof: "Trusted by 300+ businesses", art: "chart",
+    colors: { primary: "#1E3A8A", accent: "#0D9488", soft: "#EEF2FA", dark: "#0B1533" }
+  },
+  {
+    id: "personal", label: "Personal Brand", icon: "mic",
+    name: "Ayesha Fernando", domain: "ayeshafernando.me",
+    kicker: "Speaker · Coach · Author",
+    headline: "Helping leaders speak with confidence",
+    sub: "Coaching, keynotes and workshops for teams around the world.",
+    cta: "Work with me", links: ["About", "Speaking", "Blog"],
+    cards: [["mic", "Keynotes"], ["chat", "1:1 coaching"], ["book", "Latest book"]],
+    proof: "2,000+ people coached", art: "mic",
+    colors: { primary: "#9333EA", accent: "#F97316", soft: "#F6EEFF", dark: "#1E0B30" }
+  },
+  {
+    id: "other", label: "Other", icon: "sparkle",
+    name: "Your Business", domain: "yourbusiness.com",
+    kicker: "Your tagline here",
+    headline: "A website made for your business",
+    sub: "Tell us what you do and we'll shape the rest.",
+    cta: "Get in touch", links: ["About", "Services", "Contact"],
+    cards: [["star", "What you offer"], ["chat", "Enquiries"], ["pin", "Find us"]],
+    proof: "Designed by Trace Solutions Global", art: "sparkle",
+    colors: { primary: "#158A49", accent: "#FB7250", soft: "#EAF7EF", dark: "#012228" }
+  }
+];
+
+/* Visual styles offered to visitors */
+TS.visualStyles = [
+  { id: "fresh", label: "Fresh & friendly", hint: "Light, rounded, approachable" },
+  { id: "bold", label: "Bold & modern", hint: "Dark, confident, high contrast" },
+  { id: "elegant", label: "Elegant & classic", hint: "Warm, refined, serif headings" }
+];
+
+TS.getBusiness = id => TS.businessTypes.find(b => b.id === id) || TS.businessTypes[0];
+
+</script>
+<script>
+/* =========================================================
+   Preview engine: renders a convincing mini website from a
+   business config + options, and "traces" it in.
+
+   TS.renderPreview(bodyEl, config, {
+     style:    "fresh" | "bold" | "elegant",
+     trace:    true to play the outline animation,
+     urlEl:    element that shows the address bar text,
+     pages:    ["About us", "Menu", ...]   (optional, nav + footer),
+     features: ["booking", "gallery", ...] (optional, preview blocks),
+     primary:  "#hex"                      (optional brand colour)
+   })
+   ========================================================= */
+window.TS = window.TS || {};
+
+(function () {
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- colour helpers ---------- */
+  const hexToRgb = hex => { const n = parseInt(hex.replace("#", ""), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; };
+  const rgbToHex = rgb => "#" + rgb.map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0")).join("");
+  const mix = (a, b, t) => { const x = hexToRgb(a), y = hexToRgb(b); return rgbToHex(x.map((v, i) => v + (y[i] - v) * t)); };
+  function luminance(hex) {
+    const ch = hexToRgb(hex).map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+    return 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2];
+  }
+  const textOn = hex => (luminance(hex) > 0.42 ? "#111111" : "#FFFFFF");
+  const isLight = hex => luminance(hex) > 0.6;
+
+  /** Applies a visitor-chosen brand colour to a business palette. */
+  function withPrimary(colors, primary, style) {
+    if (!primary) return colors;
+    return {
+      primary,
+      accent: style === "bold" ? primary : colors.accent,
+      soft: mix(primary, "#FFFFFF", 0.9),
+      dark: style === "bold" ? mix(primary, "#0B0B0F", 0.88) : colors.dark
+    };
+  }
+
+  /** Turns brand colours + style into the CSS variables a preview uses. */
+  function palette(colors, style) {
+    const { primary, accent, soft, dark } = colors;
+    if (style === "bold") {
+      return {
+        bg: dark, surface: "rgba(255,255,255,0.06)", ink: "#FFFFFF", muted: "rgba(255,255,255,0.62)",
+        soft: "rgba(255,255,255,0.07)", line: "rgba(255,255,255,0.12)",
+        primary: accent, onPrimary: textOn(accent), accentText: accent, primaryText: accent,
+        artBg: "rgba(255,255,255,0.05)", cloud: "rgba(255,255,255,0.35)", dark: true
+      };
+    }
+    if (style === "elegant") {
+      return {
+        bg: "#FBF7F0", surface: "#FFFFFF", ink: dark, muted: "#6E665C",
+        soft: "#F1E9DC", line: "rgba(40,30,20,0.09)",
+        primary: dark, onPrimary: "#FFFFFF", accentText: isLight(primary) ? dark : primary, primaryText: isLight(primary) ? dark : primary,
+        artBg: "#FFFFFF", cloud: "#F1E9DC"
+      };
+    }
+    const softBg = isLight(soft) ? soft : "#F4F6F8";
+    const safePrimary = isLight(primary) ? dark : primary;
+    return {
+      bg: "#FFFFFF", surface: "#FFFFFF", ink: isLight(dark) ? "#1A1A1A" : dark, muted: "#5F6B78",
+      soft: softBg, line: "rgba(15,30,50,0.09)",
+      primary: safePrimary, onPrimary: textOn(safePrimary), accentText: isLight(accent) ? safePrimary : accent, primaryText: safePrimary,
+      artBg: "#FFFFFF", cloud: softBg
+    };
+  }
+
+  function artSVG(p, iconKey) {
+    const d = TS.icons[iconKey] || TS.icons.star;
+    return `<svg viewBox="0 0 240 170" aria-hidden="true">
+      <rect width="240" height="170" fill="${p.artBg}"/>
+      <circle cx="192" cy="42" r="18" fill="${p.accentText === p.ink ? p.primary : p.accentText}" opacity="0.9"/>
+      <rect x="120" y="30" width="34" height="10" rx="5" fill="${p.cloud}"/>
+      <rect x="130" y="24" width="18" height="12" rx="6" fill="${p.cloud}"/>
+      <path d="M0 170V118c40-26 72-30 112-8s64-12 128-20v80z" fill="${p.primaryText}" opacity="0.28"/>
+      <path d="M0 170v-28c50-22 90-14 130-2s70-14 110-16v46z" fill="${p.primaryText}" opacity="0.7"/>
+      <circle cx="78" cy="72" r="30" fill="${p.dark ? "rgba(255,255,255,0.1)" : "#FFFFFF"}" stroke="${p.primaryText}" stroke-opacity="0.25" stroke-width="1.5"/>
+      <g transform="translate(60 54) scale(1.5)" fill="none" stroke="${p.primaryText}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></g>
+    </svg>`;
+  }
+
+  const esc = s => String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+  const bars = n => Array.from({ length: n }, () => "<i></i>").join("");
+
+  /* ---------- feature blocks ---------- */
+  const BOOKING_LABEL = {
+    restaurant: ["Reserve a table", ["Date", "Time", "Guests"]],
+    hotel: ["Check availability", ["Check-in", "Check-out", "Guests"]],
+    clinic: ["Book appointment", ["Doctor", "Date", "Time"]],
+    hospital: ["Book a specialist", ["Department", "Doctor", "Date"]],
+    salon: ["Book a slot", ["Service", "Stylist", "Time"]]
+  };
+
+  function blocks(cfg, feats, p) {
+    const has = id => feats.includes(id);
+    const out = [];
+    if (has("booking")) {
+      const [title, fields] = BOOKING_LABEL[cfg.id] || ["Book now", ["Service", "Date", "Time"]];
+      out.push(`<div class="pv-block pv-book" data-t><b class="pv-h">${title}</b>
+        <div class="pv-fields">${fields.map(f => `<span class="pv-field"><small>${f}</small><i></i></span>`).join("")}<span class="pv-btn pv-btn--sm">Confirm</span></div></div>`);
+    }
+    if (has("shop")) {
+      const prices = ["24", "39", "12", "56"];
+      out.push(`<div class="pv-block" data-t><div class="pv-row"><b class="pv-h">Shop bestsellers</b><span class="pv-cart">${TS.icon("cart")}<em>2</em></span></div>
+        <div class="pv-grid4">${prices.map((pr, i) => `<div class="pv-prod"><span class="pv-ph" style="--i:${i}"></span><i></i><b>$${pr}</b></div>`).join("")}</div>
+        ${has("payments") ? `<div class="pv-pay"><span>VISA</span><span>Mastercard</span><span>PayPal</span><span>Apple Pay</span></div>` : ""}</div>`);
+    } else if (has("payments")) {
+      out.push(`<div class="pv-block pv-pay-only" data-t><b class="pv-h">Pay online, securely</b><div class="pv-pay"><span>VISA</span><span>Mastercard</span><span>PayPal</span></div></div>`);
+    }
+    if (has("gallery")) {
+      out.push(`<div class="pv-block" data-t><b class="pv-h">Gallery</b><div class="pv-gallery">${[0, 1, 2, 3, 4].map(i => `<span class="pv-ph" style="--i:${i}"></span>`).join("")}</div></div>`);
+    }
+    if (has("reviews")) {
+      const names = ["Amara O.", "Lucas M.", "Sarah T."];
+      out.push(`<div class="pv-block" data-t><div class="pv-row"><b class="pv-h">What customers say</b><span class="pv-g">G <b>4.8</b> ★★★★★</span></div>
+        <div class="pv-cards3">${names.map(n => `<div class="pv-review"><span class="pv-stars">★★★★★</span>${bars(2)}<small>${n}</small></div>`).join("")}</div></div>`);
+    }
+    if (has("enquiry")) {
+      out.push(`<div class="pv-block pv-enq" data-t><div><b class="pv-h">Get a quote</b><p>We reply within one working day.</p></div>
+        <div class="pv-form"><span class="pv-field"><small>Name</small><i></i></span><span class="pv-field"><small>Phone</small><i></i></span><span class="pv-field pv-field--tall"><small>Message</small><i></i></span><span class="pv-btn pv-btn--sm">Send enquiry</span></div></div>`);
+    }
+    if (has("blog")) {
+      out.push(`<div class="pv-block" data-t><b class="pv-h">Latest news</b><div class="pv-cards2">${[0, 1].map(i => `<div class="pv-post"><span class="pv-ph" style="--i:${i + 2}"></span><b>${["Our new season is here", "5 tips from our team"][i]}</b>${bars(1)}</div>`).join("")}</div></div>`);
+    }
+    if (has("map")) {
+      out.push(`<div class="pv-block pv-mapblock" data-t><div class="pv-map"><span class="pv-pin">${TS.icon("pin")}</span></div>
+        <div class="pv-hours"><b class="pv-h">Visit us</b><span><small>Mon–Fri</small><small>9:00 – 18:00</small></span><span><small>Sat</small><small>9:00 – 14:00</small></span><span class="pv-dir">Get directions →</span></div></div>`);
+    }
+    if (has("newsletter")) {
+      out.push(`<div class="pv-block pv-news" data-t><b class="pv-h">Get our offers first</b><span class="pv-input"><i></i></span><span class="pv-btn pv-btn--sm">Subscribe</span></div>`);
+    }
+    return out.join("");
+  }
+
+  function markup(cfg, style, p, opts) {
+    const vars = [
+      ["bg", p.bg], ["surface", p.surface], ["ink", p.ink], ["muted", p.muted], ["soft", p.soft],
+      ["line", p.line], ["primary", p.primary], ["on-primary", p.onPrimary],
+      ["accent-text", p.accentText], ["primary-text", p.primaryText]
+    ].map(([k, v]) => `--pv-${k}:${v}`).join(";");
+
+    const feats = opts.features || [];
+    const navPages = opts.pages ? opts.pages.filter(x => x !== "Home" && x !== "Contact").slice(0, 4) : cfg.links;
+    const links = navPages.map(l => `<b>${esc(l)}</b>`).join("");
+    const lang = feats.includes("languages") ? `<span class="pv-lang">EN · ES · FR</span>` : "";
+    const cards = cfg.cards.map(([ic, t]) =>
+      `<div class="pv-card" data-t><span class="pv-ic">${TS.icon(ic)}</span><b>${esc(t)}</b><i></i><i></i></div>`
+    ).join("");
+    const footer = opts.pages
+      ? `<div class="pv-foot" data-t><span class="pv-logo pv-name"><i></i>${esc(cfg.name)}</span><span class="pv-foot-links">${opts.pages.map(x => `<small>${esc(x)}</small>`).join("")}</span></div>`
+      : `<div class="pv-strip" data-t><span class="pv-check">✓</span><b>${esc(cfg.proof)}</b><span class="bars"><i></i><i></i></span></div>`;
+
+    return `<div class="pv pv--${style}" style="${vars}">
+      <div class="pv-nav" data-t>
+        <span class="pv-logo pv-name"><i></i>${esc(cfg.name)}</span>
+        <span class="pv-links"><b>Home</b>${links}</span>
+        ${lang}
+        <span class="pv-cta">${esc(cfg.cta)}</span>
+        <span class="pv-burger" aria-hidden="true"><i></i><i></i><i></i></span>
+      </div>
+      <div class="pv-hero" data-t>
+        <div class="pv-copy">
+          <small>${esc(cfg.kicker)}</small>
+          <h4>${esc(cfg.headline)}</h4>
+          <p>${esc(cfg.sub)}</p>
+          <span class="pv-btn">${esc(cfg.cta)} →</span>
+        </div>
+        <div class="pv-art">${artSVG(p, cfg.art)}</div>
+      </div>
+      <div class="pv-cards">${cards}</div>
+      ${blocks(cfg, feats, p)}
+      ${footer}
+      ${feats.includes("whatsapp") ? `<span class="pv-wa" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg></span>` : ""}
+    </div>`;
+  }
+
+  /** Draws coral outlines around each block, then fills the blocks in. */
+  function trace(body) {
+    if (reduceMotion) return;
+    body.querySelectorAll(".trace-layer, .trace-pen").forEach(n => n.remove());
+    const base = body.getBoundingClientRect();
+    const blocksEls = [...body.querySelectorAll("[data-t]")];
+    const ns = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("class", "trace-layer");
+    svg.setAttribute("width", base.width);
+    svg.setAttribute("height", body.scrollHeight);
+    const pen = document.createElement("span");
+    pen.className = "trace-pen";
+
+    const points = blocksEls.map((el, i) => {
+      const r = el.getBoundingClientRect();
+      const x = r.left - base.left, y = r.top - base.top + body.scrollTop;
+      const delay = (i * 0.11).toFixed(2) + "s";
+      el.style.setProperty("--d", delay);
+      const rect = document.createElementNS(ns, "rect");
+      rect.setAttribute("x", x); rect.setAttribute("y", y);
+      rect.setAttribute("width", r.width); rect.setAttribute("height", r.height);
+      rect.setAttribute("rx", 6); rect.setAttribute("pathLength", 1);
+      rect.style.setProperty("--d", delay);
+      svg.appendChild(rect);
+      return { x, y };
+    });
+
+    body.append(svg, pen);
+    body.classList.remove("is-tracing");
+    void body.offsetWidth;
+    body.classList.add("is-tracing");
+
+    clearTimeout(body._penTimers);
+    points.forEach((pt, i) => setTimeout(() => {
+      pen.style.left = pt.x - 7 + "px";
+      pen.style.top = pt.y - 7 + "px";
+    }, i * 110));
+
+    clearTimeout(body._traceTimer);
+    body._traceTimer = setTimeout(() => {
+      body.classList.remove("is-tracing");
+      svg.remove(); pen.remove();
+    }, blocksEls.length * 110 + 1900);
+  }
+
+  TS.renderPreview = function (body, cfg, opts = {}) {
+    const style = opts.style || "fresh";
+    const colors = withPrimary(cfg.colors, opts.primary, style);
+    body.innerHTML = markup(cfg, style, palette(colors, style), opts);
+    if (opts.urlEl) opts.urlEl.innerHTML = `<span class="lock">https://</span>${esc(cfg.domain)}`;
+    if (opts.trace) requestAnimationFrame(() => trace(body));
+  };
+  TS.tracePreview = trace;
+  TS.colorUtils = { mix, textOn, isLight };
+})();
+
+</script>
+<script>
+/* =========================================================
+   Homepage behaviour
+   ========================================================= */
+(function () {
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Toast ---------- */
+  let toastTimer;
+  function toast(msg) {
+    const t = $("#toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 3200);
+  }
+
+  /* ---------- Company details from TS.site ---------- */
+  function fillSiteDetails() {
+    const s = TS.site;
+    const links = {
+      whatsapp: `https://wa.me/${s.whatsapp}?text=${encodeURIComponent("Hi Trace Solutions Global, I'd like to talk about a website.")}`,
+      whatsappCall: `https://wa.me/${s.whatsapp}?text=${encodeURIComponent("Hi Trace Solutions Global, I'd like to have a quick call about a website. When suits you?")}`,
+      email: `mailto:${s.email}`,
+      instagram: `https://instagram.com/${s.instagram}`,
+      facebook: `https://facebook.com/${s.facebook}`
+    };
+    $$("[data-site]").forEach(el => { el.textContent = s[el.dataset.site] || ""; });
+    $$("[data-site-link]").forEach(el => { el.href = links[el.dataset.siteLink] || "#"; });
+    const y = $("#year"); if (y) y.textContent = new Date().getFullYear();
+    const cn = $("#copyNumber");
+    if (cn) cn.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(s.phoneDisplay); toast("Number copied"); }
+      catch (e) { toast(s.phoneDisplay); }
+    });
+  }
+
+  /* ---------- Static icons marked with data-icon ---------- */
+  function fillIcons() {
+    $$("[data-icon]").forEach(el => { el.innerHTML = TS.icon(el.dataset.icon); });
+  }
+
+  /* ---------- Header: shadow on scroll + mobile menu ---------- */
+  function initHeader() {
+    const header = $("#siteHeader");
+    const toggle = $("#menuToggle");
+    const onScroll = () => header.classList.toggle("is-scrolled", window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    const setOpen = open => {
+      document.body.classList.toggle("menu-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    };
+    toggle.addEventListener("click", () => setOpen(!document.body.classList.contains("menu-open")));
+    $("#navLinks").addEventListener("click", e => { if (e.target.closest("a")) setOpen(false); });
+  }
+
+  /* ---------- Hero: cycles through example businesses ---------- */
+  function initHero() {
+    const body = $("#heroBody"), url = $("#heroUrl"), label = $("#heroType"), sw = $("#heroSwitch");
+    const stage = $("#heroStage");
+    const sequence = [
+      { id: "restaurant", style: "fresh" },
+      { id: "clinic", style: "fresh" },
+      { id: "hotel", style: "elegant" },
+      { id: "it", style: "bold" }
+    ];
+    let index = 0, timer = null, paused = false;
+
+    sw.innerHTML = sequence.map((s, i) =>
+      `<button type="button" aria-label="Show ${TS.getBusiness(s.id).label} example" data-i="${i}"></button>`
+    ).join("");
+
+    function show(i, animate = true) {
+      index = (i + sequence.length) % sequence.length;
+      const item = sequence[index];
+      const biz = TS.getBusiness(item.id);
+      TS.renderPreview(body, biz, { style: item.style, trace: animate, urlEl: url });
+      label.textContent = `${biz.label} website`;
+      $$("button", sw).forEach((b, k) => b.setAttribute("aria-current", String(k === index)));
+    }
+    function schedule() {
+      clearInterval(timer);
+      if (reduceMotion) return;
+      timer = setInterval(() => { if (!paused && !document.hidden) show(index + 1); }, 5200);
+    }
+
+    sw.addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      show(+b.dataset.i); schedule();
+    });
+    stage.addEventListener("mouseenter", () => { paused = true; });
+    stage.addEventListener("mouseleave", () => { paused = false; });
+
+    show(0, true);
+    schedule();
+  }
+
+  /* ---------- Concept teaser ---------- */
+  function initTeaser() {
+    const typesEl = $("#teaserTypes"), stylesEl = $("#teaserStyles");
+    const body = $("#teaserBody"), url = $("#teaserUrl"), name = $("#teaserTypeName");
+    const state = { type: "restaurant", style: "fresh" };
+
+    typesEl.innerHTML = TS.businessTypes.map(b =>
+      `<button type="button" class="chip" data-type="${b.id}" aria-pressed="${b.id === state.type}">${TS.icon(b.icon)}${b.label}</button>`
+    ).join("");
+    stylesEl.innerHTML = TS.visualStyles.map(s =>
+      `<button type="button" class="chip" data-style="${s.id}" aria-pressed="${s.id === state.style}" title="${s.hint}">${s.label}</button>`
+    ).join("");
+
+    function render(trace) {
+      const biz = TS.getBusiness(state.type);
+      TS.renderPreview(body, biz, { style: state.style, trace, urlEl: url });
+      name.textContent = biz.label;
+      const cta = $("#teaserCta");
+      if (cta) cta.href = TS.links && TS.links.builder
+        ? TS.links.builder
+        : `build.html?type=${encodeURIComponent(state.type)}&style=${encodeURIComponent(state.style)}`;
+      $$("[data-type]", typesEl).forEach(b => b.setAttribute("aria-pressed", String(b.dataset.type === state.type)));
+      $$("[data-style]", stylesEl).forEach(b => b.setAttribute("aria-pressed", String(b.dataset.style === state.style)));
+    }
+
+    typesEl.addEventListener("click", e => {
+      const b = e.target.closest("[data-type]"); if (!b) return;
+      state.type = b.dataset.type; render(true);
+    });
+    stylesEl.addEventListener("click", e => {
+      const b = e.target.closest("[data-style]"); if (!b) return;
+      state.style = b.dataset.style; render(true);
+    });
+
+    render(false);
+  }
+
+  /* ---------- Industries marquee ---------- */
+  function initMarquee() {
+    const items = TS.businessTypes.filter(b => b.id !== "other")
+      .map(b => `<li>${TS.icon(b.icon)}${b.label === "E-commerce" ? "Online stores" : b.label}</li>`).join("");
+    // Two copies so the loop is seamless; the second is hidden from screen readers
+    $("#marquee").innerHTML = `<ul>${items}</ul><ul aria-hidden="true">${items}</ul>`;
+  }
+
+  /* ---------- Contact form ---------- */
+  function initContactForm() {
+    const form = $("#contactForm"), status = $("#formStatus");
+    const typeSelect = $("#c-type");
+    typeSelect.innerHTML = `<option value="">Choose one…</option>` +
+      TS.businessTypes.map(b => `<option value="${b.label}">${b.label}</option>`).join("");
+
+    function setError(input, msg) {
+      const field = input.closest(".field");
+      field.classList.toggle("has-error", !!msg);
+      let el = field.querySelector(".err");
+      if (msg) {
+        if (!el) { el = document.createElement("span"); el.className = "err"; field.appendChild(el); }
+        el.textContent = msg;
+        input.setAttribute("aria-invalid", "true");
+      } else {
+        if (el) el.remove();
+        input.removeAttribute("aria-invalid");
+      }
+    }
+
+    function validate() {
+      const name = $("#c-name"), phone = $("#c-phone"), email = $("#c-email");
+      let ok = true;
+      setError(name, name.value.trim() ? "" : "Please add your name.");
+      if (!name.value.trim()) ok = false;
+      const emailVal = email.value.trim();
+      if (!phone.value.trim() && !emailVal) {
+        setError(phone, "Add a phone number or an email so we can reply.");
+        ok = false;
+      } else setError(phone, "");
+      if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+        setError(email, "That email address doesn't look right.");
+        ok = false;
+      } else setError(email, "");
+      return ok;
+    }
+
+    function showStatus(msg, isError) {
+      status.hidden = false;
+      status.textContent = msg;
+      status.classList.toggle("is-error", !!isError);
+    }
+
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      if ($("#c-website").value.trim()) { form.reset(); showStatus("Thank you! Your message is with our team. We'll reply within one working day."); return; }
+      if (!validate()) { showStatus("Please check the highlighted fields.", true); return; }
+      const btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      const name = $("#c-name").value.trim();
+      const email = $("#c-email").value.trim();
+      const payload = new FormData(form);
+      let sent = false;
+      try {
+        const key = (TS.site.web3formsKey || "").trim();
+        if (key) {
+          try {
+            const fd = new FormData();
+            fd.append("access_key", key);
+            fd.append("from_name", "Trace Solutions Global website");
+            fd.append("subject", "Website enquiry: " + ($("#c-business").value.trim() || name));
+            fd.append("ccemail", TS.site.salesEmail || "sales@tsg.com");
+            fd.append("name", name);
+            if (email) { fd.append("email", email); fd.append("replyto", email); }
+            fd.append("phone", $("#c-phone").value.trim());
+            fd.append("business", $("#c-business").value.trim());
+            fd.append("business_type", $("#c-type").value);
+            fd.append("message", $("#c-message").value.trim() || "(no message)");
+            fd.append("botcheck", "");
+            const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: fd, headers: { Accept: "application/json" } });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || data.success === false) throw new Error((data.body && data.body.message) || data.message || "Request failed");
+            sent = true;
+            payload.append("skip_mail", "1");
+          } catch (err) { sent = false; }
+        }
+        const res = await fetch(form.getAttribute("action"), { method: "POST", body: payload, headers: { Accept: "application/json" } });
+        const data = await res.json().catch(() => ({}));
+        if (!sent && (!res.ok || !data.ok)) throw new Error(data.error || "Request failed");
+        form.reset();
+        showStatus("Thank you! Your message is with our team. We'll reply within one working day.");
+      } catch (err) {
+        showStatus(sent
+          ? "Thank you! Your message is with our team. We'll reply within one working day."
+          : "We couldn't send your message just now. Please try again or message us on WhatsApp.", !sent);
+        if (sent) form.reset();
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
+
+
+  /* ---------- Offices: call, WhatsApp and text for every number ---------- */
+  function initOffices() {
+    const el = $("#offices"); if (!el) return;
+    const digits = p => p.replace(/\D/g, "");
+    const waText = encodeURIComponent("Hi Trace Solutions Global, I'd like to talk about a website.");
+    el.innerHTML = (TS.site.offices || []).map((o, i) => `
+      <article class="office${i === 0 ? " office--dark" : ""}">
+        <div class="office-head"><span class="office-code">${o.code}</span><div><h3>${o.country} office</h3><small>${o.note || ""}</small></div></div>
+        <ul class="office-people">
+          ${o.people.map(pp => `<li>
+            <div class="who"><b>${pp.name}</b><span class="num">${pp.phone}</span></div>
+            <div class="acts">
+              <a class="act act--wa" href="https://wa.me/${digits(pp.phone)}?text=${waText}" target="_blank" rel="noopener" aria-label="WhatsApp ${pp.name}">${TS.icon("chat")}<span>WhatsApp</span></a>
+              <a class="act" href="tel:+${digits(pp.phone)}" aria-label="Call ${pp.name}">${TS.icon("phone")}<span>Call</span></a>
+              <a class="act" href="sms:+${digits(pp.phone)}" aria-label="Text ${pp.name}">${TS.icon("sms")}<span>Text</span></a>
+              <button type="button" class="act act--icon" data-copy-num="${pp.phone}" aria-label="Copy ${pp.name}'s number">${TS.icon("copy")}</button>
+            </div>
+          </li>`).join("")}
+        </ul>
+      </article>`).join("");
+    el.addEventListener("click", async e => {
+      const b = e.target.closest("[data-copy-num]"); if (!b) return;
+      try { await navigator.clipboard.writeText(b.dataset.copyNum); toast("Number copied"); }
+      catch (err) { toast(b.dataset.copyNum); }
+    });
+  }
+
+  /* ---------- Reviews: genuine reviews only ---------- */
+  const STAR_PATH = "M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z";
+  const starRow = (n, cls = "") => `<span class="stars ${cls}" role="img" aria-label="${n} out of 5 stars">${[1, 2, 3, 4, 5].map(k => `<svg viewBox="0 0 24 24" class="${k <= n ? "on" : ""}" aria-hidden="true"><path d="${STAR_PATH}"/></svg>`).join("")}</span>`;
+  const escH = v => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const onLiveSite = () => /^https?:$/.test(location.protocol) && !/claude|usercontent/.test(location.hostname);
+  function renderReviews(list) {
+    const grid = $("#revGrid"), score = $("#revScore");
+    const reviews = list.filter(r => r && r.text && r.name).map(r => ({ ...r, rating: Math.max(1, Math.min(5, Math.round(+r.rating || 5))) }));
+    if (!reviews.length) {
+      score.hidden = true;
+      grid.innerHTML = `<div class="rev-empty">${starRow(5, "lg")}<b>Our first reviews are on their way</b><span>We're collecting feedback from recent clients. If we've built something for you, we'd love to hear how it went.</span></div>`;
+      return;
+    }
+    const avg = reviews.reduce((a, r) => a + r.rating, 0) / reviews.length;
+    score.hidden = false;
+    score.innerHTML = `${starRow(Math.round(avg), "lg")}<b>${avg.toFixed(1)}</b><span>from ${reviews.length} review${reviews.length === 1 ? "" : "s"}</span>`;
+    grid.innerHTML = reviews.map(r => {
+      const initials = r.name.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase();
+      const meta = [r.business, r.country].filter(Boolean).join(" · ");
+      const d = r.date ? new Date(r.date.length === 7 ? r.date + "-01" : r.date) : null;
+      const when = d && !isNaN(d) ? d.toLocaleDateString("en-GB", { month: "long", year: "numeric" }) : "";
+      return `<figure class="rev-card">
+        ${starRow(r.rating)}
+        <blockquote>${escH(r.text)}</blockquote>
+        <figcaption><span class="av" aria-hidden="true">${escH(initials)}</span><span><b>${escH(r.name)}</b><small>${escH(meta)}${meta && when ? " · " : ""}${escH(when)}</small></span></figcaption>
+      </figure>`;
+    }).join("");
+  }
+  async function initReviews() {
+    if (!$("#revGrid")) return;
+    const local = Array.isArray(TS.reviews) ? TS.reviews.slice() : [];
+    renderReviews(local);
+    if (onLiveSite()) {
+      try {
+        const res = await fetch("api/reviews.php", { headers: { Accept: "application/json" } });
+        const data = await res.json();
+        if (data && data.ok && Array.isArray(data.reviews)) renderReviews([...data.reviews, ...local]);
+      } catch (e) { /* keep the reviews written into the page */ }
+    }
+    const form = $("#revForm"), status = $("#revStatus");
+    const show = (msg, err) => { status.hidden = false; status.textContent = msg; status.classList.toggle("is-error", !!err); };
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const name = String(fd.get("name") || "").trim(), text = String(fd.get("text") || "").trim();
+      if (!name) return show("Please add your name.", true);
+      if (text.length < 10) return show("Please write a little more about your experience.", true);
+      if (!onLiveSite()) return show("Preview mode: reviews are collected once the site is live on your hosting.", true);
+      const btn = form.querySelector('button[type="submit"]'); btn.disabled = true;
+      try {
+        const res = await fetch("api/reviews.php", { method: "POST", body: fd, headers: { Accept: "application/json" } });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) throw new Error(data.error || "We couldn't send your review just now. Please try again.");
+        form.reset(); $("#r5").checked = true;
+        show("Thank you! Your review is with our team and will appear here once it's checked.");
+      } catch (err) { show(err.message, true); }
+      finally { btn.disabled = false; }
+    });
+  }
+
+  /* ---------- Boot ---------- */
+  fillSiteDetails();
+  fillIcons();
+  initHeader();
+  initHero();
+  initTeaser();
+  initMarquee();
+  initContactForm();
+  initOffices();
+  initReviews();
+})();
+
+</script>
+</body>
+</html>
