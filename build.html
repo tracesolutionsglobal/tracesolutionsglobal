@@ -856,6 +856,7 @@ body.builder-page { background: var(--paper); }
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>document.body.classList.add('builder-page');</script>
+<script src="supabase.js"></script>
 <script>
 /* =========================================================
    Company details, used everywhere on the site.
@@ -2339,7 +2340,7 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
   const SEND_LABEL = { email: "Email me my plan", whatsapp: "Send my plan on WhatsApp", download: "Download my plan" };
   function deliverNote(via) {
     const sales = TS.site.salesEmail || "sales@tracesolutionsglobal.com";
-    if (via === "email") return `The PDF is emailed to you and copied to ${sales}.`;
+    if (via === "email") return `Your concept is emailed to ${sales} and the PDF saves on this device.`;
     if (via === "whatsapp") return "WhatsApp opens with your PDF so you can send it. Our team gets a copy too.";
     return "The PDF saves on this device, and our team gets a copy too.";
   }
@@ -2358,6 +2359,8 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
     if (r.via === "email") {
       msg = r.emailed
         ? `Your PDF plan is on its way to <b>${esc(c.email)}</b>, with a copy to <b>${sales}</b>. If you don't see it, check your spam folder.`
+        : r.mode === "web3forms"
+          ? `Your concept has reached <b>${sales}</b> and your PDF plan has downloaded to this device. We'll reply to <b>${esc(c.email)}</b> with your proposal.`
         : r.mode === "preview"
           ? `This is the preview, so no email was sent. On the live site your PDF goes to <b>${esc(c.email)}</b> and <b>${sales}</b>. Download your copy below.`
           : `Your concept is with our team, but we couldn't email the PDF just now. Download your copy below.`;
@@ -2483,36 +2486,24 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
   }
 
   /**
-   * Email the concept through Web3Forms.
-   * The access-key inbox is the main recipient. ccCustomer also copies the
-   * customer's address, and sales@tracesolutionsglobal.com is always copied, PDF attached.
+   * Email the concept to the Web3Forms access-key inbox (sales).
+   * The free plan rejects ccemail and file attachments, so the brief goes
+   * as text and the customer keeps the PDF on their device.
    */
-  async function submitConcept(brief, file, ccCustomer) {
+  async function submitConcept(brief) {
     const key = (TS.site.web3formsKey || "").trim();
     if (!key) throw new Error("Web3Forms is not connected.");
     const c = brief.contact || {};
     const customer = String(c.email || "").trim();
-    const sales = (TS.site.salesEmail || "sales@tracesolutionsglobal.com").trim();
-    const cc = [];
-    if (ccCustomer && EMAIL_RE.test(customer)) cc.push(customer);
-    if (sales && !cc.includes(sales)) cc.push(sales);
-    const first = String(c.name || "").trim().split(" ")[0] || "there";
-    const intro = ccCustomer
-      ? `Hi ${first},\n\nYour website concept plan is attached (reference ${brief.ref}). We'll send a fixed-price proposal within 24 hours.\n\n`
-      : `New website concept ${brief.ref}\n\n`;
     const fd = new FormData();
     fd.append("access_key", key);
     fd.append("from_name", TS.site.name || "Trace Solutions Global");
-    fd.append("subject", ccCustomer
-      ? `Your website concept plan (${brief.ref})`
-      : `Website concept ${brief.ref}: ${(brief.business && brief.business.name) || c.name || "new"}`);
+    fd.append("subject", `Website concept ${brief.ref}: ${(brief.business && brief.business.name) || c.name || "new"}`);
     if (EMAIL_RE.test(customer)) { fd.append("email", customer); fd.append("replyto", customer); }
-    if (cc.length) fd.append("ccemail", cc.join(";"));
     fd.append("name", c.name || "");
     fd.append("phone", c.phone || "");
-    fd.append("message", intro + briefText(brief));
+    fd.append("message", `New website concept ${brief.ref}\n\n` + briefText(brief));
     fd.append("botcheck", "");
-    if (file) fd.append("attachment", file, file.name);
     const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: fd, headers: { Accept: "application/json" } });
     const data = await res.json().catch(() => ({}));
     if (!res.ok || data.success === false) {
@@ -2553,6 +2544,33 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
     } catch (e) { return false; }
   }
 
+  const ORDER_TASKS = ["Discovery call & brief", "Send proposal & quote", "Collect logo, photos & content", "Homepage design", "Inner pages", "Mobile & speed check", "Domain, hosting & email", "Client review & changes", "Go live", "Handover & training"];
+
+  /** Adds the order to the projects dashboard (admin.html) as a new lead. */
+  async function saveOrder(brief) {
+    if (!window.TSDB || !TSDB.ready()) return false;
+    const b = brief.business || {}, w = brief.website || {}, c = brief.contact || {};
+    try {
+      await TSDB.rest("projects", {
+        method: "POST", prefer: "return=minimal",
+        body: {
+          source: "website",
+          data: {
+            name: `${b.name || c.name || "New"} website`, client: b.name || "", businessType: b.type_label || "",
+            stage: "lead", priority: "normal",
+            contactName: c.name || "", phone: c.phone || "", email: c.email || "",
+            value: 0, paid: 0, startDate: new Date().toISOString().slice(0, 10), dueDate: "",
+            domain: "", brandColor: w.brand_color || "#0D8B76", previewUrl: "", liveUrl: "",
+            pages: (w.pages || []).join(", "), features: (w.features || []).join(", "),
+            notes: briefText(brief), tasks: ORDER_TASKS.map(t => ({ t, done: false })),
+            ref: brief.ref, brief
+          }
+        }
+      });
+      return true;
+    } catch (e) { return false; }
+  }
+
   function sendHint(text, step) {
     const msg = $("#sendMsg");
     msg.hidden = false;
@@ -2577,13 +2595,18 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
     if ((TS.site.web3formsKey || "").trim()) {
       btn.textContent = via === "email" ? "Emailing your plan…" : "Sending your plan…";
       try {
-        await submitConcept(brief, file, via === "email");
+        await submitConcept(brief);
         web3ok = true;
         result.mode = "web3forms";
-        if (via === "email") result.emailed = true;
+        if (via === "email") savePdf(bytes, file.name);
       } catch (e) {
         result.web3Error = e.message;
       }
+    }
+    if (await saveOrder(brief) && !web3ok) {
+      web3ok = true;
+      result.mode = "web3forms";
+      if (via === "email") savePdf(bytes, file.name);
     }
     if (previewMode()) {
       await saveToBackOffice(brief);
@@ -2591,7 +2614,7 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
         btn.disabled = false; btn.innerHTML = label;
         return sendHint(result.web3Error || "This is a preview, so the email can't be sent yet. Download your PDF instead, or message us on WhatsApp.");
       }
-    } else {
+    } else if (!web3ok) {
       try {
         btn.textContent = "Saving your plan…";
         const res = await fetch("api/brief.php", {
@@ -2719,11 +2742,10 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
     if (!it) return;
     const customer = String((it.contact || {}).email || "").trim();
     if (!EMAIL_RE.test(customer)) { toast("This concept has no email address."); return; }
-    if (!(TS.site.web3formsKey || "").trim()) { toast("Add the Web3Forms access key before emailing from here."); return; }
-    toast("Emailing the PDF…");
     try {
-      await submitConcept(it, pdfFile(TS.pdf.plan(it, TS.site), it.ref), true);
-      toast("PDF emailed to the customer and " + (TS.site.salesEmail || "sales@tracesolutionsglobal.com"));
+      savePdf(TS.pdf.plan(it, TS.site), pdfFile(TS.pdf.plan(it, TS.site), it.ref).name);
+      window.location.href = `mailto:${customer}?subject=${encodeURIComponent(`Your website concept plan (${it.ref})`)}&body=${encodeURIComponent("Hi " + ((it.contact || {}).name || "there") + ",\n\nYour website concept plan is attached.\n")}`;
+      toast("PDF downloaded. Attach it to the email that just opened.");
     } catch (e) {
       toast(e.message || "Couldn't email the PDF.");
     }

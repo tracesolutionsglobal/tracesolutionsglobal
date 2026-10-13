@@ -1071,7 +1071,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
       <div class="rev-write">
         <div class="rev-write-copy">
           <h3>Worked with us? Leave a review</h3>
-          <p>Tell other business owners how it went. Our team reads every review before it appears here, so the page only ever shows genuine clients.</p>
+          <p>Tell other business owners how it went. Your review appears here as soon as you send it.</p>
         </div>
         <form class="rev-form" id="revForm" novalidate>
           <fieldset class="rev-stars-input">
@@ -1086,7 +1086,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
           <div class="field full"><label for="rv-text">Your review</label><textarea id="rv-text" name="text" maxlength="1200" placeholder="What did we build for you, and how was working with us?"></textarea></div>
           <div class="hp" aria-hidden="true"><label for="rv-website">Leave this empty</label><input id="rv-website" name="website" tabindex="-1" autocomplete="off"></div>
           <div class="form-foot full">
-            <small>Reviews appear after a quick check by our team.</small>
+            <small>Please only review work we've done for you.</small>
             <button class="btn btn--coral" type="submit">Send review <span class="arrow">→</span></button>
           </div>
           <div class="form-status full" id="revStatus" role="status" hidden></div>
@@ -1150,6 +1150,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="supabase.js"></script>
 <script>
 /* =========================================================
    Company details, used everywhere on the site.
@@ -1873,7 +1874,6 @@ window.TS = window.TS || {};
             fd.append("access_key", key);
             fd.append("from_name", "Trace Solutions Global website");
             fd.append("subject", "Website enquiry: " + ($("#c-business").value.trim() || name));
-            fd.append("ccemail", TS.site.salesEmail || "sales@tracesolutionsglobal.com");
             fd.append("name", name);
             if (email) { fd.append("email", email); fd.append("replyto", email); }
             fd.append("phone", $("#c-phone").value.trim());
@@ -1966,34 +1966,34 @@ window.TS = window.TS || {};
     const local = Array.isArray(TS.reviews) ? TS.reviews.slice() : [];
     renderReviews(local);
     const key = (TS.site.web3formsKey || "").trim();
-    if (onLiveSite() && !key) {
+    const hasDb = !!(window.TSDB && TSDB.ready());
+    async function loadReviews() {
+      if (!hasDb) return;
       try {
-        const res = await fetch("api/reviews.php", { headers: { Accept: "application/json" } });
-        const data = await res.json();
-        if (data && data.ok && Array.isArray(data.reviews)) renderReviews([...data.reviews, ...local]);
+        const rows = await TSDB.rest("reviews?select=name,business,country,rating,text,created_at&hidden=eq.false&order=created_at.desc&limit=60");
+        renderReviews([...(rows || []).map(r => ({ ...r, date: String(r.created_at || "").slice(0, 7) })), ...local]);
       } catch (e) { /* keep the reviews written into the page */ }
     }
-    /* Without a PHP server, reviews are emailed for approval. Paste the
-       snippet from the email into TS.reviews to publish one. */
-    async function emailReview(fd) {
-      const review = {
-        name: String(fd.get("name") || "").trim(),
-        business: String(fd.get("business") || "").trim(),
-        country: String(fd.get("country") || "").trim(),
-        rating: Math.max(1, Math.min(5, Math.round(+fd.get("rating") || 5))),
-        text: String(fd.get("text") || "").trim(),
-        date: new Date().toISOString().slice(0, 7)
-      };
+    loadReviews();
+    const readReview = fd => ({
+      name: String(fd.get("name") || "").trim().slice(0, 80),
+      business: String(fd.get("business") || "").trim().slice(0, 120),
+      country: String(fd.get("country") || "").trim().slice(0, 60),
+      rating: Math.max(1, Math.min(5, Math.round(+fd.get("rating") || 5))),
+      text: String(fd.get("text") || "").trim().slice(0, 1200)
+    });
+    async function emailReview(review, published) {
       const out = new FormData();
       out.append("access_key", key);
       out.append("from_name", "Trace Solutions Global website");
       out.append("subject", `New ${review.rating}-star review from ${review.name}`);
-      out.append("ccemail", TS.site.salesEmail || "sales@tracesolutionsglobal.com");
       out.append("name", review.name);
       out.append("business", review.business || "-");
       out.append("country", review.country || "-");
       out.append("rating", review.rating + " / 5");
-      out.append("message", review.text + "\n\nTo publish, add this line to TS.reviews in index.html:\n" + JSON.stringify(review) + ",");
+      out.append("message", review.text + (published
+        ? "\n\nThis review is live on the website. Edit or remove it at https://" + TS.site.website + "/admin.html"
+        : "\n\nTo publish, add this line to TS.reviews in index.html:\n" + JSON.stringify({ ...review, date: new Date().toISOString().slice(0, 7) }) + ","));
       out.append("botcheck", "");
       const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: out, headers: { Accept: "application/json" } });
       const data = await res.json().catch(() => ({}));
@@ -2005,21 +2005,26 @@ window.TS = window.TS || {};
       e.preventDefault();
       const fd = new FormData(form);
       const name = String(fd.get("name") || "").trim(), text = String(fd.get("text") || "").trim();
-      if (String(fd.get("website") || "").trim()) { form.reset(); $("#r5").checked = true; return show("Thank you! Your review is with our team and will appear here once it's checked."); }
+      const thanks = hasDb ? "Thank you! Your review is now live below." : "Thank you! Your review is with our team and will appear here once it's checked.";
+      if (String(fd.get("website") || "").trim()) { form.reset(); $("#r5").checked = true; return show(thanks); }
       if (!name) return show("Please add your name.", true);
       if (text.length < 10) return show("Please write a little more about your experience.", true);
       if (!onLiveSite()) return show("Preview mode: reviews are collected once the site is live on your hosting.", true);
       const btn = form.querySelector('button[type="submit"]'); btn.disabled = true;
+      const review = readReview(fd);
       try {
-        if (key) {
-          await emailReview(fd);
+        if (hasDb) {
+          await TSDB.rest("reviews", { method: "POST", body: review, prefer: "return=minimal" })
+            .catch(() => { throw new Error("We couldn't send your review just now. Please try again."); });
+          if (key) emailReview(review, true).catch(() => {});
+          await loadReviews();
+        } else if (key) {
+          await emailReview(review, false);
         } else {
-          const res = await fetch("api/reviews.php", { method: "POST", body: fd, headers: { Accept: "application/json" } });
-          const data = await res.json().catch(() => ({}));
-          if (!res.ok || !data.ok) throw new Error(data.error || "We couldn't send your review just now. Please try again.");
+          throw new Error("We couldn't send your review just now. Please try again.");
         }
         form.reset(); $("#r5").checked = true;
-        show("Thank you! Your review is with our team and will appear here once it's checked.");
+        show(thanks);
       } catch (err) { show(err.message, true); }
       finally { btn.disabled = false; }
     });
