@@ -5,8 +5,8 @@
    publish: supabase-setup.sql limits what it can do.
    ========================================================= */
 window.TSDB = (function () {
-  const URL = "";  // e.g. https://abcdefgh.supabase.co
-  const KEY = "";  // anon public key
+  const URL = "https://vjjmsvwbekkrszeornun.supabase.co";
+  const KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqam1zdndiZWtrcnN6ZW9ybnVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5MTk2NjgsImV4cCI6MjEwNzQ5NTY2OH0.RYCEZQYwyMSaBtBHc5bGzbpO6lZmRvFL3CFWBgB0mEQ";
 
   const SESSION = "ts-admin-session";
   let session = null;
