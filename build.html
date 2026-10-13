@@ -2551,11 +2551,10 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
     if (!window.TSDB || !TSDB.ready()) return false;
     const b = brief.business || {}, w = brief.website || {}, c = brief.contact || {};
     try {
-      await TSDB.rest("projects", {
-        method: "POST", prefer: "return=minimal",
+      await TSDB.rest("rpc/submit_website_lead", {
+        method: "POST",
         body: {
-          source: "website",
-          data: {
+          payload: {
             name: `${b.name || c.name || "New"} website`, client: b.name || "", businessType: b.type_label || "",
             stage: "lead", priority: "normal",
             contactName: c.name || "", phone: c.phone || "", email: c.email || "",

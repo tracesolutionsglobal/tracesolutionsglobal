@@ -1874,11 +1874,10 @@ window.TS = window.TS || {};
         message || "(no message)"
       ].filter((l, i, a) => l !== "" || a[i - 1] !== "").join("\n");
       try {
-        await TSDB.rest("projects", {
-          method: "POST", prefer: "return=minimal",
+        await TSDB.rest("rpc/submit_website_lead", {
+          method: "POST",
           body: {
-            source: "website",
-            data: {
+            payload: {
               origin: "contact", name: `${business || name} enquiry`, client: business, businessType: type,
               stage: "lead", priority: "normal", contactName: name, phone, email,
               value: 0, paid: 0, startDate: new Date().toISOString().slice(0, 10), dueDate: "",
