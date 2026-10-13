@@ -1856,6 +1856,42 @@ window.TS = window.TS || {};
       status.classList.toggle("is-error", !!isError);
     }
 
+    /** Adds the message to the projects board in admin.html as a new lead. */
+    async function saveEnquiry() {
+      if (!window.TSDB || !TSDB.ready()) return false;
+      const v = id => $(id).value.trim();
+      const business = v("#c-business"), name = v("#c-name");
+      const phone = v("#c-phone"), email = v("#c-email"), type = v("#c-type");
+      const message = v("#c-message");
+      const notes = [
+        "Contact form",
+        `Name: ${name}`,
+        business ? `Business: ${business}` : "",
+        phone ? `Phone: ${phone}` : "",
+        email ? `Email: ${email}` : "",
+        type ? `Business type: ${type}` : "",
+        "",
+        message || "(no message)"
+      ].filter((l, i, a) => l !== "" || a[i - 1] !== "").join("\n");
+      try {
+        await TSDB.rest("projects", {
+          method: "POST", prefer: "return=minimal",
+          body: {
+            source: "website",
+            data: {
+              origin: "contact", name: `${business || name} enquiry`, client: business, businessType: type,
+              stage: "lead", priority: "normal", contactName: name, phone, email,
+              value: 0, paid: 0, startDate: new Date().toISOString().slice(0, 10), dueDate: "",
+              domain: "", brandColor: "#0D8B76", previewUrl: "", liveUrl: "", pages: "", features: "",
+              notes,
+              tasks: [{ t: "Reply to the enquiry", done: false }, { t: "Discovery call & brief", done: false }, { t: "Send proposal & quote", done: false }]
+            }
+          }
+        });
+        return true;
+      } catch (e) { return false; }
+    }
+
     form.addEventListener("submit", async e => {
       e.preventDefault();
       if ($("#c-website").value.trim()) { form.reset(); showStatus("Thank you! Your message is with our team. We'll reply within one working day."); return; }
@@ -1887,6 +1923,7 @@ window.TS = window.TS || {};
             sent = true;
           } catch (err) { sent = false; }
         }
+        if (await saveEnquiry()) sent = true;
         if (!sent) {
           const res = await fetch(form.getAttribute("action"), { method: "POST", body: payload, headers: { Accept: "application/json" } });
           const data = await res.json().catch(() => ({}));
