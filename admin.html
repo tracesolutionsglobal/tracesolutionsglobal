@@ -166,6 +166,15 @@ legend{grid-column:1/-1;font-family:var(--f-mono);font-size:.72rem;letter-spacin
 footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
 .pill.web{background:var(--blue-soft);color:var(--blue)}
 .pill.contact{background:var(--coral-soft);color:var(--coral)}
+.card.is-lead{border-color:color-mix(in srgb,var(--coral) 40%, var(--line))}
+.card .snip{color:var(--ink-2);font-size:.82rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-align:left;line-height:1.4}
+.request{background:var(--mint-soft);border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;display:grid;gap:.75rem}
+.request h3{font-size:1.05rem}
+.request p{color:var(--ink-2);font-size:.88rem}
+.request dl{display:grid;grid-template-columns:7.5rem 1fr;gap:.4rem .8rem;margin:0}
+.request dt{color:var(--ink-3);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding-top:.15rem}
+.request dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.request .msg{white-space:pre-wrap;background:var(--surface);border-radius:10px;padding:.8rem .9rem;font-size:.92rem;line-height:1.45}
 .login{max-width:400px;margin:4rem auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1.6rem;display:grid;gap:.9rem}
 .login h1{font-size:1.4rem}
 .login p{color:var(--ink-2);font-size:.9rem}
@@ -316,12 +325,61 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
     if (p.source === "website") return `<span class="pill web">Website order</span>`;
     return "";
   }
+  function leadSnippet(p){
+    if (p.origin === "contact") {
+      const n = String(p.notes || ""), i = n.indexOf("\n\n");
+      const msg = (i >= 0 ? n.slice(i + 2) : n).replace(/^Contact form\n?/, "").trim();
+      return [p.contactName, msg].filter(Boolean).join(" — ");
+    }
+    if (p.brief && p.brief.website) {
+      const w = p.brief.website;
+      return [w.type_label, w.style_label, (w.pages || []).slice(0, 4).join(", ")].filter(Boolean).join(" · ");
+    }
+    return "";
+  }
+  function customerMessage(p){
+    if (p.brief) {
+      const parts = [];
+      (p.brief.answers || []).forEach(a => parts.push(`${a.question} ${[].concat(a.answer).join(", ")}`));
+      (p.brief.notes || []).forEach(n => parts.push(`${n.step}: ${n.text}`));
+      return parts.join("\n") || "";
+    }
+    const n = String(p.notes || "");
+    if (n.startsWith("Contact form")) {
+      const i = n.indexOf("\n\n");
+      return (i >= 0 ? n.slice(i + 2) : n).trim();
+    }
+    return n;
+  }
+  function customerRequestHTML(p){
+    if (!p || (p.origin !== "contact" && p.source !== "website" && !p.brief)) return "";
+    const row = (k, v) => v ? `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>` : "";
+    const brief = p.brief || {}, w = brief.website || {}, est = brief.estimate || {}, c = brief.contact || {};
+    const rows = [
+      row("Contact", p.contactName), row("Business", p.client), row("Type", p.businessType || w.type_label),
+      row("Phone", p.phone), row("Email", p.email),
+      row("Website", [w.type_label, w.style_label].filter(Boolean).join(" · ")),
+      row("Colour", w.brand_color), row("Pages", (w.pages || []).join(", ") || p.pages),
+      row("Features", (w.features || []).join(", ") || p.features),
+      row("Package", est.package ? `${est.package}${est.timeline ? " · " + est.timeline : ""}` : ""),
+      row("Prefers", c.preferred)
+    ].join("");
+    const msg = customerMessage(p);
+    return `<div class="request">
+      <h3>${p.origin === "contact" ? "Contact form request" : "Customer website request"}</h3>
+      <p>What the customer submitted. Use the fields below to turn this into a project.</p>
+      ${rows ? `<dl>${rows}</dl>` : ""}
+      ${msg ? `<div class="msg">${esc(msg)}</div>` : ""}
+    </div>`;
+  }
   function cardHTML(p){
-    const due = dueInfo(p), pr = progress(p), col = p.brandColor || "#0D8B76";
-    return `<button type="button" class="card" data-id="${esc(p.id)}">
+    const due = dueInfo(p), pr = progress(p), col = p.brandColor || "#0D8B76", snip = leadSnippet(p);
+    const who = [p.contactName, p.client, p.businessType].filter(Boolean).join(" · ") || "No client yet";
+    return `<button type="button" class="card${p.source === "website" || p.origin === "contact" ? " is-lead" : ""}" data-id="${esc(p.id)}">
       <div class="row"><span class="swatch" style="background:${esc(col)};color:${textOn(col)}">${esc(initials(p.name))}</span>
         <h3>${esc(p.name)}</h3><span class="code mono">${esc(p.code||"")}</span></div>
-      <div class="client">${esc(p.client || "No client yet")}${p.businessType ? " · " + esc(p.businessType) : ""}</div>
+      <div class="client">${esc(who)}</div>
+      ${snip ? `<div class="snip">${esc(snip)}</div>` : ""}
       <div class="meta">${sourcePill(p)}${due ? `<span class="pill ${due.cls}">${due.txt}</span>` : ""}${p.priority==="high" ? `<span class="pill prio-high">High priority</span>` : ""}${p.value ? `<span class="pill num">${rs(p.value)}</span>` : ""}</div>
       ${(p.tasks||[]).length ? `<div class="progress" aria-label="${pr}% of tasks done"><i style="width:${pr}%"></i></div><div class="foot"><span>${(p.tasks||[]).filter(t=>t.done).length}/${p.tasks.length} tasks</span><span>${pr}%</span></div>` : ""}
     </button>`;
@@ -372,6 +430,7 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
     const typeOpts = [""].concat(TYPES).map(t => `<option value="${esc(t)}" ${t===editing.businessType?"selected":""}>${t||"Choose…"}</option>`).join("");
     $("#dForm").innerHTML = `
       ${canWrite ? "" : `<div class="readonly-note">You can view this project but not edit it.</div>`}
+      ${customerRequestHTML(editing)}
       <fieldset><legend>Project</legend>
         <div class="f"><label for="p-name">Project name</label><input id="p-name" name="name" value="${esc(editing.name)}" placeholder="Bake Away website" ${ro} required></div>
         <div class="f"><label for="p-client">Client / business</label><input id="p-client" name="client" value="${esc(editing.client)}" placeholder="Bake Away" ${ro}></div>
@@ -514,9 +573,11 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
   /* ---------- projects (Supabase) ---------- */
   async function loadProjects(){
     try {
-      const rows = await TSDB.rest("projects?select=id,code,source,data,created_at&order=code.asc");
+      let rows = [];
+      try { rows = await TSDB.rest("rpc/admin_projects", { method: "POST", body: {} }); }
+      catch (e) { rows = await TSDB.rest("projects?select=id,code,source,data,created_at&order=code.asc"); }
       if (!TSDB.session()) return signOut();
-      projects = (rows || []).map(r => ({ ...r.data, id:r.id, code:r.code, source:r.source, extra:r.data }));
+      projects = (rows || []).map(r => ({ ...(r.data || {}), id: r.id, code: r.code, source: r.source, extra: r.data || {} }));
       loaded = true; loadError = false;
     } catch (e) {
       if (e.status === 401) return signOut();
