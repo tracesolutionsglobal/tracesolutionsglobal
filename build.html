@@ -869,8 +869,8 @@ TS.site = {
   tagline: "Your vision, built line by line.",
   whatsapp: "447548692972",         // international format, no + or spaces
   phoneDisplay: "+44 7548 692972",
-  email: "hello@tracesolutionsglobal.com", // PLACEHOLDER
-  salesEmail: "sales@tsg.com",
+  email: "sales@tracesolutionsglobal.com",
+  salesEmail: "sales@tracesolutionsglobal.com",
   /* Access key from https://app.web3forms.com. Paste the same value in
      index.html and api/config.php. Leave blank to send through PHP mail. */
   web3formsKey: "57dfc7a2-d684-46b0-ac8c-216d41f22f88",
@@ -2338,7 +2338,7 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
 
   const SEND_LABEL = { email: "Email me my plan", whatsapp: "Send my plan on WhatsApp", download: "Download my plan" };
   function deliverNote(via) {
-    const sales = TS.site.salesEmail || "sales@tsg.com";
+    const sales = TS.site.salesEmail || "sales@tracesolutionsglobal.com";
     if (via === "email") return `The PDF is emailed to you and copied to ${sales}.`;
     if (via === "whatsapp") return "WhatsApp opens with your PDF so you can send it. Our team gets a copy too.";
     return "The PDF saves on this device, and our team gets a copy too.";
@@ -2354,7 +2354,7 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
     const c = state.contact, r = state.sent || { via: "download", mode: "preview" };
     const first = firstName();
     let msg;
-    const sales = esc(TS.site.salesEmail || "sales@tsg.com");
+    const sales = esc(TS.site.salesEmail || "sales@tracesolutionsglobal.com");
     if (r.via === "email") {
       msg = r.emailed
         ? `Your PDF plan is on its way to <b>${esc(c.email)}</b>, with a copy to <b>${sales}</b>. If you don't see it, check your spam folder.`
@@ -2485,14 +2485,14 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
   /**
    * Email the concept through Web3Forms.
    * The access-key inbox is the main recipient. ccCustomer also copies the
-   * customer's address, and sales@tsg.com is always copied, PDF attached.
+   * customer's address, and sales@tracesolutionsglobal.com is always copied, PDF attached.
    */
   async function submitConcept(brief, file, ccCustomer) {
     const key = (TS.site.web3formsKey || "").trim();
     if (!key) throw new Error("Web3Forms is not connected.");
     const c = brief.contact || {};
     const customer = String(c.email || "").trim();
-    const sales = (TS.site.salesEmail || "sales@tsg.com").trim();
+    const sales = (TS.site.salesEmail || "sales@tracesolutionsglobal.com").trim();
     const cc = [];
     if (ccCustomer && EMAIL_RE.test(customer)) cc.push(customer);
     if (sales && !cc.includes(sales)) cc.push(sales);
@@ -2723,7 +2723,7 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
     toast("Emailing the PDF…");
     try {
       await submitConcept(it, pdfFile(TS.pdf.plan(it, TS.site), it.ref), true);
-      toast("PDF emailed to the customer and " + (TS.site.salesEmail || "sales@tsg.com"));
+      toast("PDF emailed to the customer and " + (TS.site.salesEmail || "sales@tracesolutionsglobal.com"));
     } catch (e) {
       toast(e.message || "Couldn't email the PDF.");
     }

@@ -1163,8 +1163,8 @@ TS.site = {
   tagline: "Your vision, built line by line.",
   whatsapp: "447548692972",         // international format, no + or spaces
   phoneDisplay: "+44 7548 692972",
-  email: "hello@tracesolutionsglobal.com", // PLACEHOLDER
-  salesEmail: "sales@tsg.com",
+  email: "sales@tracesolutionsglobal.com",
+  salesEmail: "sales@tracesolutionsglobal.com",
   /* Access key from https://app.web3forms.com. Paste the same value in
      build.html and api/config.php. Leave blank to send through PHP mail. */
   web3formsKey: "57dfc7a2-d684-46b0-ac8c-216d41f22f88",
@@ -1177,10 +1177,10 @@ TS.site = {
   /* Offices and direct numbers shown in "Talk to a real person".
      Each number gets Call, WhatsApp and Text buttons. */
   offices: [
-    { country: "United Kingdom", code: "UK", note: "WhatsApp, calls and texts", people: [
+    { country: "United Kingdom", label: "UK office", code: "UK", note: "WhatsApp, calls and texts", people: [
       { name: "UK team", phone: "+44 7548 692972" }
     ] },
-    { country: "Sri Lanka", code: "LK", note: "Calls, WhatsApp and texts", people: [
+    { country: "Sri Lanka", label: "SL office", code: "LK", note: "Calls, WhatsApp and texts", people: [
       { name: "Azzy", phone: "+94 76 831 0321" },
       { name: "Ocean", phone: "+94 77 723 4441" },
       { name: "Mandy", phone: "+94 77 780 9199" }
@@ -1873,7 +1873,7 @@ window.TS = window.TS || {};
             fd.append("access_key", key);
             fd.append("from_name", "Trace Solutions Global website");
             fd.append("subject", "Website enquiry: " + ($("#c-business").value.trim() || name));
-            fd.append("ccemail", TS.site.salesEmail || "sales@tsg.com");
+            fd.append("ccemail", TS.site.salesEmail || "sales@tracesolutionsglobal.com");
             fd.append("name", name);
             if (email) { fd.append("email", email); fd.append("replyto", email); }
             fd.append("phone", $("#c-phone").value.trim());
@@ -1885,12 +1885,13 @@ window.TS = window.TS || {};
             const data = await res.json().catch(() => ({}));
             if (!res.ok || data.success === false) throw new Error((data.body && data.body.message) || data.message || "Request failed");
             sent = true;
-            payload.append("skip_mail", "1");
           } catch (err) { sent = false; }
         }
-        const res = await fetch(form.getAttribute("action"), { method: "POST", body: payload, headers: { Accept: "application/json" } });
-        const data = await res.json().catch(() => ({}));
-        if (!sent && (!res.ok || !data.ok)) throw new Error(data.error || "Request failed");
+        if (!sent) {
+          const res = await fetch(form.getAttribute("action"), { method: "POST", body: payload, headers: { Accept: "application/json" } });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.ok) throw new Error(data.error || "Request failed");
+        }
         form.reset();
         showStatus("Thank you! Your message is with our team. We'll reply within one working day.");
       } catch (err) {
@@ -1912,7 +1913,7 @@ window.TS = window.TS || {};
     const waText = encodeURIComponent("Hi Trace Solutions Global, I'd like to talk about a website.");
     el.innerHTML = (TS.site.offices || []).map((o, i) => `
       <article class="office${i === 0 ? " office--dark" : ""}">
-        <div class="office-head"><span class="office-code">${o.code}</span><div><h3>${o.country} office</h3><small>${o.note || ""}</small></div></div>
+        <div class="office-head"><span class="office-code">${o.code}</span><div><h3>${o.label || o.country + " office"}</h3><small>${o.note || ""}</small></div></div>
         <ul class="office-people">
           ${o.people.map(pp => `<li>
             <div class="who"><b>${pp.name}</b><span class="num">${pp.phone}</span></div>
@@ -1964,12 +1965,39 @@ window.TS = window.TS || {};
     if (!$("#revGrid")) return;
     const local = Array.isArray(TS.reviews) ? TS.reviews.slice() : [];
     renderReviews(local);
-    if (onLiveSite()) {
+    const key = (TS.site.web3formsKey || "").trim();
+    if (onLiveSite() && !key) {
       try {
         const res = await fetch("api/reviews.php", { headers: { Accept: "application/json" } });
         const data = await res.json();
         if (data && data.ok && Array.isArray(data.reviews)) renderReviews([...data.reviews, ...local]);
       } catch (e) { /* keep the reviews written into the page */ }
+    }
+    /* Without a PHP server, reviews are emailed for approval. Paste the
+       snippet from the email into TS.reviews to publish one. */
+    async function emailReview(fd) {
+      const review = {
+        name: String(fd.get("name") || "").trim(),
+        business: String(fd.get("business") || "").trim(),
+        country: String(fd.get("country") || "").trim(),
+        rating: Math.max(1, Math.min(5, Math.round(+fd.get("rating") || 5))),
+        text: String(fd.get("text") || "").trim(),
+        date: new Date().toISOString().slice(0, 7)
+      };
+      const out = new FormData();
+      out.append("access_key", key);
+      out.append("from_name", "Trace Solutions Global website");
+      out.append("subject", `New ${review.rating}-star review from ${review.name}`);
+      out.append("ccemail", TS.site.salesEmail || "sales@tracesolutionsglobal.com");
+      out.append("name", review.name);
+      out.append("business", review.business || "-");
+      out.append("country", review.country || "-");
+      out.append("rating", review.rating + " / 5");
+      out.append("message", review.text + "\n\nTo publish, add this line to TS.reviews in index.html:\n" + JSON.stringify(review) + ",");
+      out.append("botcheck", "");
+      const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: out, headers: { Accept: "application/json" } });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.success === false) throw new Error("We couldn't send your review just now. Please try again.");
     }
     const form = $("#revForm"), status = $("#revStatus");
     const show = (msg, err) => { status.hidden = false; status.textContent = msg; status.classList.toggle("is-error", !!err); };
@@ -1977,14 +2005,19 @@ window.TS = window.TS || {};
       e.preventDefault();
       const fd = new FormData(form);
       const name = String(fd.get("name") || "").trim(), text = String(fd.get("text") || "").trim();
+      if (String(fd.get("website") || "").trim()) { form.reset(); $("#r5").checked = true; return show("Thank you! Your review is with our team and will appear here once it's checked."); }
       if (!name) return show("Please add your name.", true);
       if (text.length < 10) return show("Please write a little more about your experience.", true);
       if (!onLiveSite()) return show("Preview mode: reviews are collected once the site is live on your hosting.", true);
       const btn = form.querySelector('button[type="submit"]'); btn.disabled = true;
       try {
-        const res = await fetch("api/reviews.php", { method: "POST", body: fd, headers: { Accept: "application/json" } });
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok || !data.ok) throw new Error(data.error || "We couldn't send your review just now. Please try again.");
+        if (key) {
+          await emailReview(fd);
+        } else {
+          const res = await fetch("api/reviews.php", { method: "POST", body: fd, headers: { Accept: "application/json" } });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.ok) throw new Error(data.error || "We couldn't send your review just now. Please try again.");
+        }
         form.reset(); $("#r5").checked = true;
         show("Thank you! Your review is with our team and will appear here once it's checked.");
       } catch (err) { show(err.message, true); }
