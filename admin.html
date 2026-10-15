@@ -166,6 +166,10 @@ legend{grid-column:1/-1;font-family:var(--f-mono);font-size:.72rem;letter-spacin
 footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
 .pill.web{background:var(--blue-soft);color:var(--blue)}
 .pill.contact{background:var(--coral-soft);color:var(--coral)}
+.who{display:block;color:var(--ink-2);font-size:.74rem;font-weight:600;letter-spacing:0;line-height:1.3;white-space:pre-line}
+.pass-row{display:flex;align-items:center;gap:.35rem}
+.pass-row input{flex:1;min-width:0}
+.pass-row button{border:0;background:transparent;color:var(--green);font-weight:700;font-size:.8rem;cursor:pointer;white-space:nowrap;padding:.2rem .15rem}
 .card.is-lead{border-color:color-mix(in srgb,var(--coral) 40%, var(--line))}
 .card .snip{color:var(--ink-2);font-size:.82rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-align:left;line-height:1.4}
 .request{background:var(--mint-soft);border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;display:grid;gap:.75rem}
@@ -192,7 +196,7 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
   <div class="wrap">
     <div class="brand">
       <svg viewBox="0 0 322 244" aria-hidden="true" style="color:var(--ink)"><g fill="currentColor"><path d="M4 4h314l-36 56H39z"/><path d="M68 93h59l62 123-48 24z"/><path d="M168 93h87l-45 87z" fill="#1FA75A"/></g></svg>
-      <div><b>TRACE SOLUTIONS <span>G</span>LOBAL</b><small>Admin</small></div>
+      <div><b>TRACE SOLUTIONS <span>G</span>LOBAL</b><small id="whoGuest">Admin</small><small class="who" id="who" hidden></small></div>
     </div>
     <div class="seg" role="group" aria-label="Section" id="tabs" hidden>
       <button type="button" data-tab="projects" aria-pressed="true">Projects</button>
@@ -207,7 +211,7 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
   <h1>Admin sign-in</h1>
   <p>Projects, website orders and customer reviews for Trace Solutions Global.</p>
   <div class="f"><label for="l-email">Email</label><input id="l-email" type="email" autocomplete="username" required></div>
-  <div class="f"><label for="l-pass">Password</label><input id="l-pass" type="password" autocomplete="current-password" required></div>
+  <div class="f"><label for="l-pass">Password</label><div class="pass-row"><input id="l-pass" type="password" autocomplete="current-password" required><button type="button" id="showPass" aria-pressed="false" aria-controls="l-pass" aria-label="Show password">Show</button></div></div>
   <div class="err" id="loginErr" hidden></div>
   <button class="btn btn-primary" type="submit" style="justify-content:center">Sign in</button>
 </form>
@@ -662,8 +666,21 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
     t === "projects" ? loadProjects() : loadReviews();
   }
   document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
+  function adminLabel(email){
+    const known = {
+      "ocean.tracesolutions@outlook.com": "Ocean",
+      "azzy.tracesolutions@outlook.com": "Azzy",
+      "mandy.tracesolutions@outlook.com": "Mandy"
+    };
+    const e = String(email || "").toLowerCase();
+    return known[e] || (e.split("@")[0] || "Admin");
+  }
   function signedIn(){
     canWrite = true;
+    const email = (TSDB.session() && TSDB.session().email) || "";
+    $("#who").textContent = "Signed in as " + adminLabel(email) + (email ? "\n" + email : "");
+    $("#who").hidden = false;
+    $("#whoGuest").hidden = true;
     $("#loginView").hidden = true;
     $("#tabs").hidden = false; $("#signOut").hidden = false; $("#newBtn").disabled = false;
     showTab(tab);
@@ -674,8 +691,17 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
     TSDB.signOut(); clearInterval(timer); canWrite = false; loaded = false; projects = []; reviews = [];
     $("#projectsView").hidden = true; $("#reviewsView").hidden = true;
     $("#tabs").hidden = true; $("#signOut").hidden = true; $("#newBtn").hidden = true;
+    $("#who").hidden = true; $("#whoGuest").hidden = false;
     $("#loginView").hidden = false;
   }
+  $("#showPass").addEventListener("click", () => {
+    const input = $("#l-pass"), show = input.type === "password";
+    input.type = show ? "text" : "password";
+    const btn = $("#showPass");
+    btn.textContent = show ? "Hide" : "Show";
+    btn.setAttribute("aria-pressed", String(show));
+    btn.setAttribute("aria-label", show ? "Hide password" : "Show password");
+  });
   $("#signOut").addEventListener("click", signOut);
   $("#loginView").addEventListener("submit", async e => {
     e.preventDefault();
