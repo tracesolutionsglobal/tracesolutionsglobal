@@ -24,6 +24,13 @@
   const criteriaEl = $("lfCriteria");
   const tableWrap = $("lfTableWrap");
   const rowsEl = $("lfRows");
+  const savedRowsEl = $("lfSavedRows");
+  const savedWrap = $("lfSavedWrap");
+  const leadCountEl = $("lfLeadCount");
+  const sectorFilter = $("lfSectorFilter");
+  const historyEl = $("lfHistory");
+  const dbNote = $("lfDbNote");
+  const exportBtn = $("lfExport");
   const saveNote = $("lfSaveNote");
   const locRoot = $("lfLoc");
 
@@ -86,7 +93,7 @@
 
   const cache = new Map();
   const webCache = new Map();
-  const state = { location: null, saved: [], savesMode: "local", loaded: false, active: -1, options: [], suggestGen: 0, searchGen: 0 };
+  const state = { location: null, saved: [], savesMode: "local", loaded: false, active: -1, options: [], suggestGen: 0, searchGen: 0, leads: [], history: [], dbOk: null };
   let lastSearch = null;
   let suggestTimer = null;
   let suggestAbort = null;
@@ -613,12 +620,14 @@
     const lon = el.lon != null ? el.lon : (el.center && el.center.lon);
     if (lat == null || lon == null) return null;
     const website = cleanWeb(tags.website || tags["contact:website"] || tags.url || "");
+    const type = el.type || "node";
     return {
       name: tags.name || tags.brand || "Unnamed place",
       kind: tags.amenity || tags.shop || tags.tourism || tags.leisure || tags.office || "place",
       address: [tags["addr:housenumber"], tags["addr:street"], tags["addr:postcode"], tags["addr:city"]].filter(Boolean).join(" "),
-      website, miles: milesBetween(centre.lat, centre.lon, lat, lon),
-      osm: `https://www.openstreetmap.org/${el.type || "node"}/${el.id}`
+      website, miles: milesBetween(centre.lat, centre.lon, lat, lon), lat, lon,
+      dedupe: `${type}/${el.id}`,
+      osm: `https://www.openstreetmap.org/${type}/${el.id}`
     };
   }
 
@@ -630,7 +639,7 @@
       <td>${esc(row.kind)}</td>
       <td>${esc(row.address || "—")}</td>
       <td class="num">${esc(formatMiles(row.miles))}</td>
-      <td>${row.website ? `<a href="${esc(row.website)}" target="_blank" rel="noopener noreferrer">${esc(new URL(row.website).hostname)}</a> <span class="pill web-wait" data-host="${esc(new URL(row.website).hostname)}">Checking domain…</span>` : '<span class="pill web-none">No website listed</span>'}</td>
+      <td>${row.website ? `<a href="${esc(row.website)}" target="_blank" rel="noopener noreferrer">${esc(new URL(row.website).hostname)}</a> <span class="pill web-wait" data-host="${esc(new URL(row.website).hostname)}" data-key="${esc(row.dedupe)}">Checking domain…</span>` : '<span class="pill web-none">No website listed</span>'}</td>
     </tr>`).join("");
   }
 
@@ -663,6 +672,7 @@
   async function checkSites(gen) {
     const pills = [...rowsEl.querySelectorAll("[data-host]")];
     let n = 0;
+    const updates = new Map();
     async function worker() {
       while (n < pills.length) {
         if (gen !== state.searchGen) return;
@@ -674,9 +684,155 @@
         if (gen !== state.searchGen) return;
         pill.className = "pill " + result.cls;
         pill.textContent = result.text;
+        const key = pill.getAttribute("data-key");
+        if (key) updates.set(key, result.text);
       }
     }
     await Promise.all([worker(), worker(), worker(), worker()]);
+    if (gen !== state.searchGen || !state.dbOk || !updates.size) return;
+    const groups = new Map();
+    updates.forEach((text, key) => {
+      if (!groups.has(text)) groups.set(text, []);
+      groups.get(text).push(key);
+    });
+    for (const [text, keys] of groups) {
+      try {
+        await TSDB.rest("saved_leads?dedupe_key=in.(" + inFilter(keys) + ")", {
+          method: "PATCH", prefer: "return=minimal", body: { website_status: text.slice(0, 120) }
+        });
+      } catch (e) {}
+    }
+    loadLibrary();
+  }
+
+  function clip(value, max) { return String(value || "").slice(0, max); }
+  function inFilter(keys) {
+    return keys.map((key) => '"' + String(key).replace(/["\\]/g, "") + '"').join(",");
+  }
+  function csvCell(value) {
+    const text = String(value ?? "");
+    return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+  }
+  function when(iso) {
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return "";
+    return date.toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  }
+  function setLeadCount(n) {
+    if (leadCountEl) leadCountEl.textContent = String(n);
+    const dash = document.getElementById("sLeads");
+    const sub = document.getElementById("sLeadsSub");
+    if (dash) dash.textContent = state.dbOk === false ? "–" : String(n);
+    if (sub) sub.textContent = state.dbOk === false ? "Needs the leads table" : "Stored for the team";
+  }
+  function visibleLeads() {
+    const sector = sectorFilter ? sectorFilter.value : "";
+    return state.leads.filter((lead) => !sector || lead.sector === sector);
+  }
+  function paintLibrary() {
+    const leads = state.leads;
+    setLeadCount(leads.length);
+    if (dbNote) {
+      dbNote.className = "lf-note" + (state.dbOk === false ? " warn" : "");
+      dbNote.textContent = state.dbOk === false
+        ? "Leads are not being stored yet. In Supabase, open SQL Editor and run the saved_leads section at the end of supabase-setup.sql, then search again."
+        : (leads.length ? "" : "Named businesses from a search are stored here for the whole team.");
+    }
+    const sectors = [...new Set(leads.map((lead) => lead.sector).filter(Boolean))].sort();
+    if (sectorFilter) {
+      const current = sectorFilter.value;
+      sectorFilter.innerHTML = `<option value="">All sectors</option>` + sectors.map((sector) => `<option value="${esc(sector)}">${esc(sector)}</option>`).join("");
+      if (sectors.includes(current)) sectorFilter.value = current;
+    }
+    const shown = visibleLeads();
+    if (savedWrap) savedWrap.hidden = !shown.length;
+    if (savedRowsEl) {
+      savedRowsEl.innerHTML = shown.map((lead) => `<tr>
+        <td>${lead.osm_url ? `<a href="${esc(lead.osm_url)}" target="_blank" rel="noopener noreferrer">${esc(lead.name)}</a>` : esc(lead.name)}</td>
+        <td>${esc(lead.sector)}</td>
+        <td>${esc(lead.category || "—")}</td>
+        <td>${esc(lead.address || "—")}</td>
+        <td>${esc(lead.area || "—")}${lead.radius ? " · " + esc(lead.radius) : ""}</td>
+        <td>${lead.website ? `<a href="${esc(lead.website)}" target="_blank" rel="noopener noreferrer">${esc(lead.website_status || "Website")}</a>` : esc(lead.website_status || "No website listed")}</td>
+      </tr>`).join("");
+    }
+    if (historyEl) {
+      historyEl.innerHTML = state.history.length
+        ? state.history.map((search) => `<li>${esc(search.sector)} · ${esc(search.area)} · ${esc(search.radius || "radius not set")} · ${esc(search.result_count)} found · ${esc(search.new_count)} new · ${esc(when(search.created_at))}</li>`).join("")
+        : `<li>No searches stored yet.</li>`;
+    }
+  }
+  async function loadLibrary() {
+    if (!window.TSDB || !TSDB.session()) return;
+    try {
+      const [leads, history] = await Promise.all([
+        TSDB.rest("saved_leads?select=dedupe_key,name,sector,category,address,area,radius,website,website_status,osm_url,created_at&order=created_at.desc&limit=500"),
+        TSDB.rest("lead_searches?select=sector,area,radius,result_count,new_count,created_at&order=created_at.desc&limit=20")
+      ]);
+      state.leads = leads || [];
+      state.history = history || [];
+      state.dbOk = true;
+    } catch (e) {
+      state.dbOk = false;
+    }
+    paintLibrary();
+  }
+  async function rememberSearch(sector, loc, radius, leads) {
+    const named = leads.filter((lead) => lead.name !== "Unnamed place" && lead.dedupe);
+    const record = {
+      sector: clip(sector.label, 80),
+      area: clip(loc.label, 120),
+      radius: clip(radiusText(radius), 40),
+      result_count: leads.length,
+      new_count: 0,
+      searched_by: email()
+    };
+    if (!window.TSDB || !TSDB.session()) return { ok: false, added: 0, skipped: named.length };
+    let existing = [];
+    try {
+      if (named.length) {
+        existing = await TSDB.rest("saved_leads?select=dedupe_key&dedupe_key=in.(" + inFilter(named.map((lead) => lead.dedupe)) + ")") || [];
+      }
+      state.dbOk = true;
+    } catch (e) {
+      state.dbOk = false;
+      paintLibrary();
+      return { ok: false, added: 0, skipped: 0 };
+    }
+    const have = new Set(existing.map((row) => row.dedupe_key));
+    const fresh = named.filter((lead) => !have.has(lead.dedupe));
+    record.new_count = fresh.length;
+    try {
+      if (fresh.length) {
+        await TSDB.rest("saved_leads?on_conflict=dedupe_key", {
+          method: "POST",
+          prefer: "return=minimal,resolution=ignore-duplicates",
+          body: fresh.map((lead) => ({
+            dedupe_key: clip(lead.dedupe, 80),
+            name: clip(lead.name, 160),
+            sector: clip(sector.label, 80),
+            category: clip(lead.kind, 80),
+            address: clip(lead.address, 240),
+            area: clip(loc.label, 120),
+            radius: clip(radiusText(radius), 40),
+            miles: lead.miles == null ? null : Math.round(lead.miles * 100) / 100,
+            website: clip(lead.website, 500),
+            website_status: lead.website ? "Checking domain…" : "No website listed",
+            osm_url: clip(lead.osm, 200),
+            latitude: lead.lat,
+            longitude: lead.lon,
+            found_by: email()
+          }))
+        });
+      }
+      await TSDB.rest("lead_searches", { method: "POST", prefer: "return=minimal", body: record });
+      await loadLibrary();
+      return { ok: true, added: fresh.length, skipped: named.length - fresh.length };
+    } catch (e) {
+      state.dbOk = false;
+      paintLibrary();
+      return { ok: false, added: 0, skipped: 0 };
+    }
   }
 
   async function runSearch() {
@@ -753,8 +909,13 @@
       const extra = leads.length > max;
       leads = leads.slice(0, max);
       renderRows(leads);
-      if (!leads.length) setStatus(`No ${sector.label.toLowerCase()} were mapped ${where}. OpenStreetMap does not list every business.`, false);
-      else setStatus(`${leads.length} mapped ${leads.length === 1 ? "business" : "businesses"} ${where}.${extra || limited ? " Narrow the radius if you need a tighter set." : ""}`, false);
+      const stored = await rememberSearch(sector, loc, radius, leads);
+      if (gen !== state.searchGen) return;
+      const storeNote = !stored.ok
+        ? " These results were not stored."
+        : ` Saved ${stored.added} new${stored.skipped ? `, ${stored.skipped} already stored` : ""}.`;
+      if (!leads.length) setStatus(`No ${sector.label.toLowerCase()} were mapped ${where}. OpenStreetMap does not list every business.${storeNote}`, false);
+      else setStatus(`${leads.length} mapped ${leads.length === 1 ? "business" : "businesses"} ${where}.${extra || limited ? " Narrow the radius if you need a tighter set." : ""}${storeNote}`, false);
       checkSites(gen);
     } catch (e) {
       if (gen !== state.searchGen) return;
@@ -811,12 +972,35 @@
     if (confirm(`Remove ${displayName(item)} from saved destinations?`)) removeSaved(item.id);
   });
   goBtn.addEventListener("click", () => { runSearch(); });
+  if (sectorFilter) sectorFilter.addEventListener("change", paintLibrary);
+  if (exportBtn) exportBtn.addEventListener("click", () => {
+    const rows = visibleLeads();
+    if (!rows.length) { setStatus("There are no saved leads to export.", true); return; }
+    const header = ["Name", "Sector", "Category", "Address", "Area", "Radius", "Website", "Website status", "Map", "Saved"];
+    const lines = [header.join(",")].concat(rows.map((lead) => [
+      lead.name, lead.sector, lead.category, lead.address, lead.area, lead.radius,
+      lead.website, lead.website_status, lead.osm_url, lead.created_at
+    ].map(csvCell).join(",")));
+    const file = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(file);
+    link.download = "saved-leads.csv";
+    link.click();
+    URL.revokeObjectURL(link.href);
+  });
 
   window.TSLeadFinder = {
-    show() { if (!state.loaded) { state.loaded = true; loadSaved(); } },
+    show() {
+      if (!state.loaded) { state.loaded = true; loadSaved(); }
+      loadLibrary();
+    },
+    refreshCount() { loadLibrary(); },
     reset() {
       state.loaded = false;
       state.location = null;
+      state.leads = [];
+      state.history = [];
+      state.dbOk = null;
       state.searchGen++;
       input.value = "";
       closeMenu();
@@ -826,6 +1010,7 @@
       setStatus("");
       tableWrap.hidden = true;
       rowsEl.innerHTML = "";
+      paintLibrary();
     },
     state: () => state.location,
     lastSearch: () => lastSearch
