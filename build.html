@@ -280,6 +280,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .site-footer a { text-decoration: none; }
 .site-footer a:hover { color: var(--white); }
 .footer-bottom { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line-navy); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; font-size: 0.85rem; }
+.legal-line { margin: 0.8rem 0 0; font-size: 0.82rem; color: rgba(255,255,255,.62); }
+.legal-line a, .privacy a { color: inherit; text-underline-offset: 2px; }
 
 </style>
 <style>
@@ -682,39 +684,6 @@ body.builder-page { background: var(--paper); }
 .sum-done .done-actions { display: grid; gap: 0.5rem; width: 100%; max-width: 340px; }
 .sum-done .done-actions .btn { width: 100%; }
 
-/* ---------- Back office (owner only, opens at #admin) ---------- */
-.admin { padding-block: 1.6rem 4rem; display: grid; gap: 1.5rem; }
-.admin-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1rem 2rem; }
-.admin-head h1 { font-size: clamp(1.7rem, 3.2vw, 2.3rem); margin-top: 0.6rem; }
-.admin-head p { color: var(--ink-soft); margin-top: 0.5rem; max-width: 54ch; }
-.admin-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem; }
-@media (max-width: 640px) { .admin-stats { grid-template-columns: 1fr; } }
-.stat { background: var(--white); border: 1px solid var(--line); border-radius: var(--r-md); padding: 1rem 1.2rem; display: grid; gap: 0.2rem; }
-.stat:first-child { background: var(--navy); border-color: var(--navy); color: var(--white); }
-.stat small { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); }
-.stat:first-child small { color: var(--green-bright); }
-.stat b { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-.admin-list { background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
-.admin-note { padding: 0.7rem 1.3rem; font-size: 0.85rem; color: var(--ink-soft); border-bottom: 1px solid var(--line); }
-.lead { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto; gap: 0.6rem 1.5rem; padding: 1.1rem 1.3rem; border-bottom: 1px solid var(--line); align-items: start; }
-.lead:last-child { border-bottom: 0; }
-@media (max-width: 760px) { .lead { grid-template-columns: 1fr; } }
-.lead h3 { font-size: 1.08rem; letter-spacing: -0.01em; }
-.lead .meta { font-size: 0.85rem; color: var(--ink-soft); }
-.lead .ref { font-family: var(--f-mono); font-size: 0.74rem; color: var(--ink-soft); margin-top: 0.15rem; }
-.lead .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
-.lead .who { font-size: 0.88rem; display: grid; gap: 0.1rem; min-width: 0; }
-.lead .who span { color: var(--ink-soft); overflow-wrap: anywhere; }
-.lead .acts { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: flex-end; }
-@media (max-width: 760px) { .lead .acts { justify-content: flex-start; } }
-.lead details { grid-column: 1 / -1; font-size: 0.86rem; }
-.lead summary { cursor: pointer; color: var(--green); font-weight: 700; width: fit-content; }
-.lead dl { display: grid; grid-template-columns: minmax(0, 180px) minmax(0, 1fr); gap: 0.35rem 1rem; margin: 0.7rem 0 0; }
-.lead dt { color: var(--ink-soft); font-weight: 600; }
-.lead dd { margin: 0; }
-@media (max-width: 520px) { .lead dl { grid-template-columns: 1fr; } .lead dd { margin-bottom: 0.4rem; } }
-.admin-empty { padding: 2.6rem 1.4rem; text-align: center; display: grid; gap: 0.4rem; justify-items: center; color: var(--ink-soft); }
-.admin-empty b { color: var(--navy); font-size: 1.05rem; }
 .stage-frame .browser { width: 100%; transition: width 0.45s var(--ease), border-radius 0.45s var(--ease); }
 .stage-frame .browser-body { height: calc(100vh - 210px); min-height: 420px; overflow-y: auto; scrollbar-width: thin; }
 @media (max-width: 980px) { .stage-frame .browser-body { height: 52vh; min-height: 320px; } }
@@ -786,7 +755,6 @@ body.builder-page { background: var(--paper); }
         <li><a href="index.html#services">Services</a></li>
         <li><a href="index.html#about">About</a></li>
         <li><a href="index.html#contact">Contact</a></li>
-        <li class="owner-link" hidden><a href="#admin">Back office</a></li>
       </ul>
     </nav>
     <div class="nav-actions">
@@ -838,20 +806,35 @@ body.builder-page { background: var(--paper); }
       <p class="stage-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>This is a concept. Your final website is designed around your real photos, text and brand.</p>
     </section>
   </div>
-
-  <section class="admin" id="adminView" hidden aria-labelledby="adminTitle">
-    <div class="admin-head">
-      <div>
-        <span class="eyebrow">Back office</span>
-        <h1 id="adminTitle">Website concepts</h1>
-        <p>Every plan customers send from the Concept Builder, newest first. Only you can see this page.</p>
-      </div>
-      <a class="btn btn--outline btn--sm" href="#builder">Back to the builder</a>
-    </div>
-    <div class="admin-stats" id="adminStats"></div>
-    <div class="admin-list" id="adminList"></div>
-  </section>
 </main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo logo--light" href="index.html" aria-label="Trace Solutions Global, home">
+          <svg class="mark" aria-hidden="true"><use href="#ts-mark"/></svg>
+          <span class="word">TRACE SOLUTIONS <span class="g">G</span>LOBAL</span>
+        </a>
+        <p>Modern websites for businesses worldwide, designed so you can see them before we build them.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="work.html">Our work</a></li>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="privacy.html">Privacy policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Trace Solutions Global. All rights reserved.</span>
+      <span>Websites · Social media · Ads</span>
+    </div>
+    <p class="legal-line"><span data-site="legalName"></span> · Company no. <span data-site="companyNumber"></span> · <span data-site="registeredAddress"></span></p>
+  </div>
+</footer>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -872,6 +855,9 @@ TS.site = {
   phoneDisplay: "+44 7548 692972",
   email: "sales@tracesolutionsglobal.com",
   salesEmail: "sales@tracesolutionsglobal.com",
+  legalName: "[PLACEHOLDER: legal company name]",
+  companyNumber: "[PLACEHOLDER: company number]",
+  registeredAddress: "[PLACEHOLDER: registered address]",
   /* Access key from https://app.web3forms.com. Paste the same value in
      index.html and api/config.php. Leave blank to send through PHP mail. */
   web3formsKey: "57dfc7a2-d684-46b0-ac8c-216d41f22f88",
@@ -2258,7 +2244,7 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
           </div>
         </div>
         <p class="hint-msg" id="stepHint" hidden></p>
-        <p class="privacy">We only use your details to prepare and send your proposal. No spam, ever.</p>
+        <p class="privacy">We only use your details to prepare and send your proposal. No spam, ever. <a href="privacy.html">Privacy policy</a></p>
       </div>`;
     },
     summary() {
@@ -2652,104 +2638,6 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
     if (via === "download") savePdf(bytes, file.name);
   }
 
-  /* ---------- back office (owner only, at #admin) ---------- */
-  let isOwner = false, adminItems = [], adminUnsub = null;
-  const VIA = { email: "Email", whatsapp: "WhatsApp", download: "Download" };
-  async function initOwner() {
-    const user = await cap("user");
-    try { isOwner = user ? await user.isOwner() : false; } catch (e) { isOwner = false; }
-    if (!isOwner) return;
-    $$(".owner-link").forEach(el => { el.hidden = false; });
-    route();
-  }
-  function route() {
-    const on = isOwner && location.hash === "#admin";
-    $(".b-grid").hidden = on;
-    $("#adminView").hidden = !on;
-    if (on) { startAdmin(); window.scrollTo(0, 0); }
-  }
-  async function startAdmin() {
-    if (adminUnsub) return;
-    renderAdmin(null);
-    const db = await cap("db");
-    if (!db) { renderAdmin([], "The back office needs you to be signed in to claude.ai to load."); return; }
-    adminUnsub = db.collection("concepts").onSnapshot(snap => {
-      const items = [];
-      snap.docs.forEach(d => { const v = d.data() || {}; Object.values(v.items || {}).forEach(it => items.push(it)); });
-      items.sort((a, b) => String(b.received_at || b.created_at).localeCompare(String(a.received_at || a.created_at)));
-      adminItems = items;
-      renderAdmin(items);
-    }, () => { adminUnsub = null; renderAdmin(adminItems, "Live updates paused. Reload the page to refresh."); });
-  }
-  function renderAdmin(items, note) {
-    const list = $("#adminList"), stats = $("#adminStats");
-    if (items === null) { stats.innerHTML = ""; list.innerHTML = `<div class="admin-empty"><b>Loading concepts…</b></div>`; return; }
-    const weekAgo = Date.now() - 7 * 864e5;
-    const recent = items.filter(i => Date.parse(i.received_at || i.created_at) > weekAgo).length;
-    const counts = {};
-    items.forEach(i => { const p = (i.estimate || {}).package; if (p) counts[p] = (counts[p] || 0) + 1; });
-    const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
-    stats.innerHTML = [["Concepts received", items.length], ["Last 7 days", recent], ["Most requested", top ? top[0] : "–"]]
-      .map(([k, v]) => `<div class="stat"><small>${k}</small><b>${esc(v)}</b></div>`).join("");
-    if (!items.length) {
-      list.innerHTML = `<div class="admin-empty"><b>No concepts yet</b><span>${esc(note || "When a customer sends their plan from the Concept Builder, it shows up here with their PDF.")}</span></div>`;
-      return;
-    }
-    list.innerHTML = (note ? `<p class="admin-note">${esc(note)}</p>` : "") + items.map(leadRow).join("");
-  }
-  function leadRow(it) {
-    const b = it.business || {}, w = it.website || {}, e = it.estimate || {}, c = it.contact || {};
-    const when = new Date(it.received_at || it.created_at);
-    const date = isNaN(when) ? "" : when.toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
-    const ans = (it.answers || []).map(a => `<dt>${esc(a.question)}</dt><dd>${esc(Array.isArray(a.answer) ? a.answer.join(", ") : a.answer)}</dd>`).join("");
-    return `<article class="lead">
-      <div>
-        <h3>${esc(b.name || "Unnamed business")}</h3>
-        <div class="meta">${esc([b.type_label, w.type_label].filter(Boolean).join(" · "))}</div>
-        <div class="ref">${esc(it.ref)} · ${esc(date)}</div>
-        <div class="tags"><span class="tag">${esc(e.package || "")} · ${esc(e.timeline || "")}</span>${it.delivery ? `<span class="tag tag--coral">Plan via ${esc(VIA[it.delivery] || it.delivery)}</span>` : ""}</div>
-      </div>
-      <div class="who"><b>${esc(c.name || "")}</b>${c.phone ? `<span>${esc(c.phone)}</span>` : ""}${c.email ? `<span>${esc(c.email)}</span>` : ""}${c.location ? `<span>${esc(c.location)}</span>` : ""}</div>
-      <div class="acts">
-        <button type="button" class="btn btn--coral btn--sm" data-admin-pdf="${esc(it.ref)}">Download PDF</button>
-        <button type="button" class="btn btn--wa btn--sm" data-admin-wa="${esc(it.ref)}">WhatsApp PDF</button>
-        ${c.email ? `<button type="button" class="btn btn--outline btn--sm" data-admin-email="${esc(it.ref)}">Email PDF</button>` : ""}
-      </div>
-      <details><summary>Pages, add-ons and answers</summary>
-        <dl><dt>Pages</dt><dd>${esc((w.pages || []).join(", "))}</dd><dt>Add-ons</dt><dd>${esc((w.features || []).join(", ") || "None")}</dd><dt>Style</dt><dd>${esc(w.style_label || "")} · ${esc(w.brand_color || "")}</dd>${(it.notes || []).map(nt => `<dt>More details: ${esc(nt.step)}</dt><dd>${esc(nt.text)}</dd>`).join("")}${ans}</dl>
-      </details>
-    </article>`;
-  }
-  async function sendAdminWhatsApp(it) {
-    if (!it) return;
-    const bytes = TS.pdf.plan(it, TS.site);
-    const file = pdfFile(bytes, it.ref);
-    const c = it.contact || {};
-    const digits = phoneDigits(c.phone);
-    const text = `Hi ${c.name || "there"}, here is your website concept from Trace Solutions Global (ref ${it.ref}). Please attach the PDF in this chat.`;
-    try {
-      if (await sharePdfFile(file, text)) { toast("Choose WhatsApp to send the PDF"); return; }
-    } catch (e) {
-      if (e && e.name === "AbortError") return;
-    }
-    savePdf(bytes, file.name);
-    if (digits) window.open(`https://wa.me/${digits}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
-    else toast("PDF downloaded. Attach it in WhatsApp.");
-  }
-
-  async function sendAdminEmail(it) {
-    if (!it) return;
-    const customer = String((it.contact || {}).email || "").trim();
-    if (!EMAIL_RE.test(customer)) { toast("This concept has no email address."); return; }
-    try {
-      savePdf(TS.pdf.plan(it, TS.site), pdfFile(TS.pdf.plan(it, TS.site), it.ref).name);
-      window.location.href = `mailto:${customer}?subject=${encodeURIComponent(`Your website concept plan (${it.ref})`)}&body=${encodeURIComponent("Hi " + ((it.contact || {}).name || "there") + ",\n\nYour website concept plan is attached.\n")}`;
-      toast("PDF downloaded. Attach it to the email that just opened.");
-    } catch (e) {
-      toast(e.message || "Couldn't email the PDF.");
-    }
-  }
-
   async function copyText(text) {
     try { await navigator.clipboard.writeText(text); toast("Copied"); }
     catch (e) { toast(text); }
@@ -2888,16 +2776,6 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
       return;
     }
     if (t.closest("[data-dl-pdf]")) { downloadPlan(); return; }
-    const apdf = t.closest("[data-admin-pdf]");
-    if (apdf) {
-      const it = adminItems.find(x => x.ref === apdf.dataset.adminPdf);
-      if (it) savePdf(TS.pdf.plan(it, TS.site), `Trace-website-plan-${it.ref}.pdf`);
-      return;
-    }
-    const awa = t.closest("[data-admin-wa]");
-    if (awa) { sendAdminWhatsApp(adminItems.find(x => x.ref === awa.dataset.adminWa)); return; }
-    const aem = t.closest("[data-admin-email]");
-    if (aem) { sendAdminEmail(adminItems.find(x => x.ref === aem.dataset.adminEmail)); return; }
     const cp = t.closest("[data-copy]");
     if (cp) { copyText(cp.dataset.copy); return; }
     if (t.closest("#copyBrief")) { copyBrief(); return; }
@@ -2979,6 +2857,8 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
     };
     toggle.addEventListener("click", () => setOpen(!document.body.classList.contains("menu-open")));
     $("#navLinks").addEventListener("click", e => { if (e.target.closest("a")) setOpen(false); });
+    $$("[data-site]").forEach(el => { el.textContent = TS.site[el.dataset.site] || ""; });
+    const y = $("#year"); if (y) y.textContent = new Date().getFullYear();
     $$('[data-site-link="whatsapp"]').forEach(a => {
       a.href = `https://wa.me/${TS.site.whatsapp}?text=${encodeURIComponent("Hi Trace Solutions Global, I have a question about a website.")}`;
     });
@@ -2999,8 +2879,6 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
   show(state.step, { scroll: false });
   renderPreview(true);
   if (restored && state.business) toast("Welcome back. We kept your concept.");
-  window.addEventListener("hashchange", route);
-  initOwner();
 })();
 
 </script>

@@ -280,6 +280,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .site-footer a { text-decoration: none; }
 .site-footer a:hover { color: var(--white); }
 .footer-bottom { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line-navy); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; font-size: 0.85rem; }
+.legal-line { margin: 0.8rem 0 0; font-size: 0.82rem; color: rgba(255,255,255,.62); }
+.legal-line a { color: inherit; text-underline-offset: 2px; }
 
 </style>
 <style>
@@ -1008,6 +1010,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
           <li><a href="index.html#about">About</a></li>
           <li><a href="index.html#live">Talk to a real person</a></li>
           <li><a href="index.html#reviews">Reviews</a></li>
+          <li><a href="privacy.html">Privacy policy</a></li>
         </ul>
       </div>
       <div>
@@ -1033,6 +1036,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
       <span>© <span id="year">2026</span> Trace Solutions Global. All rights reserved.</span>
       <span>Websites · Social media · Ads</span>
     </div>
+    <p class="legal-line"><span data-site="legalName"></span> · Company no. <span data-site="companyNumber"></span> · <span data-site="registeredAddress"></span></p>
   </div>
 </footer>
 
@@ -1056,6 +1060,9 @@ TS.site = {
   whatsapp: "447548692972",         // international format, no + or spaces
   phoneDisplay: "+44 7548 692972",
   email: "sales@tracesolutionsglobal.com",
+  legalName: "[PLACEHOLDER: legal company name]",
+  companyNumber: "[PLACEHOLDER: company number]",
+  registeredAddress: "[PLACEHOLDER: registered address]",
   instagram: "tracesolutionsglobal", // PLACEHOLDER
   facebook: "tracesolutionsglobal",   // PLACEHOLDER
   location: "Offices in the UK and Sri Lanka",

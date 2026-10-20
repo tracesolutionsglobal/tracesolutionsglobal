@@ -280,6 +280,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .site-footer a { text-decoration: none; }
 .site-footer a:hover { color: var(--white); }
 .footer-bottom { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line-navy); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; font-size: 0.85rem; }
+.legal-line { margin: 0.8rem 0 0; font-size: 0.82rem; color: rgba(255,255,255,.62); }
+.legal-line a, .form-foot a, .privacy a { color: inherit; text-underline-offset: 2px; }
 
 </style>
 <style>
@@ -1046,8 +1048,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
           </div>
           <div class="field full"><label for="c-message">How can we help?</label><textarea id="c-message" name="message" placeholder="We need a website with online table booking and a menu…"></textarea></div>
           <div class="hp" aria-hidden="true"><label for="c-website">Leave this empty</label><input id="c-website" name="website" tabindex="-1" autocomplete="off"></div>
+          <div class="field full" data-turnstile="contact"></div>
           <div class="form-foot">
-            <small>We'll only use your details to reply to you.</small>
+            <small>We'll only use your details to reply to you. <a href="privacy.html">Privacy policy</a></small>
             <button class="btn btn--coral" type="submit">Send message <span class="arrow">→</span></button>
           </div>
           <div class="form-status" id="formStatus" role="status" hidden></div>
@@ -1071,7 +1074,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
       <div class="rev-write">
         <div class="rev-write-copy">
           <h3>Worked with us? Leave a review</h3>
-          <p>Tell other business owners how it went. Your review appears here as soon as you send it.</p>
+          <p>Tell other business owners how it went. Your review will appear once we've checked it.</p>
         </div>
         <form class="rev-form" id="revForm" novalidate>
           <fieldset class="rev-stars-input">
@@ -1085,8 +1088,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
           <div class="field"><label for="rv-country">Country <span class="opt">(optional)</span></label><input id="rv-country" name="country" autocomplete="country-name" maxlength="60" placeholder="United Kingdom"></div>
           <div class="field full"><label for="rv-text">Your review</label><textarea id="rv-text" name="text" maxlength="1200" placeholder="What did we build for you, and how was working with us?"></textarea></div>
           <div class="hp" aria-hidden="true"><label for="rv-website">Leave this empty</label><input id="rv-website" name="website" tabindex="-1" autocomplete="off"></div>
+          <div class="field full" data-turnstile="review"></div>
           <div class="form-foot full">
-            <small>Please only review work we've done for you.</small>
+            <small>Please only review work we've done for you. We'll only use your details to reply to you. <a href="privacy.html">Privacy policy</a></small>
             <button class="btn btn--coral" type="submit">Send review <span class="arrow">→</span></button>
           </div>
           <div class="form-status full" id="revStatus" role="status" hidden></div>
@@ -1116,6 +1120,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
           <li><a href="#about">About</a></li>
           <li><a href="#live">Talk to a real person</a></li>
           <li><a href="#reviews">Reviews</a></li>
+          <li><a href="privacy.html">Privacy policy</a></li>
         </ul>
       </div>
       <div>
@@ -1141,6 +1146,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
       <span>© <span id="year">2026</span> Trace Solutions Global. All rights reserved.</span>
       <span>Websites · Social media · Ads</span>
     </div>
+    <p class="legal-line"><span data-site="legalName"></span> · Company no. <span data-site="companyNumber"></span> · <span data-site="registeredAddress"></span></p>
   </div>
 </footer>
 
@@ -1150,6 +1156,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script src="supabase.js"></script>
 <script>
 /* =========================================================
@@ -1166,6 +1173,11 @@ TS.site = {
   phoneDisplay: "+44 7548 692972",
   email: "sales@tracesolutionsglobal.com",
   salesEmail: "sales@tracesolutionsglobal.com",
+  legalName: "[PLACEHOLDER: legal company name]",
+  companyNumber: "[PLACEHOLDER: company number]",
+  registeredAddress: "[PLACEHOLDER: registered address]",
+  /* Site key from Cloudflare Turnstile. Leave the placeholder until you paste a real key. */
+  turnstileSiteKey: "[PLACEHOLDER: Cloudflare Turnstile site key]",
   /* Access key from https://app.web3forms.com. Paste the same value in
      build.html and api/config.php. Leave blank to send through PHP mail. */
   web3formsKey: "57dfc7a2-d684-46b0-ac8c-216d41f22f88",
@@ -1684,6 +1696,24 @@ window.TS = window.TS || {};
     toastTimer = setTimeout(() => t.classList.remove("show"), 3200);
   }
 
+  function turnstileOn() {
+    const key = String((TS.site && TS.site.turnstileSiteKey) || "").trim();
+    return key && !key.includes("PLACEHOLDER");
+  }
+  function mountTurnstiles() {
+    const key = String(TS.site.turnstileSiteKey || "").trim();
+    $$("[data-turnstile]").forEach(el => {
+      if (!turnstileOn()) { el.innerHTML = "<small>[PLACEHOLDER: Cloudflare Turnstile site key]</small>"; return; }
+      const draw = () => window.turnstile && window.turnstile.render(el, { sitekey: key });
+      if (window.turnstile) draw();
+      else window.addEventListener("load", draw, { once: true });
+    });
+  }
+  function turnstileToken(form) {
+    const input = form.querySelector('[name="cf-turnstile-response"]');
+    return input ? input.value.trim() : "";
+  }
+
   /* ---------- Company details from TS.site ---------- */
   function fillSiteDetails() {
     const s = TS.site;
@@ -1697,6 +1727,7 @@ window.TS = window.TS || {};
     $$("[data-site]").forEach(el => { el.textContent = s[el.dataset.site] || ""; });
     $$("[data-site-link]").forEach(el => { el.href = links[el.dataset.siteLink] || "#"; });
     const y = $("#year"); if (y) y.textContent = new Date().getFullYear();
+    mountTurnstiles();
     const cn = $("#copyNumber");
     if (cn) cn.addEventListener("click", async () => {
       try { await navigator.clipboard.writeText(s.phoneDisplay); toast("Number copied"); }
@@ -1895,6 +1926,7 @@ window.TS = window.TS || {};
       e.preventDefault();
       if ($("#c-website").value.trim()) { form.reset(); showStatus("Thank you! Your message is with our team. We'll reply within one working day."); return; }
       if (!validate()) { showStatus("Please check the highlighted fields.", true); return; }
+      if (turnstileOn() && !turnstileToken(form)) { showStatus("Please confirm you're not a robot.", true); return; }
       const btn = form.querySelector('button[type="submit"]');
       btn.disabled = true;
       const name = $("#c-name").value.trim();
@@ -1915,6 +1947,7 @@ window.TS = window.TS || {};
             fd.append("business", $("#c-business").value.trim());
             fd.append("business_type", $("#c-type").value);
             fd.append("message", $("#c-message").value.trim() || "(no message)");
+            if (turnstileToken(form)) fd.append("cf-turnstile-response", turnstileToken(form));
             fd.append("botcheck", "");
             const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: fd, headers: { Accept: "application/json" } });
             const data = await res.json().catch(() => ({}));
@@ -2027,8 +2060,9 @@ window.TS = window.TS || {};
       out.append("business", review.business || "-");
       out.append("country", review.country || "-");
       out.append("rating", review.rating + " / 5");
+      if (turnstileToken(form)) out.append("cf-turnstile-response", turnstileToken(form));
       out.append("message", review.text + (published
-        ? "\n\nThis review is live on the website. Edit or remove it at https://" + TS.site.website + "/admin.html"
+        ? "\n\nThis review is waiting for approval in the admin page: https://" + TS.site.website + "/admin.html"
         : "\n\nTo publish, add this line to TS.reviews in index.html:\n" + JSON.stringify({ ...review, date: new Date().toISOString().slice(0, 7) }) + ","));
       out.append("botcheck", "");
       const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: out, headers: { Accept: "application/json" } });
@@ -2041,16 +2075,17 @@ window.TS = window.TS || {};
       e.preventDefault();
       const fd = new FormData(form);
       const name = String(fd.get("name") || "").trim(), text = String(fd.get("text") || "").trim();
-      const thanks = hasDb ? "Thank you! Your review is now live below." : "Thank you! Your review is with our team and will appear here once it's checked.";
+      const thanks = "Thank you! Your review is with our team and will appear here once it's checked.";
       if (String(fd.get("website") || "").trim()) { form.reset(); $("#r5").checked = true; return show(thanks); }
       if (!name) return show("Please add your name.", true);
       if (text.length < 10) return show("Please write a little more about your experience.", true);
+      if (turnstileOn() && !turnstileToken(form)) return show("Please confirm you're not a robot.", true);
       if (!onLiveSite()) return show("Preview mode: reviews are collected once the site is live on your hosting.", true);
       const btn = form.querySelector('button[type="submit"]'); btn.disabled = true;
       const review = readReview(fd);
       try {
         if (hasDb) {
-          await TSDB.rest("reviews", { method: "POST", body: review, prefer: "return=minimal" })
+          await TSDB.rest("reviews", { method: "POST", body: { ...review, hidden: true }, prefer: "return=minimal" })
             .catch(() => { throw new Error("We couldn't send your review just now. Please try again."); });
           if (key) emailReview(review, true).catch(() => {});
           await loadReviews();

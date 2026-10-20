@@ -200,6 +200,7 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
     </div>
     <div class="seg" role="group" aria-label="Section" id="tabs" hidden>
       <button type="button" data-tab="projects" aria-pressed="true">Projects</button>
+      <button type="button" data-tab="concepts" aria-pressed="false">Concepts</button>
       <button type="button" data-tab="reviews" aria-pressed="false">Reviews</button>
     </div>
     <button class="btn btn-primary" id="newBtn" disabled hidden>+ New project</button>
@@ -215,6 +216,15 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
   <div class="err" id="loginErr" hidden></div>
   <button class="btn btn-primary" type="submit" style="justify-content:center">Sign in</button>
 </form>
+
+<main class="wrap" id="conceptsView" hidden>
+  <div class="admin-head" style="margin-top:1.4rem">
+    <h2>Website concepts</h2>
+    <p style="color:var(--ink-2);max-width:54ch">Every plan customers send from the Concept Builder, newest first. Only you can see this page.</p>
+  </div>
+  <div class="summary" id="conceptStats" aria-label="Concept summary"></div>
+  <div class="rev-list" id="conceptList"></div>
+</main>
 
 <main class="wrap" id="reviewsView" hidden>
   <div class="toolbar">
@@ -588,6 +598,42 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
       loaded = false; loadError = true;
     }
     if (!editing) render();
+    renderConcepts();
+  }
+  function renderConcepts(){
+    const host = $("#conceptList"), stats = $("#conceptStats");
+    if (!host) return;
+    const items = projects.filter(p => p.brief).map(p => ({ ...p.brief, received_at: p.createdAt || p.extra && p.extra.createdAt, code: p.code }))
+      .sort((a, b) => String(b.created_at || b.received_at).localeCompare(String(a.created_at || a.received_at)));
+    const weekAgo = Date.now() - 7 * 864e5;
+    const recent = items.filter(i => Date.parse(i.received_at || i.created_at) > weekAgo).length;
+    stats.innerHTML = [["Concepts received", items.length], ["Last 7 days", recent], ["On the board", projects.filter(p => p.brief).length]]
+      .map(([k, v]) => `<div class="stat"><span class="mono">${k}</span><b class="num">${esc(v)}</b></div>`).join("");
+    if (!loaded) { host.innerHTML = `<div class="notice"><p>Loading concepts…</p></div>`; return; }
+    if (!items.length) { host.innerHTML = `<div class="notice"><h2>No concepts yet</h2><p>When a customer sends their plan from the Concept Builder, it shows up here.</p></div>`; return; }
+    host.innerHTML = items.map(it => {
+      const b = it.business || {}, w = it.website || {}, e = it.estimate || {}, c = it.contact || {};
+      const when = new Date(it.received_at || it.created_at);
+      const date = isNaN(when) ? "" : when.toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+      const ans = (it.answers || []).map(a => `<dt>${esc(a.question)}</dt><dd>${esc([].concat(a.answer).join(", "))}</dd>`).join("");
+      const notes = (it.notes || []).map(nt => `<dt>${esc(nt.step)}</dt><dd>${esc(nt.text)}</dd>`).join("");
+      return `<article class="rev">
+        <div class="f" style="grid-column:1/-1"><h3 style="font-size:1.05rem">${esc(b.name || "Unnamed business")} <span class="mono">${esc(it.ref || it.code || "")}</span></h3>
+        <p style="color:var(--ink-2)">${esc([b.type_label, w.type_label, date].filter(Boolean).join(" · "))}</p></div>
+        <div class="f"><label>Contact</label><div>${esc(c.name || "–")}</div></div>
+        <div class="f"><label>Phone</label><div>${esc(c.phone || "–")}</div></div>
+        <div class="f"><label>Email</label><div>${esc(c.email || "–")}</div></div>
+        <div class="f"><label>Package</label><div>${esc(e.package || "–")}${e.timeline ? " · " + esc(e.timeline) : ""}</div></div>
+        <div class="f" style="grid-column:1/-1"><label>What they asked for</label>
+          <dl class="request" style="display:grid;grid-template-columns:9rem 1fr;gap:.35rem .8rem;margin:0">
+            <dt>Pages</dt><dd>${esc((w.pages || []).join(", ") || "–")}</dd>
+            <dt>Features</dt><dd>${esc((w.features || []).join(", ") || "None")}</dd>
+            <dt>Style</dt><dd>${esc([w.style_label, w.brand_color].filter(Boolean).join(" · ") || "–")}</dd>
+            ${notes}${ans}
+          </dl>
+        </div>
+      </article>`;
+    }).join("");
   }
 
   /* ---------- reviews ---------- */
@@ -628,7 +674,7 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
     if (!body.name) return toast("Add the customer's name");
     if (body.text.length < 10) return toast("The review needs at least 10 characters");
     try {
-      if (id === "new") { await TSDB.rest("reviews", { method:"POST", body, prefer:"return=minimal" }); draftNew = false; toast("Review published"); }
+      if (id === "new") { await TSDB.rest("reviews", { method:"POST", body:{ ...body, hidden:false }, prefer:"return=minimal" }); draftNew = false; toast("Review published"); }
       else { await TSDB.rest(`reviews?id=eq.${id}`, { method:"PATCH", body, prefer:"return=minimal" }); toast("Review saved"); }
       loadReviews();
     } catch (e) { toast("Couldn't save the review. Try again."); }
@@ -661,9 +707,11 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
     tab = t;
     document.querySelectorAll("[data-tab]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.tab === t)));
     $("#projectsView").hidden = t !== "projects";
+    $("#conceptsView").hidden = t !== "concepts";
     $("#reviewsView").hidden = t !== "reviews";
     $("#newBtn").hidden = t !== "projects";
-    t === "projects" ? loadProjects() : loadReviews();
+    if (t === "reviews") loadReviews();
+    else loadProjects();
   }
   document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
   function adminLabel(email){
@@ -685,11 +733,11 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
     $("#tabs").hidden = false; $("#signOut").hidden = false; $("#newBtn").disabled = false;
     showTab(tab);
     clearInterval(timer);
-    timer = setInterval(() => { if (!document.hidden) tab === "projects" ? loadProjects() : (!draftNew && !document.activeElement.closest("[data-rev]") && loadReviews()); }, 30000);
+    timer = setInterval(() => { if (document.hidden) return; if (tab === "reviews") { if (!draftNew && !document.activeElement.closest("[data-rev]")) loadReviews(); } else loadProjects(); }, 30000);
   }
   function signOut(){
     TSDB.signOut(); clearInterval(timer); canWrite = false; loaded = false; projects = []; reviews = [];
-    $("#projectsView").hidden = true; $("#reviewsView").hidden = true;
+    $("#projectsView").hidden = true; $("#conceptsView").hidden = true; $("#reviewsView").hidden = true;
     $("#tabs").hidden = true; $("#signOut").hidden = true; $("#newBtn").hidden = true;
     $("#who").hidden = true; $("#whoGuest").hidden = false;
     $("#loginView").hidden = false;
