@@ -189,7 +189,48 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
 .rev.is-hidden{opacity:.6;border-style:dashed}
 .rev .acts{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
 .rev .acts small{color:var(--ink-3);margin-right:auto}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Lead finder */
+.lf-head{margin-top:1.4rem;display:grid;gap:.35rem}
+.lf-head p{color:var(--ink-2);max-width:68ch}
+.lf-panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1rem 1.1rem 1.15rem;margin-top:1rem;display:grid;gap:.85rem}
+.lf-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(168px,.55fr) minmax(150px,.45fr);gap:.75rem .8rem;align-items:start}
+#lfSave[aria-pressed="true"] svg{fill:currentColor}
+@media(max-width:860px){.lf-grid{grid-template-columns:1fr}}
+.lf-loc{position:relative;min-width:0}
+.lf-loc label,.lf-field label{font-weight:700;font-size:.8rem;color:var(--ink-2);display:block;margin-bottom:.3rem}
+.lf-box{display:flex;align-items:center;gap:.35rem;background:var(--surface-2);border:1.5px solid var(--line);border-radius:12px;padding:.35rem .45rem .35rem .7rem;min-width:0}
+.lf-box:focus-within{border-color:var(--green)}
+.lf-box input{flex:1;min-width:0;border:0;background:transparent;outline:none;padding:.35rem 0}
+.lf-box svg{width:16px;height:16px;color:var(--ink-3);flex:none}
+.lf-iconbtn{border:0;background:transparent;color:var(--ink-3);width:32px;height:32px;border-radius:8px;cursor:pointer;display:grid;place-items:center;flex:none}
+.lf-iconbtn:hover,.lf-iconbtn[aria-pressed="true"]{background:var(--mint-soft);color:var(--green)}
+.lf-iconbtn[disabled]{opacity:.35;cursor:not-allowed}
+.lf-menu{position:absolute;z-index:30;left:0;right:0;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);max-height:min(320px,50vh);overflow:auto;padding:.3rem}
+.lf-sec{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding:.5rem .6rem .15rem}
+.lf-opt{display:flex;gap:.55rem;align-items:flex-start;width:100%;text-align:left;border:0;background:transparent;border-radius:8px;padding:.48rem .55rem;cursor:pointer}
+.lf-opt svg{width:15px;height:15px;margin-top:.15rem;color:var(--green);flex:none}
+.lf-opt b{display:block;font-size:.92rem}
+.lf-opt small{display:block;color:var(--ink-3);font-weight:600;font-size:.75rem}
+.lf-opt[aria-selected="true"]{background:var(--mint-soft)}
+.lf-empty{padding:.7rem .65rem;color:var(--ink-2);font-size:.86rem}
+.lf-note{min-height:1.2em;font-size:.8rem;color:var(--ink-2);margin-top:.35rem}
+.lf-note.warn{color:var(--amber)}
+.lf-note.ok{color:var(--green-deep)}
+.lf-field select{width:100%;background:var(--surface-2);border:1.5px solid var(--line);border-radius:12px;padding:.72rem .75rem;font-weight:600}
+.lf-actions{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center}
+.lf-actions p{color:var(--ink-2);font-size:.86rem;flex:1;min-width:16rem}
+.lf-spin{width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--green);border-radius:50%;animation:lfspin .7s linear infinite}
+@keyframes lfspin{to{transform:rotate(360deg)}}
+.lf-status{font-weight:700}
+.lf-status.bad{color:var(--danger)}
+.pill.web-none{background:var(--grey-soft);color:var(--ink-2)}
+.pill.web-down{background:var(--danger-soft);color:var(--danger)}
+.pill.web-up{background:var(--mint);color:var(--green-deep)}
+.pill.web-wait{background:var(--amber-soft);color:var(--amber)}
+.lf-foot{color:var(--ink-3);font-size:.78rem;display:grid;gap:.25rem}
+.lf-foot a{color:var(--green)}
 </style>
 
 <header class="top">
@@ -202,6 +243,7 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
       <button type="button" data-tab="projects" aria-pressed="true">Projects</button>
       <button type="button" data-tab="concepts" aria-pressed="false">Concepts</button>
       <button type="button" data-tab="reviews" aria-pressed="false">Reviews</button>
+      <button type="button" data-tab="finder" aria-pressed="false">Lead finder</button>
     </div>
     <button class="btn btn-primary" id="newBtn" disabled hidden>+ New project</button>
     <button class="btn btn-ghost" id="signOut" hidden>Sign out</button>
@@ -210,7 +252,7 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
 
 <form class="login" id="loginView" hidden novalidate>
   <h1>Admin sign-in</h1>
-  <p>Projects, website orders and customer reviews for Trace Solutions Global.</p>
+  <p>Projects, the lead finder, website orders and customer reviews for Trace Solutions Global.</p>
   <div class="f"><label for="l-email">Email</label><input id="l-email" type="email" autocomplete="username" required></div>
   <div class="f"><label for="l-pass">Password</label><div class="pass-row"><input id="l-pass" type="password" autocomplete="current-password" required><button type="button" id="showPass" aria-pressed="false" aria-controls="l-pass" aria-label="Show password">Show</button></div></div>
   <div class="err" id="loginErr" hidden></div>
@@ -233,6 +275,95 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
   </div>
   <div class="rev-list" id="revList"></div>
   <footer>Reviews show on the homepage as soon as customers post them. Hidden reviews stay here but don't appear on the site.</footer>
+</main>
+
+<main class="wrap" id="finderView" hidden>
+  <div class="lf-head">
+    <h2>Lead finder</h2>
+    <p>Search mapped UK businesses around a postcode, town or city. Results come from OpenStreetMap, then each listed website is checked.</p>
+  </div>
+  <div class="lf-panel">
+    <div class="lf-grid">
+      <div class="lf-loc" id="lfLoc">
+        <label for="lfQ">UK Postcode, Town or City</label>
+        <div class="lf-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/></svg>
+          <input id="lfQ" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="lfList" autocomplete="off" spellcheck="false" placeholder="Enter a postcode, e.g. N15 4JA, or search London">
+          <span class="lf-spin" id="lfSpin" hidden></span>
+          <button type="button" class="lf-iconbtn" id="lfClear" hidden aria-label="Clear location">×</button>
+          <button type="button" class="lf-iconbtn" id="lfSave" aria-pressed="false" aria-label="Save destination" title="Save destination">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3.2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 15.8 7.2 18.1l.9-5.4L4.2 8.9l5.4-.8z"/></svg>
+          </button>
+        </div>
+        <div class="lf-menu" id="lfList" role="listbox" aria-label="Location suggestions" hidden></div>
+        <p class="lf-note" id="lfNote" aria-live="polite"></p>
+      </div>
+      <div class="lf-field">
+        <label for="lfRadius">Search radius</label>
+        <select id="lfRadius">
+          <option value="1">1 mile</option>
+          <option value="3">3 miles</option>
+          <option value="5" selected>5 miles</option>
+          <option value="10">10 miles</option>
+          <option value="15">15 miles</option>
+          <option value="25">25 miles</option>
+          <option value="50">50 miles</option>
+          <option value="area">Entire city / area</option>
+        </select>
+      </div>
+      <div class="lf-field">
+        <label for="lfMax">Maximum leads</label>
+        <select id="lfMax">
+          <option value="10">10</option>
+          <option value="25" selected>25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+      <div class="lf-field">
+        <label for="lfSector">Business sector</label>
+        <select id="lfSector">
+          <option value="">Choose a sector</option>
+          <option value="cafe">Cafés and restaurants</option>
+          <option value="pub">Pubs and bars</option>
+          <option value="beauty">Hair and beauty</option>
+          <option value="retail">Shops</option>
+          <option value="hotel">Hotels and guest houses</option>
+          <option value="health">Dentists and clinics</option>
+          <option value="pharmacy">Pharmacies</option>
+          <option value="gym">Gyms and fitness</option>
+          <option value="estate">Estate agents</option>
+          <option value="garage">Garages and car repair</option>
+          <option value="accountant">Accountants</option>
+          <option value="legal">Solicitors</option>
+          <option value="supermarket">Supermarkets and convenience</option>
+        </select>
+      </div>
+      <div class="lf-field">
+        <label for="lfSaved">Saved destinations</label>
+        <select id="lfSaved"><option value="">None saved yet</option></select>
+      </div>
+      <div class="lf-field">
+        <label for="lfRemove">&nbsp;</label>
+        <button type="button" class="btn btn-ghost" id="lfRemove" disabled>Remove saved</button>
+      </div>
+    </div>
+    <div class="lf-actions">
+      <button type="button" class="btn btn-primary" id="lfGo">Find businesses</button>
+      <p id="lfCriteria"></p>
+    </div>
+  </div>
+  <p class="lf-status" id="lfStatus" aria-live="polite"></p>
+  <div class="list-wrap" id="lfTableWrap" hidden>
+    <table>
+      <thead><tr><th>Business</th><th>Type</th><th>Address</th><th>Distance</th><th>Website</th></tr></thead>
+      <tbody id="lfRows"></tbody>
+    </table>
+  </div>
+  <footer class="lf-foot">
+    <span>Place names and postcodes from <a href="https://postcodes.io" rel="noopener noreferrer">postcodes.io</a> (Ordnance Survey Open Names). Businesses and area boundaries from <a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer">OpenStreetMap</a> via the public Overpass API. A mile radius is sent with the search. Entire city / area uses the OpenStreetMap boundary, which is too large for some cities on the free service.</span>
+    <span id="lfSaveNote"></span>
+  </footer>
 </main>
 
 <main class="wrap" id="projectsView" hidden>
@@ -269,6 +400,7 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="supabase.js"></script>
+<script src="lead-finder.js"></script>
 <script>
 (function(){
   const $ = s => document.querySelector(s);
@@ -709,8 +841,10 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
     $("#projectsView").hidden = t !== "projects";
     $("#conceptsView").hidden = t !== "concepts";
     $("#reviewsView").hidden = t !== "reviews";
+    $("#finderView").hidden = t !== "finder";
     $("#newBtn").hidden = t !== "projects";
     if (t === "reviews") loadReviews();
+    else if (t === "finder" && window.TSLeadFinder) TSLeadFinder.show();
     else loadProjects();
   }
   document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
@@ -733,11 +867,12 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
     $("#tabs").hidden = false; $("#signOut").hidden = false; $("#newBtn").disabled = false;
     showTab(tab);
     clearInterval(timer);
-    timer = setInterval(() => { if (document.hidden) return; if (tab === "reviews") { if (!draftNew && !document.activeElement.closest("[data-rev]")) loadReviews(); } else loadProjects(); }, 30000);
+    timer = setInterval(() => { if (document.hidden) return; if (tab === "reviews") { if (!draftNew && !document.activeElement.closest("[data-rev]")) loadReviews(); } else if (tab !== "finder") loadProjects(); }, 30000);
   }
   function signOut(){
     TSDB.signOut(); clearInterval(timer); canWrite = false; loaded = false; projects = []; reviews = [];
-    $("#projectsView").hidden = true; $("#conceptsView").hidden = true; $("#reviewsView").hidden = true;
+    $("#projectsView").hidden = true; $("#conceptsView").hidden = true; $("#reviewsView").hidden = true; $("#finderView").hidden = true;
+    if (window.TSLeadFinder) TSLeadFinder.reset();
     $("#tabs").hidden = true; $("#signOut").hidden = true; $("#newBtn").hidden = true;
     $("#who").hidden = true; $("#whoGuest").hidden = false;
     $("#loginView").hidden = false;
