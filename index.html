@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Trace Solutions Global</title>
+<title>Trace Solutions Global — Websites for Restaurants, Hotels, Clinics & Growing Businesses</title>
 <link rel="canonical" href="https://tracesolutionsglobal.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Trace Solutions Global">
@@ -909,7 +909,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
           <span class="ic" data-icon="cart"></span>
           <span class="group">Build</span>
           <h3>Online stores</h3>
-          <p>Product catalogues, carts and checkout with trusted payment gateways such as Stripe and PayPal, plus delivery zones and international shipping.</p>
+          <p>Product catalogues, carts and checkout with trusted payment gateways such as PayPal and Payoneer, plus delivery zones and international shipping.</p>
         </article>
         <article class="service">
           <span class="ic" data-icon="calendar"></span>
@@ -950,7 +950,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
       <div class="why-copy">
         <span class="eyebrow">About us</span>
         <h2 class="h2">A studio that shows you, instead of telling you</h2>
-        <p class="lede">Trace Solutions Global is a web studio with offices in the United Kingdom and Sri Lanka, building websites for businesses all over the world. Wherever you are, you get the same care: a team that listens, works around your time zone and treats your business with the respect it deserves.</p>
+        <p class="lede">Trace Solutions Global is a web studio based in Sri Lanka, with a UK contact number, building websites for businesses all over the world. Wherever you are, you get the same care: a team that listens, works around your time zone and treats your business with the respect it deserves.</p>
         <p class="lede">Our name comes from the first step of any good design: tracing the outline before filling in the detail. We work the same way with every client, in every country. Agree on the shape first, then build exactly what you need.</p>
         <a class="link-arrow" href="#contact">Talk to the team <span>→</span></a>
       </div>
@@ -986,7 +986,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
         <div class="live-copy">
           <span class="live-badge"><span class="dot" aria-hidden="true"></span>Real people, not bots</span>
           <h2 class="h2" id="liveTitle">Talk to a real person</h2>
-          <p class="lede">Questions before you start? Call, WhatsApp or text our team directly. We have offices in the United Kingdom and Sri Lanka, and a real member of the team picks up every message, wherever you are in the world.</p>
+          <p class="lede">Questions before you start? Call, WhatsApp or text our team directly. We're based in Sri Lanka with a UK number too, and a real member of the team picks up every message, wherever you are in the world.</p>
         </div>
         <div class="live-ways">
           <a class="live-way live-way--wa" data-site-link="whatsapp" href="#" target="_blank" rel="noopener">
@@ -1126,10 +1126,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
       <div>
         <h4>Services</h4>
         <ul>
-          <li>Business websites</li>
-          <li>Online stores</li>
-          <li>Social media</li>
-          <li>Google &amp; Meta ads</li>
+          <li><a href="#services">Business websites</a></li>
+          <li><a href="#services">Online stores</a></li>
+          <li><a href="#services">Social media</a></li>
+          <li><a href="#services">Google &amp; Meta ads</a></li>
         </ul>
       </div>
       <div>
@@ -1146,7 +1146,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
       <span>© <span id="year">2026</span> Trace Solutions Global. All rights reserved.</span>
       <span>Websites · Social media · Ads</span>
     </div>
-    <p class="legal-line"><span data-site="legalName"></span> · Company no. <span data-site="companyNumber"></span> · <span data-site="registeredAddress"></span></p>
+    <p class="legal-line"><span data-site="legalName"></span></p>
   </div>
 </footer>
 
@@ -1173,27 +1173,25 @@ TS.site = {
   phoneDisplay: "+44 7548 692972",
   email: "sales@tracesolutionsglobal.com",
   salesEmail: "sales@tracesolutionsglobal.com",
-  legalName: "[PLACEHOLDER: legal company name]",
-  companyNumber: "[PLACEHOLDER: company number]",
-  registeredAddress: "[PLACEHOLDER: registered address]",
+  legalName: "Trace Solutions Global",
   /* Site key from Cloudflare Turnstile. Leave the placeholder until you paste a real key. */
   turnstileSiteKey: "[PLACEHOLDER: Cloudflare Turnstile site key]",
   /* Access key from https://app.web3forms.com. Paste the same value in
      build.html and api/config.php. Leave blank to send through PHP mail. */
   web3formsKey: "57dfc7a2-d684-46b0-ac8c-216d41f22f88",
-  instagram: "tracesolutionsglobal", // PLACEHOLDER
-  facebook: "tracesolutionsglobal",   // PLACEHOLDER
-  location: "Offices in the UK and Sri Lanka",
+  instagram: "tracesolutionsglobal",
+  facebook: "tracesolutionsglobal",
+  location: "Based in Sri Lanka, with a UK number",
   hours: "Replies within one working day",
   website: "tracesolutionsglobal.com",
 
   /* Offices and direct numbers shown in "Talk to a real person".
      Each number gets Call, WhatsApp and Text buttons. */
   offices: [
-    { country: "United Kingdom", label: "UK office", code: "UK", note: "WhatsApp, calls and texts", people: [
+    { country: "United Kingdom", label: "UK number", code: "UK", note: "WhatsApp, calls and texts", people: [
       { name: "UK team", phone: "+44 7548 692972" }
     ] },
-    { country: "Sri Lanka", label: "SL office", code: "LK", note: "Calls, WhatsApp and texts", people: [
+    { country: "Sri Lanka", label: "Sri Lanka team", code: "LK", note: "Calls, WhatsApp and texts", people: [
       { name: "Azzy", phone: "+94 76 831 0321" },
       { name: "Ocean", phone: "+94 77 723 4441" },
       { name: "Mandy", phone: "+94 77 780 9199" }
@@ -1703,7 +1701,7 @@ window.TS = window.TS || {};
   function mountTurnstiles() {
     const key = String(TS.site.turnstileSiteKey || "").trim();
     $$("[data-turnstile]").forEach(el => {
-      if (!turnstileOn()) { el.innerHTML = "<small>[PLACEHOLDER: Cloudflare Turnstile site key]</small>"; return; }
+      if (!turnstileOn()) { el.innerHTML = ""; return; }
       const draw = () => window.turnstile && window.turnstile.render(el, { sitekey: key });
       if (window.turnstile) draw();
       else window.addEventListener("load", draw, { once: true });
@@ -2012,11 +2010,13 @@ window.TS = window.TS || {};
     const reviews = list.filter(r => r && r.text && r.name).map(r => ({ ...r, rating: Math.max(1, Math.min(5, Math.round(+r.rating || 5))) }));
     if (!reviews.length) {
       score.hidden = true;
-      grid.innerHTML = `<div class="rev-empty">${starRow(5, "lg")}<b>Our first reviews are on their way</b><span>We're collecting feedback from recent clients. If we've built something for you, we'd love to hear how it went.</span></div>`;
+      grid.hidden = true;
+      grid.innerHTML = "";
       return;
     }
     const avg = reviews.reduce((a, r) => a + r.rating, 0) / reviews.length;
     score.hidden = false;
+    grid.hidden = false;
     score.innerHTML = `${starRow(Math.round(avg), "lg")}<b>${avg.toFixed(1)}</b><span>from ${reviews.length} review${reviews.length === 1 ? "" : "s"}</span>`;
     grid.innerHTML = reviews.map(r => {
       const initials = r.name.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase();

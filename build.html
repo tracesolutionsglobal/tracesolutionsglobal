@@ -832,7 +832,7 @@ body.builder-page { background: var(--paper); }
       <span>© <span id="year">2026</span> Trace Solutions Global. All rights reserved.</span>
       <span>Websites · Social media · Ads</span>
     </div>
-    <p class="legal-line"><span data-site="legalName"></span> · Company no. <span data-site="companyNumber"></span> · <span data-site="registeredAddress"></span></p>
+    <p class="legal-line"><span data-site="legalName"></span></p>
   </div>
 </footer>
 
@@ -855,15 +855,13 @@ TS.site = {
   phoneDisplay: "+44 7548 692972",
   email: "sales@tracesolutionsglobal.com",
   salesEmail: "sales@tracesolutionsglobal.com",
-  legalName: "[PLACEHOLDER: legal company name]",
-  companyNumber: "[PLACEHOLDER: company number]",
-  registeredAddress: "[PLACEHOLDER: registered address]",
+  legalName: "Trace Solutions Global",
   /* Access key from https://app.web3forms.com. Paste the same value in
      index.html and api/config.php. Leave blank to send through PHP mail. */
   web3formsKey: "57dfc7a2-d684-46b0-ac8c-216d41f22f88",
-  instagram: "tracesolutionsglobal", // PLACEHOLDER
-  facebook: "tracesolutionsglobal",   // PLACEHOLDER
-  location: "Offices in the UK and Sri Lanka",
+  instagram: "tracesolutionsglobal",
+  facebook: "tracesolutionsglobal",
+  location: "Based in Sri Lanka, with a UK number",
   hours: "Replies within one working day",
   website: "tracesolutionsglobal.com"
 };
@@ -1162,7 +1160,7 @@ TS.features = [
   { id: "whatsapp",  label: "WhatsApp chat button", icon: "chat", desc: "Customers message you in one tap.", block: "whatsapp", weight: 0 },
   { id: "booking",   label: "Online booking", icon: "calendar", desc: "Tables, rooms or appointments, with email confirmation.", block: "booking", weight: 3 },
   { id: "store",     label: "Online store & cart", icon: "cart", desc: "Products, cart, checkout and order emails.", block: "shop", weight: 4 },
-  { id: "payments",  label: "Card payments (Stripe, PayPal)", icon: "card", desc: "Accept Visa, Mastercard, Apple Pay and more.", block: "payments", weight: 2 },
+  { id: "payments",  label: "Card payments (PayPal, Payoneer)", icon: "card", desc: "Accept Visa, Mastercard, Apple Pay and more.", block: "payments", weight: 2 },
   { id: "gallery",   label: "Photo gallery", icon: "grid", desc: "Show your food, rooms, work or products.", block: "gallery", weight: 1 },
   { id: "reviews",   label: "Google reviews", icon: "star", desc: "Your best reviews on your site, automatically.", block: "reviews", weight: 1 },
   { id: "map",       label: "Map & opening hours", icon: "pin", desc: "Directions and hours, linked to Google Maps.", block: "map", weight: 0 },
