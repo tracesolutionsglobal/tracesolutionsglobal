@@ -1074,6 +1074,9 @@ TS.site = {
   location: "Based in Sri Lanka, with a UK number",
   hours: "Replies within one working day",
   website: "tracesolutionsglobal.com",
+  /* Total websites you have completed, including ones not shown on this page.
+     Shown as "Projects delivered". Set to 0 to count only the projects listed here. */
+  projectsDelivered: 25,
 
   /* Offices and direct numbers shown in "Talk to a real person".
      Each number gets Call, WhatsApp and Text buttons. */
@@ -1603,7 +1606,8 @@ TS.portfolio = [
   function initTop() {
     const cats = [...new Set(P.map(p => p.category))];
     const styles = new Set(P.map(p => p.style));
-    $("#wStats").innerHTML = [[P.length, "Projects"], [cats.length, "Industries"], [styles.size, "Visual styles"]]
+    const delivered = Math.max(+TS.site.projectsDelivered || 0, P.length);
+    $("#wStats").innerHTML = [[delivered, delivered > P.length ? "Projects delivered" : "Projects"], [cats.length, "Industries"], [styles.size, "Visual styles"]]
       .map(([n, l]) => `<div><dt>${l}</dt><dd>${String(n).padStart(2, "0")}</dd></div>`).join("");
     $("#wFilters").innerHTML = [["all", "All work", P.length], ...cats.map(c => [c, c, P.filter(p => p.category === c).length])]
       .map(([v, l, n]) => `<button type="button" class="chip" data-filter="${esc(v)}" aria-pressed="${v === "all"}">${esc(l)} <small>${n}</small></button>`).join("");
