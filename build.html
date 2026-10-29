@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Trace Concept Builder</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Website Concept Builder: Plan Your Site in Minutes · Trace Solutions Global</title>
 <link rel="canonical" href="https://tracesolutionsglobal.com/build.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Trace Solutions Global">
@@ -832,7 +833,6 @@ body.builder-page { background: var(--paper); }
       <span>© <span id="year">2026</span> Trace Solutions Global. All rights reserved.</span>
       <span>Websites · Social media · Ads</span>
     </div>
-    <p class="legal-line"><span data-site="legalName"></span></p>
   </div>
 </footer>
 
@@ -859,8 +859,9 @@ TS.site = {
   /* Access key from https://app.web3forms.com. Paste the same value in
      index.html and api/config.php. Leave blank to send through PHP mail. */
   web3formsKey: "57dfc7a2-d684-46b0-ac8c-216d41f22f88",
-  instagram: "tracesolutionsglobal",
-  facebook: "tracesolutionsglobal",
+  /* Full page URLs. Leave one blank ("") to hide its link. */
+  instagram: "https://www.instagram.com/tracesolutionsglobal/",
+  facebook: "https://www.facebook.com/p/Trace-Solutions-61594900683412/",
   location: "Based in Sri Lanka, with a UK number",
   hours: "Replies within one working day",
   website: "tracesolutionsglobal.com"
@@ -1160,7 +1161,7 @@ TS.features = [
   { id: "whatsapp",  label: "WhatsApp chat button", icon: "chat", desc: "Customers message you in one tap.", block: "whatsapp", weight: 0 },
   { id: "booking",   label: "Online booking", icon: "calendar", desc: "Tables, rooms or appointments, with email confirmation.", block: "booking", weight: 3 },
   { id: "store",     label: "Online store & cart", icon: "cart", desc: "Products, cart, checkout and order emails.", block: "shop", weight: 4 },
-  { id: "payments",  label: "Card payments (PayPal, Payoneer)", icon: "card", desc: "Accept Visa, Mastercard, Apple Pay and more.", block: "payments", weight: 2 },
+  { id: "payments",  label: "Card payments", icon: "card", desc: "Accept Visa, Mastercard, Apple Pay and more.", block: "payments", weight: 2 },
   { id: "gallery",   label: "Photo gallery", icon: "grid", desc: "Show your food, rooms, work or products.", block: "gallery", weight: 1 },
   { id: "reviews",   label: "Google reviews", icon: "star", desc: "Your best reviews on your site, automatically.", block: "reviews", weight: 1 },
   { id: "map",       label: "Map & opening hours", icon: "pin", desc: "Directions and hours, linked to Google Maps.", block: "map", weight: 0 },
@@ -1368,9 +1369,9 @@ window.TS = window.TS || {};
       const prices = ["24", "39", "12", "56"];
       out.push(`<div class="pv-block" data-t><div class="pv-row"><b class="pv-h">Shop bestsellers</b><span class="pv-cart">${TS.icon("cart")}<em>2</em></span></div>
         <div class="pv-grid4">${prices.map((pr, i) => `<div class="pv-prod"><span class="pv-ph" style="--i:${i}"></span><i></i><b>$${pr}</b></div>`).join("")}</div>
-        ${has("payments") ? `<div class="pv-pay"><span>VISA</span><span>Mastercard</span><span>PayPal</span><span>Apple Pay</span></div>` : ""}</div>`);
+        ${has("payments") ? `<div class="pv-pay"><span>VISA</span><span>Mastercard</span><span>Apple Pay</span><span>Google Pay</span></div>` : ""}</div>`);
     } else if (has("payments")) {
-      out.push(`<div class="pv-block pv-pay-only" data-t><b class="pv-h">Pay online, securely</b><div class="pv-pay"><span>VISA</span><span>Mastercard</span><span>PayPal</span></div></div>`);
+      out.push(`<div class="pv-block pv-pay-only" data-t><b class="pv-h">Pay online, securely</b><div class="pv-pay"><span>VISA</span><span>Mastercard</span><span>Apple Pay</span></div></div>`);
     }
     if (has("gallery")) {
       out.push(`<div class="pv-block" data-t><b class="pv-h">Gallery</b><div class="pv-gallery">${[0, 1, 2, 3, 4].map(i => `<span class="pv-ph" style="--i:${i}"></span>`).join("")}</div></div>`);
@@ -2321,7 +2322,7 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
     return STEPS.filter(st => n[st.id] && n[st.id].trim()).map(st => ({ step: st.label, step_id: st.id, text: n[st.id].trim() }));
   }
 
-  const SEND_LABEL = { email: "Email me my plan", whatsapp: "Send my plan on WhatsApp", download: "Download my plan" };
+  const SEND_LABEL = { email: "Send my concept &amp; save the PDF", whatsapp: "Send my plan on WhatsApp", download: "Download my plan" };
   function deliverNote(via) {
     const sales = TS.site.salesEmail || "sales@tracesolutionsglobal.com";
     if (via === "email") return `Your concept is emailed to ${sales} and the PDF saves on this device.`;
@@ -2332,7 +2333,11 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
   const phoneDigits = v => String(v || "").replace(/\D/g, "");
   function currentDeliver() {
     if (state.deliver) return state.deliver;
-    return state.contact.preferred === "Email" ? "email" : "whatsapp";
+    /* Default to a channel they actually gave us, so an email-only visitor isn't asked for a WhatsApp number. */
+    const c = state.contact, hasEmail = EMAIL_RE.test(c.email.trim()), hasPhone = phoneDigits(c.phone).length >= 8;
+    if (c.preferred === "Email" && hasEmail) return "email";
+    if (hasPhone) return "whatsapp";
+    return hasEmail ? "email" : "download";
   }
 
   function doneView(name) {

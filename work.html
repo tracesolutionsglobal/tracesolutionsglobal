@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Trace Solutions Work</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Our Work: Website Examples &amp; Case Studies · Trace Solutions Global</title>
 <link rel="canonical" href="https://tracesolutionsglobal.com/work.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Trace Solutions Global">
@@ -256,6 +257,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .field textarea { min-height: 120px; resize: vertical; }
 .field .err { color: #B3261E; font-size: 0.82rem; font-weight: 600; }
 .field.has-error input, .field.has-error textarea { border-color: #B3261E; }
+.socials a + a { margin-left: 0.9rem; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; } /* spam honeypot */
 
 /* ---------- Toast ---------- */
@@ -1009,17 +1011,16 @@ button, input, select, textarea { font: inherit; color: inherit; }
           <li><a href="index.html#services">Services</a></li>
           <li><a href="index.html#about">About</a></li>
           <li><a href="index.html#live">Talk to a real person</a></li>
-          <li><a href="index.html#reviews">Reviews</a></li>
           <li><a href="privacy.html">Privacy policy</a></li>
         </ul>
       </div>
       <div>
         <h4>Services</h4>
         <ul>
-          <li>Business websites</li>
-          <li>Online stores</li>
-          <li>Social media</li>
-          <li>Google &amp; Meta ads</li>
+          <li><a href="index.html#services">Business websites</a></li>
+          <li><a href="index.html#services">Online stores</a></li>
+          <li><a href="index.html#services">Social media</a></li>
+          <li><a href="index.html#services">Google &amp; Meta ads</a></li>
         </ul>
       </div>
       <div>
@@ -1027,7 +1028,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
         <ul>
           <li><a data-site-link="whatsapp" href="#" target="_blank" rel="noopener" data-site="phoneDisplay"></a></li>
           <li><a data-site-link="email" href="#" data-site="email"></a></li>
-          <li><a data-site-link="instagram" href="#" target="_blank" rel="noopener">Instagram</a> · <a data-site-link="facebook" href="#" target="_blank" rel="noopener">Facebook</a></li>
+          <li class="socials"><a data-site-link="instagram" href="#" target="_blank" rel="noopener">Instagram</a><a data-site-link="facebook" href="#" target="_blank" rel="noopener">Facebook</a></li>
           <li data-site="location"></li>
         </ul>
       </div>
@@ -1036,7 +1037,6 @@ button, input, select, textarea { font: inherit; color: inherit; }
       <span>© <span id="year">2026</span> Trace Solutions Global. All rights reserved.</span>
       <span>Websites · Social media · Ads</span>
     </div>
-    <p class="legal-line"><span data-site="legalName"></span></p>
   </div>
 </footer>
 
@@ -1061,8 +1061,9 @@ TS.site = {
   phoneDisplay: "+44 7548 692972",
   email: "sales@tracesolutionsglobal.com",
   legalName: "Trace Solutions Global",
-  instagram: "tracesolutionsglobal",
-  facebook: "tracesolutionsglobal",
+  /* Full page URLs. Leave one blank ("") to hide its link. */
+  instagram: "https://www.instagram.com/tracesolutionsglobal/",
+  facebook: "https://www.facebook.com/p/Trace-Solutions-61594900683412/",
   location: "Based in Sri Lanka, with a UK number",
   hours: "Replies within one working day",
   website: "tracesolutionsglobal.com",
@@ -1071,7 +1072,7 @@ TS.site = {
      Each number gets Call, WhatsApp and Text buttons. */
   offices: [
     { country: "United Kingdom", label: "UK number", code: "UK", note: "WhatsApp, calls and texts", people: [
-      { name: "UK team", phone: "+44 7548 692972" }
+      { name: "Sales line", phone: "+44 7548 692972" }
     ] },
     { country: "Sri Lanka", label: "Sri Lanka team", code: "LK", note: "Calls, WhatsApp and texts", people: [
       { name: "Azzy", phone: "+94 76 831 0321" },
@@ -1267,9 +1268,9 @@ window.TS = window.TS || {};
       const prices = ["24", "39", "12", "56"];
       out.push(`<div class="pv-block" data-t><div class="pv-row"><b class="pv-h">Shop bestsellers</b><span class="pv-cart">${TS.icon("cart")}<em>2</em></span></div>
         <div class="pv-grid4">${prices.map((pr, i) => `<div class="pv-prod"><span class="pv-ph" style="--i:${i}"></span><i></i><b>$${pr}</b></div>`).join("")}</div>
-        ${has("payments") ? `<div class="pv-pay"><span>VISA</span><span>Mastercard</span><span>PayPal</span><span>Apple Pay</span></div>` : ""}</div>`);
+        ${has("payments") ? `<div class="pv-pay"><span>VISA</span><span>Mastercard</span><span>Apple Pay</span><span>Google Pay</span></div>` : ""}</div>`);
     } else if (has("payments")) {
-      out.push(`<div class="pv-block pv-pay-only" data-t><b class="pv-h">Pay online, securely</b><div class="pv-pay"><span>VISA</span><span>Mastercard</span><span>PayPal</span></div></div>`);
+      out.push(`<div class="pv-block pv-pay-only" data-t><b class="pv-h">Pay online, securely</b><div class="pv-pay"><span>VISA</span><span>Mastercard</span><span>Apple Pay</span></div></div>`);
     }
     if (has("gallery")) {
       out.push(`<div class="pv-block" data-t><b class="pv-h">Gallery</b><div class="pv-gallery">${[0, 1, 2, 3, 4].map(i => `<span class="pv-ph" style="--i:${i}"></span>`).join("")}</div></div>`);
@@ -1567,10 +1568,13 @@ TS.portfolio = [
     const s = TS.site;
     const links = {
       whatsapp: `https://wa.me/${s.whatsapp}?text=${encodeURIComponent("Hi Trace Solutions Global, I saw your work and I'd like to talk about a website.")}`,
-      email: `mailto:${s.email}`, instagram: `https://instagram.com/${s.instagram}`, facebook: `https://facebook.com/${s.facebook}`
+      email: `mailto:${s.email}`, instagram: s.instagram, facebook: s.facebook
     };
     $$("[data-site]").forEach(el => { el.textContent = s[el.dataset.site] || ""; });
-    $$("[data-site-link]").forEach(el => { el.href = links[el.dataset.siteLink] || "#"; });
+    $$("[data-site-link]").forEach(el => {
+      const href = links[el.dataset.siteLink];
+      if (href) el.href = href; else el.remove();   /* no page set: drop the link rather than point at "#" */
+    });
     const y = $("#year"); if (y) y.textContent = new Date().getFullYear();
   }
   function initHeader() {
