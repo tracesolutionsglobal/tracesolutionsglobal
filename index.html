@@ -2083,7 +2083,7 @@ window.TS = window.TS || {};
       if (turnstileToken(form)) out.append("cf-turnstile-response", turnstileToken(form));
       out.append("message", review.text + (published
         ? "\n\nThis review is waiting for approval in the admin page: https://" + TS.site.website + "/admin.html"
-        : "\n\nTo publish, add this line to TS.reviews in index.html:\n" + JSON.stringify({ ...review, date: new Date().toISOString().slice(0, 7) }) + ","));
+        : "\n\nThis review couldn't be saved to the database, so it isn't in the admin page yet. To publish it, open https://" + TS.site.website + "/admin.html → Reviews → New review and paste it in."));
       out.append("botcheck", "");
       const res = await fetchWithTimeout("https://api.web3forms.com/submit", { method: "POST", body: out, headers: { Accept: "application/json" } });
       const data = await res.json().catch(() => ({}));
@@ -2104,11 +2104,16 @@ window.TS = window.TS || {};
       const btn = form.querySelector('button[type="submit"]'); btn.disabled = true;
       const review = readReview(fd);
       try {
+        /* Save for approval in the admin page; if the database refuses it, email it so the review is never lost. */
+        let saved = false;
         if (hasDb) {
-          await TSDB.rest("reviews", { method: "POST", body: { ...review, hidden: true }, prefer: "return=minimal" })
-            .catch(() => { throw new Error("We couldn't send your review just now. Please try again."); });
+          try {
+            await TSDB.rest("reviews", { method: "POST", body: { ...review, hidden: true }, prefer: "return=minimal" });
+            saved = true;
+          } catch (dbErr) { console.warn("Review not saved to the database:", dbErr.message); }
+        }
+        if (saved) {
           if (key) emailReview(review, true).catch(() => {});
-          await loadReviews();
         } else if (key) {
           await emailReview(review, false);
         } else {
