@@ -1947,7 +1947,7 @@ window.TS = window.TS || {};
             fd.append("message", $("#c-message").value.trim() || "(no message)");
             if (turnstileToken(form)) fd.append("cf-turnstile-response", turnstileToken(form));
             fd.append("botcheck", "");
-            const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: fd, headers: { Accept: "application/json" } });
+            const res = await fetchWithTimeout("https://api.web3forms.com/submit", { method: "POST", body: fd, headers: { Accept: "application/json" } });
             const data = await res.json().catch(() => ({}));
             if (!res.ok || data.success === false) throw new Error((data.body && data.body.message) || data.message || "Request failed");
             sent = true;
@@ -1955,7 +1955,7 @@ window.TS = window.TS || {};
         }
         if (await saveEnquiry()) sent = true;
         if (!sent) {
-          const res = await fetch(form.getAttribute("action"), { method: "POST", body: payload, headers: { Accept: "application/json" } });
+          const res = await fetchWithTimeout(form.getAttribute("action"), { method: "POST", body: payload, headers: { Accept: "application/json" } });
           const data = await res.json().catch(() => ({}));
           if (!res.ok || !data.ok) throw new Error(data.error || "Request failed");
         }
@@ -2065,7 +2065,7 @@ window.TS = window.TS || {};
         ? "\n\nThis review is waiting for approval in the admin page: https://" + TS.site.website + "/admin.html"
         : "\n\nTo publish, add this line to TS.reviews in index.html:\n" + JSON.stringify({ ...review, date: new Date().toISOString().slice(0, 7) }) + ","));
       out.append("botcheck", "");
-      const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: out, headers: { Accept: "application/json" } });
+      const res = await fetchWithTimeout("https://api.web3forms.com/submit", { method: "POST", body: out, headers: { Accept: "application/json" } });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || data.success === false) throw new Error("We couldn't send your review just now. Please try again.");
     }

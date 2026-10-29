@@ -14,6 +14,20 @@ window.TSDB = (function () {
 
   const ready = () => !!(URL && KEY);
 
+  /** fetch() that always settles: aborts and rejects after `ms` instead of hanging forever on a dropped connection. Shared with the page scripts as window.fetchWithTimeout. */
+  async function fetchT(url, opts, ms = 12000) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), ms);
+    try {
+      return await fetch(url, { ...opts, signal: ctrl.signal });
+    } catch (e) {
+      if (e.name === "AbortError") throw new Error("The connection timed out. Please check your internet and try again.");
+      throw e;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
   function keep(s) {
     session = s ? {
       access_token: s.access_token,
@@ -25,7 +39,7 @@ window.TSDB = (function () {
   }
 
   async function auth(path, body) {
-    const res = await fetch(`${URL}/auth/v1/${path}`, {
+    const res = await fetchT(`${URL}/auth/v1/${path}`, {
       method: "POST",
       headers: { apikey: KEY, "Content-Type": "application/json" },
       body: JSON.stringify(body)
@@ -50,7 +64,7 @@ window.TSDB = (function () {
     const headers = { apikey: KEY, Authorization: `Bearer ${await token()}`, Accept: "application/json" };
     if (body !== undefined) headers["Content-Type"] = "application/json";
     if (prefer) headers.Prefer = prefer;
-    const res = await fetch(`${URL}/rest/v1/${path}`, { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
+    const res = await fetchT(`${URL}/rest/v1/${path}`, { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
     const text = await res.text();
     let data = null;
     try { data = text ? JSON.parse(text) : null; } catch (e) {}
@@ -70,3 +84,19 @@ window.TSDB = (function () {
     signOut() { keep(null); }
   };
 })();
+
+/** Shared with every page: fetch() that times out instead of hanging forever on a dropped connection. */
+if (!window.fetchWithTimeout) {
+  window.fetchWithTimeout = async function (url, opts, ms = 12000) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), ms);
+    try {
+      return await fetch(url, { ...opts, signal: ctrl.signal });
+    } catch (e) {
+      if (e.name === "AbortError") throw new Error("The connection timed out. Please check your internet and try again.");
+      throw e;
+    } finally {
+      clearTimeout(timer);
+    }
+  };
+}

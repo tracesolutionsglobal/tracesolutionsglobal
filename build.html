@@ -2488,7 +2488,7 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
     fd.append("phone", c.phone || "");
     fd.append("message", `New website concept ${brief.ref}\n\n` + briefText(brief));
     fd.append("botcheck", "");
-    const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: fd, headers: { Accept: "application/json" } });
+    const res = await fetchWithTimeout("https://api.web3forms.com/submit", { method: "POST", body: fd, headers: { Accept: "application/json" } });
     const data = await res.json().catch(() => ({}));
     if (!res.ok || data.success === false) {
       throw new Error((data.body && data.body.message) || data.message || "We couldn't send your plan just now. Please try again, or message us on WhatsApp.");
@@ -2600,7 +2600,7 @@ const _WB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,5
     } else if (!web3ok) {
       try {
         btn.textContent = "Saving your plan…";
-        const res = await fetch("api/brief.php", {
+        const res = await fetchWithTimeout("api/brief.php", {
           method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
           body: JSON.stringify({ ...brief, pdf_base64: TS.pdf.toBase64(bytes), skip_mail: web3ok })
         });
