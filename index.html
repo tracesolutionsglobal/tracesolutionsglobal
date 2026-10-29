@@ -1083,7 +1083,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
       <div class="rev-write">
         <div class="rev-write-copy">
           <h3>Worked with us? Leave a review</h3>
-          <p>Tell other business owners how it went. Your review will appear once we've checked it.</p>
+          <p>Tell other business owners how it went. Your review appears on this page straight away.</p>
         </div>
         <form class="rev-form" id="revForm" novalidate>
           <fieldset class="rev-stars-input">
@@ -2071,7 +2071,7 @@ window.TS = window.TS || {};
       rating: Math.max(1, Math.min(5, Math.round(+fd.get("rating") || 5))),
       text: String(fd.get("text") || "").trim().slice(0, 1200)
     });
-    async function emailReview(review, published) {
+    async function emailReview(review, saved) {
       const out = new FormData();
       out.append("access_key", key);
       out.append("from_name", "Trace Solutions Global website");
@@ -2081,8 +2081,11 @@ window.TS = window.TS || {};
       out.append("country", review.country || "-");
       out.append("rating", review.rating + " / 5");
       if (turnstileToken(form)) out.append("cf-turnstile-response", turnstileToken(form));
-      out.append("message", review.text + (published
-        ? "\n\nThis review is waiting for approval in the admin page: https://" + TS.site.website + "/admin.html"
+      const admin = "https://" + TS.site.website + "/admin.html";
+      out.append("message", review.text + (saved === "live"
+        ? "\n\nThis review is now showing on the website. To edit, hide or delete it, open " + admin + " → Reviews."
+        : saved === "hidden"
+        ? "\n\nThis review is waiting in " + admin + " → Reviews. Click \"Show on website\" to publish it."
         : "\n\nThis review couldn't be saved to the database, so it isn't in the admin page yet. To publish it, open https://" + TS.site.website + "/admin.html → Reviews → New review and paste it in."));
       out.append("botcheck", "");
       const res = await fetchWithTimeout("https://api.web3forms.com/submit", { method: "POST", body: out, headers: { Accept: "application/json" } });
@@ -2096,6 +2099,7 @@ window.TS = window.TS || {};
       const fd = new FormData(form);
       const name = String(fd.get("name") || "").trim(), text = String(fd.get("text") || "").trim();
       const thanks = "Thank you! Your review is with our team and will appear here once it's checked.";
+      const live = "Thank you! Your review is now on our website.";
       if (String(fd.get("website") || "").trim()) { form.reset(); $("#r5").checked = true; return show(thanks); }
       if (!name) return show("Please add your name.", true);
       if (text.length < 10) return show("Please write a little more about your experience.", true);
@@ -2104,23 +2108,28 @@ window.TS = window.TS || {};
       const btn = form.querySelector('button[type="submit"]'); btn.disabled = true;
       const review = readReview(fd);
       try {
-        /* Save for approval in the admin page; if the database refuses it, email it so the review is never lost. */
-        let saved = false;
+        /* Publish straight away (admins can hide or delete it in admin.html). If the database only accepts
+           hidden reviews, save it for approval instead; if it refuses both, email it so the review is never lost. */
+        let saved = "";
         if (hasDb) {
-          try {
-            await TSDB.rest("reviews", { method: "POST", body: { ...review, hidden: true }, prefer: "return=minimal" });
-            saved = true;
-          } catch (dbErr) { console.warn("Review not saved to the database:", dbErr.message); }
+          for (const hidden of [false, true]) {
+            try {
+              await TSDB.rest("reviews", { method: "POST", body: { ...review, hidden }, prefer: "return=minimal" });
+              saved = hidden ? "hidden" : "live";
+              break;
+            } catch (dbErr) { console.warn(`Review not saved (hidden: ${hidden}):`, dbErr.message); }
+          }
         }
         if (saved) {
-          if (key) emailReview(review, true).catch(() => {});
+          if (key) emailReview(review, saved).catch(() => {});
         } else if (key) {
-          await emailReview(review, false);
+          await emailReview(review, "");
         } else {
           throw new Error("We couldn't send your review just now. Please try again.");
         }
         form.reset(); $("#r5").checked = true;
-        show(thanks);
+        if (saved === "live") await loadReviews();
+        show(saved === "live" ? live : thanks);
       } catch (err) { show(err.message, true); }
       finally { btn.disabled = false; }
     });
