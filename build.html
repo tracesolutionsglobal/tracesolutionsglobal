@@ -426,6 +426,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .pv-g { font-size: 1em; color: var(--pv-muted); white-space: nowrap; }
 .pv-g b { color: var(--pv-ink); }
+.pv-sample { display: inline-block; vertical-align: middle; margin-left: 0.4em; padding: 0.1em 0.5em; border-radius: 1em; font-size: 0.62em; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: #FFF1D6; color: #7A4A00; }
 .pv-cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1em; }
 .pv-review { display: grid; gap: 0.6em; padding: 1.1em; border-radius: calc(var(--pv-radius) * 0.7); background: var(--pv-soft); }
 .pv-review i { display: block; height: 0.5em; border-radius: 1em; background: var(--pv-line); }
@@ -727,6 +728,12 @@ body.builder-page { background: var(--paper); }
 .sum-actions .btn { width: 100%; }
 .sum-actions .row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
 .btn--wa { background: #25D366; color: #06331A; }
+.reach { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+.reach .btn { justify-content: center; text-align: center; white-space: normal; line-height: 1.25; }
+@media (max-width: 560px) { .reach { grid-template-columns: 1fr; } }
+.sum-done .reach { grid-template-columns: 1fr; }
+.reach-title { font-size: 0.85rem; font-weight: 700; color: var(--ink-soft); margin: 0.4rem 0 -0.1rem; }
+.link-btn { background: none; border: 0; padding: 0; font: inherit; font-size: 0.88rem; color: var(--ink-soft); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; justify-self: start; }
 .btn--wa:hover { transform: translateY(-2px); }
 .sum-done { background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 1.6rem; display: grid; gap: 0.8rem; text-align: center; justify-items: center; }
 .sum-done .tick { width: 60px; height: 60px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; font-size: 1.6rem; }
@@ -766,7 +773,6 @@ body.builder-page { background: var(--paper); }
       </ul>
     </nav>
     <div class="nav-actions">
-      <a class="btn btn--outline btn--sm" data-site-link="whatsapp" href="#" target="_blank" rel="noopener">Ask on WhatsApp</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
     </div>
   </div>
@@ -816,32 +822,8 @@ body.builder-page { background: var(--paper); }
   </div>
 </main>
 
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a class="logo logo--light" href="index.html" aria-label="Trace Solutions Global, home">
-          <svg class="mark" aria-hidden="true"><use href="#ts-mark"/></svg>
-          <span class="word">TRACE SOLUTIONS <span class="g">G</span>LOBAL</span>
-        </a>
-        <p>Modern websites for businesses worldwide, designed so you can see them before we build them.</p>
-      </div>
-      <div>
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="work.html">Our work</a></li>
-          <li><a href="index.html#services">Services</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
-          <li><a href="privacy.html">Privacy policy</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© <span id="year">2026</span> Trace Solutions Global. All rights reserved.</span>
-      <span>Websites · Social media · Ads</span>
-    </div>
-  </div>
-</footer>
+<footer id="siteFooter"></footer>
+<script src="site-common.js"></script>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -1389,7 +1371,7 @@ window.TS = window.TS || {};
     }
     if (has("reviews")) {
       const names = ["Amara O.", "Lucas M.", "Sarah T."];
-      out.push(`<div class="pv-block" data-t><div class="pv-row"><b class="pv-h">What customers say</b><span class="pv-g">G <b>4.8</b> ★★★★★</span></div>
+      out.push(`<div class="pv-block" data-t><div class="pv-row"><b class="pv-h">What customers say <span class="pv-sample">Sample reviews</span></b><span class="pv-g">G <b>4.8</b> ★★★★★</span></div>
         <div class="pv-cards3">${names.map(n => `<div class="pv-review"><span class="pv-stars">★★★★★</span>${bars(2)}<small>${n}</small></div>`).join("")}</div></div>`);
     }
     if (has("enquiry")) {
@@ -1944,10 +1926,9 @@ window.TS = window.TS || {};
         <div class="sum-actions">
           <button type="button" class="btn btn--coral" id="sendPlan">${SEND_LABEL[via]} <span class="arrow">→</span></button>
           <p class="note" id="deliverNote">${esc(deliverNote(via))} Your fixed-price proposal follows within 24 hours.</p>
-          <div class="row">
-            <a class="btn btn--outline btn--sm" href="${waLink("")}" target="_blank" rel="noopener">Ask on WhatsApp</a>
-            <button type="button" class="btn btn--outline btn--sm" id="copyBrief">Copy brief</button>
-          </div>
+          <p class="reach-title">Or reach us directly</p>
+          ${contactRow("")}
+          <button type="button" class="link-btn" id="copyBrief">Copy brief</button>
           <p class="hint-msg" id="sendMsg" hidden></p>
           <p class="privacy">Package and timeline are estimates. Your proposal includes a fixed price in US dollars.</p>
         </div>
@@ -2012,11 +1993,10 @@ window.TS = window.TS || {};
     } else if (r.via === "whatsapp") {
       msg = r.whatsappSent
         ? `Your PDF plan was handed to WhatsApp. Send it in the chat to keep a copy, and our team has it too.`
-        : `Your PDF has downloaded. Tap <b>Open WhatsApp</b> and attach that file in the chat.${r.pdfUrl ? " The message also includes a link to your PDF." : ""}`;
+        : `Your PDF has downloaded. Tap <b>Send my order on WhatsApp</b> and attach that file in the chat.${r.pdfUrl ? " The message also includes a link to your PDF." : ""}`;
     } else {
       msg = "Your PDF plan is saved on this device. Our team has your concept too.";
     }
-    const waFirst = r.via === "whatsapp" && !r.whatsappSent;
     return `<div class="sum-done b-anim">
       <span class="tick">✓</span>
       <h2>Thank you${first ? ", " + esc(first) : ""}!</h2>
@@ -2024,9 +2004,8 @@ window.TS = window.TS || {};
       <p class="via">${msg}</p>
       <span class="sum-ref">Reference ${esc(state.ref)}</span>
       <div class="done-actions">
-        ${waFirst ? `<a class="btn btn--wa" href="${waLink(r.pdfUrl || "", true)}" target="_blank" rel="noopener">Open WhatsApp</a>` : ""}
-        <button type="button" class="btn ${waFirst ? "btn--outline" : "btn--coral"}" data-dl-pdf>Download your PDF plan</button>
-        ${waFirst ? "" : `<a class="btn btn--outline" href="${waLink("")}" target="_blank" rel="noopener">Chat with us on WhatsApp</a>`}
+        <button type="button" class="btn btn--coral" data-dl-pdf>Download your PDF plan</button>
+        ${contactRow(r.pdfUrl)}
       </div>
       <button type="button" class="restart" data-restart>Start a new concept</button>
     </div>`;
@@ -2094,6 +2073,21 @@ window.TS = window.TS || {};
       : `Hi Trace Solutions Global! I'm looking at a website concept (ref ${state.ref || "new"}) and have a question.`;
     return `https://wa.me/${TS.site.whatsapp}?text=${encodeURIComponent(text)}`;
   }
+
+  /** Email with the order pre-filled (mail apps can't take attachments from a link, so the PDF is attached by hand). */
+  function mailLink() {
+    const subject = `Website concept ${state.ref || ""}: ${state.name.trim() || state.contact.name.trim() || "new enquiry"}`;
+    let body = `Hi Trace Solutions Global,\n\nHere is my website concept. I've attached my PDF plan.\n\n${briefText()}`;
+    if (body.length > 1800) body = body.slice(0, 1800) + "…";
+    return `mailto:${TS.site.salesEmail || TS.site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+  const telLink = () => `tel:+${String(TS.site.whatsapp).replace(/\D/g, "")}`;
+  /** WhatsApp, email and call: the three ways to reach us from the last step. */
+  const contactRow = pdfUrl => `<div class="reach">
+      <a class="btn btn--wa btn--sm" href="${waLink(pdfUrl || "", true)}" target="_blank" rel="noopener">Send my order on WhatsApp</a>
+      <a class="btn btn--outline btn--sm" href="${mailLink()}" data-mail-plan>Email us my PDF plan</a>
+      <a class="btn btn--outline btn--sm" href="${telLink()}">Call ${esc(TS.site.phoneDisplay)}</a>
+    </div>`;
 
   /* ---------- PDF plan: build, deliver, save ---------- */
   const cap = name => (window.claude && typeof window.claude.use === "function")
@@ -2441,6 +2435,7 @@ window.TS = window.TS || {};
     const cp = t.closest("[data-copy]");
     if (cp) { copyText(cp.dataset.copy); return; }
     if (t.closest("#copyBrief")) { copyBrief(); return; }
+    if (t.closest("[data-mail-plan]") && !state.sent) downloadPlan();   /* so the PDF is ready to attach */
     if (t.closest("[data-restart]")) {
       state = fresh(); save(); show(0); renderPreview(true); return;
     }

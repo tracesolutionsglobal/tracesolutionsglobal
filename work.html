@@ -427,6 +427,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .pv-g { font-size: 1em; color: var(--pv-muted); white-space: nowrap; }
 .pv-g b { color: var(--pv-ink); }
+.pv-sample { display: inline-block; vertical-align: middle; margin-left: 0.4em; padding: 0.1em 0.5em; border-radius: 1em; font-size: 0.62em; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: #FFF1D6; color: #7A4A00; }
 .pv-cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1em; }
 .pv-review { display: grid; gap: 0.6em; padding: 1.1em; border-radius: calc(var(--pv-radius) * 0.7); background: var(--pv-soft); }
 .pv-review i { display: block; height: 0.5em; border-radius: 1em; background: var(--pv-line); }
@@ -999,53 +1000,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 </dialog>
 
 
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a class="logo logo--light" href="#top" aria-label="Trace Solutions Global, back to top">
-          <svg class="mark" aria-hidden="true"><use href="#ts-mark"/></svg>
-          <span class="word">TRACE SOLUTIONS <span class="g">G</span>LOBAL</span>
-        </a>
-        <p>Modern websites for businesses worldwide, designed so you can see them before we build them.</p>
-        <div class="tagline">Your vision, built line by line.</div>
-      </div>
-      <div>
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="#top">Our work</a></li>
-          <li><a href="build.html">Concept Builder</a></li>
-          <li><a href="index.html#services">Services</a></li>
-          <li><a href="index.html#about">About</a></li>
-          <li><a href="index.html#live">Talk to a real person</a></li>
-          <li><a href="privacy.html">Privacy policy</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Services</h4>
-        <ul>
-          <li><a href="index.html#services">Business websites</a></li>
-          <li><a href="index.html#services">Online stores</a></li>
-          <li><a href="index.html#services">Social media</a></li>
-          <li><a href="index.html#services">Google &amp; Meta ads</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Contact</h4>
-        <ul>
-          <li><a data-site-link="whatsapp" href="#" target="_blank" rel="noopener" data-site="phoneDisplay"></a></li>
-          <li><a data-site-link="email" href="#" data-site="email"></a></li>
-          <li class="socials"><a data-site-link="instagram" href="#" target="_blank" rel="noopener">Instagram</a><a data-site-link="facebook" href="#" target="_blank" rel="noopener">Facebook</a></li>
-          <li data-site="location"></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© <span id="year">2026</span> Trace Solutions Global. All rights reserved.</span>
-      <span>Websites · Social media · Ads</span>
-    </div>
-  </div>
-</footer>
+<footer id="siteFooter"></footer>
+<script src="site-common.js"></script>
 
 <a class="wa-float" data-site-link="whatsapp" href="#" target="_blank" rel="noopener" aria-label="Chat with our team on WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg><span>Chat with us</span>
@@ -1287,7 +1243,7 @@ window.TS = window.TS || {};
     }
     if (has("reviews")) {
       const names = ["Amara O.", "Lucas M.", "Sarah T."];
-      out.push(`<div class="pv-block" data-t><div class="pv-row"><b class="pv-h">What customers say</b><span class="pv-g">G <b>4.8</b> ★★★★★</span></div>
+      out.push(`<div class="pv-block" data-t><div class="pv-row"><b class="pv-h">What customers say <span class="pv-sample">Sample reviews</span></b><span class="pv-g">G <b>4.8</b> ★★★★★</span></div>
         <div class="pv-cards3">${names.map(n => `<div class="pv-review"><span class="pv-stars">★★★★★</span>${bars(2)}<small>${n}</small></div>`).join("")}</div></div>`);
     }
     if (has("enquiry")) {
@@ -1419,7 +1375,7 @@ window.TS = window.TS || {};
 
 TS.portfolio = [
   {
-    id: "bake-away", tint: "#FDE8EE", status: "live", url: "https://claude.ai/artifact/GkSpbaK6KcpS5Kp51NVtkt",
+    id: "bake-away", tint: "#FDE8EE", status: "live", url: "demos/bake-away/",
     type: "Cakes & Bakery", category: "Food & drink", build: "restaurant",
     title: "Bake Away",
     summary: "A storybook bakery site with a build-your-own-cake tool that stacks the cake and prices it live, plus pickup orders and WhatsApp ordering.",
@@ -1643,7 +1599,7 @@ TS.portfolio = [
           <div class="browser browser--sm"><div class="browser-bar"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url" data-url="${p.id}"></span></div><div class="browser-body" data-preview="${p.id}"></div></div>
           <span class="w-open">View case <span aria-hidden="true">→</span></span>
         </div>
-        <div class="w-meta"><span class="tag">${esc(p.type)}</span><span class="tag tag--style">${STYLE[p.style]}</span>${p.redacted ? `<span class="tag tag--coral">Live feed redacted</span>` : p.status === "live" ? `<span class="tag tag--coral">Live demo</span>` : `<span class="tag tag--style">Concept</span>`}</div>
+        <div class="w-meta"><span class="tag">${esc(p.type)}</span><span class="tag tag--style">${STYLE[p.style]}</span>${p.status === "live" ? `<span class="tag tag--coral">Live demo</span>` : `<span class="tag tag--style">Concept</span>`}</div>
         <h3>${esc(p.title)}</h3>
         <p class="sum">${esc(p.summary)}</p>
         <div class="w-card-foot"><span class="w-sig"><b>Signature</b>${esc(p.features[0])}</span>${palette(p.preview.colors)}</div>

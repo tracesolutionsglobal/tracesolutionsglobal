@@ -427,6 +427,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .pv-g { font-size: 1em; color: var(--pv-muted); white-space: nowrap; }
 .pv-g b { color: var(--pv-ink); }
+.pv-sample { display: inline-block; vertical-align: middle; margin-left: 0.4em; padding: 0.1em 0.5em; border-radius: 1em; font-size: 0.62em; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: #FFF1D6; color: #7A4A00; }
 .pv-cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1em; }
 .pv-review { display: grid; gap: 0.6em; padding: 1.1em; border-radius: calc(var(--pv-radius) * 0.7); background: var(--pv-soft); }
 .pv-review i { display: block; height: 0.5em; border-radius: 1em; background: var(--pv-line); }
@@ -524,6 +525,23 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .hero-switch { position: absolute; right: 1.2rem; bottom: 0.35rem; z-index: 3; display: flex; gap: 6px; }
 .hero-switch button { width: 26px; height: 6px; border-radius: 6px; border: 0; background: rgba(1, 34, 40, 0.15); cursor: pointer; padding: 0; transition: background 0.3s, width 0.3s var(--ease); }
 .hero-switch button[aria-current="true"] { background: var(--navy); width: 40px; }
+
+/* ---------- Pricing ---------- */
+.price-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; margin-top: 3rem; }
+@media (max-width: 900px) { .price-grid { grid-template-columns: 1fr; } }
+.price-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 1.6rem; display: grid; gap: 0.9rem; align-content: start; min-width: 0; }
+.price-card.is-featured { border: 2px solid var(--navy); }
+.price-card .pc-top { display: flex; justify-content: space-between; align-items: center; gap: 0.6rem; }
+.price-card h3 { font-size: 1.3rem; letter-spacing: -0.02em; }
+.price-card .pc-price { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.price-card .pc-price small { display: block; font-size: 0.82rem; font-weight: 600; letter-spacing: 0; color: var(--ink-soft); }
+.price-card p { color: var(--ink-soft); }
+.price-card ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; font-size: 0.95rem; }
+.price-card li { display: flex; gap: 0.5rem; }
+.price-card li::before { content: "✓"; color: var(--green); font-weight: 800; }
+.price-card .btn { justify-content: center; margin-top: 0.4rem; }
+.price-note { margin-top: 1.4rem; font-size: 0.9rem; color: var(--ink-soft); }
+.price-note a { color: inherit; text-underline-offset: 2px; }
 
 /* ---------- How it works ---------- */
 .how { background: var(--white); border-block: 1px solid var(--line); }
@@ -953,6 +971,21 @@ button, input, select, textarea { font: inherit; color: inherit; }
     <div class="marquee" id="marquee"></div>
   </div>
 
+  <!-- ============ PRICING ============ -->
+  <section class="section pricing" id="pricing" aria-labelledby="pricingTitle" hidden>
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Pricing</span>
+          <h2 class="h2" id="pricingTitle">Clear starting prices, in US dollars</h2>
+        </div>
+        <p class="lede">Every project gets a fixed price in your proposal, so you know the full cost before we start. These are starting prices for each package.</p>
+      </div>
+      <div class="price-grid" id="priceGrid"></div>
+      <p class="price-note">Domain, hosting and paid third-party tools are extra where needed, and listed in your proposal. <a href="terms.html">Terms of service</a></p>
+    </div>
+  </section>
+
   <!-- ============ ABOUT / WHY ============ -->
   <section class="section" id="about">
     <div class="container why-grid">
@@ -1109,54 +1142,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
   </section>
 </main>
 
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a class="logo logo--light" href="#top" aria-label="Trace Solutions Global, back to top">
-          <svg class="mark" aria-hidden="true"><use href="#ts-mark"/></svg>
-          <span class="word">TRACE SOLUTIONS <span class="g">G</span>LOBAL</span>
-        </a>
-        <p>Modern websites for businesses worldwide, designed so you can see them before we build them.</p>
-        <div class="tagline">Your vision, built line by line.</div>
-      </div>
-      <div>
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="work.html">Our work</a></li>
-          <li><a href="build.html">Concept Builder</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#live">Talk to a real person</a></li>
-          <li data-reviews-link hidden><a href="#reviews">Reviews</a></li>
-          <li><a href="privacy.html">Privacy policy</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Services</h4>
-        <ul>
-          <li><a href="#services">Business websites</a></li>
-          <li><a href="#services">Online stores</a></li>
-          <li><a href="#services">Social media</a></li>
-          <li><a href="#services">Google &amp; Meta ads</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Contact</h4>
-        <ul>
-          <li><a data-site-link="whatsapp" href="#" target="_blank" rel="noopener" data-site="phoneDisplay"></a></li>
-          <li><a data-site-link="email" href="#" data-site="email"></a></li>
-          <li class="socials"><a data-site-link="instagram" href="#" target="_blank" rel="noopener">Instagram</a><a data-site-link="facebook" href="#" target="_blank" rel="noopener">Facebook</a></li>
-          <li data-site="location"></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© <span id="year">2026</span> Trace Solutions Global. All rights reserved.</span>
-      <span>Websites · Social media · Ads</span>
-    </div>
-  </div>
-</footer>
+<footer id="siteFooter"></footer>
+<script src="site-common.js"></script>
 
 <a class="wa-float" data-site-link="whatsapp" href="#" target="_blank" rel="noopener" aria-label="Chat with our team on WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg><span>Chat with us</span>
@@ -1193,6 +1180,9 @@ TS.site = {
   location: "Based in Sri Lanka, with a UK number",
   hours: "Replies within one working day",
   website: "tracesolutionsglobal.com",
+  /* Starting prices in US dollars for the Pricing section, one per package.
+     The section stays hidden until at least one price is filled in (0 = not set). */
+  pricing: { starter: 0, growth: 0, pro: 0 },
 
   /* Offices and direct numbers shown in "Talk to a real person".
      Each number gets Call, WhatsApp and Text buttons. */
@@ -1564,7 +1554,7 @@ window.TS = window.TS || {};
     }
     if (has("reviews")) {
       const names = ["Amara O.", "Lucas M.", "Sarah T."];
-      out.push(`<div class="pv-block" data-t><div class="pv-row"><b class="pv-h">What customers say</b><span class="pv-g">G <b>4.8</b> ★★★★★</span></div>
+      out.push(`<div class="pv-block" data-t><div class="pv-row"><b class="pv-h">What customers say <span class="pv-sample">Sample reviews</span></b><span class="pv-g">G <b>4.8</b> ★★★★★</span></div>
         <div class="pv-cards3">${names.map(n => `<div class="pv-review"><span class="pv-stars">★★★★★</span>${bars(2)}<small>${n}</small></div>`).join("")}</div></div>`);
     }
     if (has("enquiry")) {
@@ -2135,6 +2125,28 @@ window.TS = window.TS || {};
     });
   }
 
+  /* ---------- Pricing: starting prices from TS.site.pricing ---------- */
+  function initPricing() {
+    const pr = TS.site.pricing || {};
+    const PKG = [
+      { id: "starter", name: "Starter", weeks: "2–3 weeks", desc: "A polished business website with the essentials.", points: ["Mobile-first design", "WhatsApp and contact buttons", "Google search basics"] },
+      { id: "growth", name: "Growth", weeks: "3–5 weeks", desc: "More pages and tools that bring in bookings and enquiries.", points: ["Everything in Starter", "Bookings, enquiry forms or a menu", "Reviews, gallery and maps"], featured: true },
+      { id: "pro", name: "Pro", weeks: "5–8 weeks", desc: "Online sales, bookings or several languages, built to scale.", points: ["Everything in Growth", "Online store or payments", "Several languages"] }
+    ];
+    const has = PKG.some(p => +pr[p.id] > 0);
+    $("#pricing").hidden = !has;
+    $$("[data-pricing-link]").forEach(a => { a.closest("li").hidden = !has; });
+    if (!has) return;
+    const money = n => "$" + Number(n).toLocaleString("en-US");
+    $("#priceGrid").innerHTML = PKG.map(p => `<article class="price-card${p.featured ? " is-featured" : ""}">
+      <div class="pc-top"><h3>${p.name}</h3><span class="tag">${p.weeks}</span></div>
+      <div class="pc-price">${+pr[p.id] > 0 ? `<small>From</small>${money(pr[p.id])}` : `<small>Price</small>On request`}</div>
+      <p>${p.desc}</p>
+      <ul>${p.points.map(x => `<li>${x}</li>`).join("")}</ul>
+      <a class="btn ${p.featured ? "btn--coral" : "btn--outline"}" href="build.html">Build your concept <span class="arrow">→</span></a>
+    </article>`).join("");
+  }
+
   /* ---------- Boot ---------- */
   fillSiteDetails();
   fillIcons();
@@ -2145,6 +2157,7 @@ window.TS = window.TS || {};
   initContactForm();
   initOffices();
   initReviews();
+  initPricing();
 })();
 
 </script>

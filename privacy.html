@@ -68,16 +68,19 @@ a{color:var(--green)}
   <ul>
     <li><b>Contact form.</b> Your name, business name, phone, email, business type and message.</li>
     <li><b>Review form.</b> Your name, optional business and country, star rating and review. Reviews appear on the homepage with your name, business and country, and we may hide or remove any review.</li>
-    <li><b>Concept Builder.</b> Your name, phone, email, location, business details, chosen pages, features, style and the answers you give. That brief is saved as a lead on our private dashboard.</li>
+    <li><b>Concept Builder.</b> Your name, phone, email, location, business details, chosen pages, features, style and the answers you give. That brief is saved as a lead on our private dashboard, and your PDF plan is created in your own browser. We can re-create the same PDF from the saved brief in our private dashboard.</li>
+    <li><b>WhatsApp, email and calls.</b> If you tap a WhatsApp, email or call button, your own WhatsApp, email or phone app opens with a message we pre-fill (for example your concept summary). Nothing is sent until you send it, and what you send is handled by that app's provider, such as WhatsApp (Meta) under its own privacy policy.</li>
   </ul>
   <p>We use this information to reply to you, prepare a proposal, publish your review, and run the project. The legal basis is steps you ask us to take before a contract, and our legitimate interest in responding to enquiries and showing genuine client feedback.</p>
 
   <h2>Who processes it</h2>
   <ul>
-    <li><b>Web3Forms</b> emails the contact form, review alerts and concept briefs to sales@tracesolutionsglobal.com.</li>
+    <li><b>Web3Forms</b> emails the contact form, review alerts and concept briefs, with a link to your PDF plan in our private dashboard, to sales@tracesolutionsglobal.com.</li>
+    <li><b>CallMeBot</b>, when switched on, sends our team a WhatsApp alert for each new enquiry or concept with your name, business, phone, email and reference.</li>
     <li><b>Supabase</b> stores reviews and project leads. The database is in the region we chose when the project was created.</li>
     <li><b>Cloudflare Turnstile</b> checks that a form was sent by a person, when a site key is configured.</li>
     <li><b>GitHub Pages</b> hosts the website files. It does not store the form contents.</li>
+    <li><b>Google Fonts</b> supplies the typefaces, so your browser connects to Google when a page loads.</li>
   </ul>
 
   <h2>How long we keep it</h2>
@@ -86,16 +89,7 @@ a{color:var(--green)}
   <h2>Your rights</h2>
   <p>You can ask for a copy of your information, corrections, deletion, or a restriction on how we use it. Email <a href="mailto:sales@tracesolutionsglobal.com">sales@tracesolutionsglobal.com</a> with the subject “Privacy request”. We will respond within one month. You can also complain to the Information Commissioner’s Office at <a href="https://ico.org.uk">ico.org.uk</a>.</p>
 </main>
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-bottom">
-      <span>© <span id="year">2026</span> Trace Solutions Global. All rights reserved.</span>
-      <span><a href="index.html">Home</a> · <a href="privacy.html">Privacy policy</a></span>
-    </div>
-  </div>
-</footer>
-<script>
-document.getElementById("year").textContent = new Date().getFullYear();
-</script>
+<footer id="siteFooter"></footer>
+<script src="site-common.js"></script>
 </body>
 </html>

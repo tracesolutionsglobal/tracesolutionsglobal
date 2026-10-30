@@ -1,0 +1,901 @@
+<!doctype html><html><head><meta charset=utf8><meta name="robots" content="noindex"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<title>Bake Away</title>
+<meta name="description" content="Bake Away: cupcakes, cakes and donuts baked fresh every day in Nugegoda. Open daily 8 am to 10 pm.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Pacifico&display=swap">
+<style>
+/* Layout: storybook bakery. Stacked full-width "layers" like a cake, each joined by a hand-dripped icing edge. */
+:root{
+  --strawberry:#F7A1B5;
+  --strawberry-deep:#E57C96;
+  --vanilla:#FFF6E9;
+  --vanilla-deep:#F8E7CF;
+  --caramel:#C98B5A;
+  --ganache:#4A2C2A;
+  --ganache-soft:#6E4A45;
+  --mint:#A8E6CF;
+  --mint-deep:#6FCBA8;
+  --paper:#FFFDF8;
+  --whatsapp:#1FA855;
+
+  --f-logo:"Pacifico","Brush Script MT",cursive;
+  --f-display:"Fredoka","Nunito",ui-rounded,system-ui,sans-serif;
+  --f-body:"Nunito",ui-rounded,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-hand:"Caveat","Segoe Print","Comic Sans MS",cursive;
+
+  --r-soft:22px;
+  --gutter:clamp(16px,4vw,40px);
+  --max:1160px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--vanilla);color:var(--ganache);font-family:var(--f-body);font-size:17px;line-height:1.6;overflow-x:hidden}
+h1,h2,h3{font-family:var(--f-display);line-height:1.1;text-wrap:balance;margin:0;font-weight:600}
+p{margin:0}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--caramel);outline-offset:3px;border-radius:8px}
+.wrap{max-width:var(--max);margin:0 auto;padding-inline:var(--gutter)}
+.eyebrow{font-family:var(--f-display);font-weight:500;text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;color:var(--caramel)}
+.h2{font-size:clamp(2rem,4.6vw,3.1rem);margin-top:.35rem}
+.lede{max-width:58ch;color:var(--ganache-soft);margin-top:.8rem}
+section{position:relative}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:.55rem;border:0;cursor:pointer;text-decoration:none;font-family:var(--f-display);font-weight:600;font-size:1.02rem;padding:.85rem 1.5rem;border-radius:999px;background:var(--ganache);color:var(--vanilla);transition:transform .2s ease,box-shadow .3s ease,background .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 0 6px rgba(247,161,181,.35),0 10px 30px rgba(247,161,181,.55)}
+.btn.pink{background:var(--strawberry);color:var(--ganache)}
+.btn.ghost{background:transparent;color:var(--ganache);box-shadow:inset 0 0 0 2px var(--ganache)}
+.btn.ghost:hover{box-shadow:inset 0 0 0 2px var(--ganache),0 0 0 6px rgba(168,230,207,.5),0 10px 30px rgba(168,230,207,.6)}
+.btn.wa{background:var(--whatsapp);color:#fff}
+.btn.wa:hover{box-shadow:0 0 0 6px rgba(31,168,85,.2),0 10px 30px rgba(31,168,85,.35)}
+
+/* ---------- demo ribbon + nav ---------- */
+.demo-ribbon{background:var(--ganache);color:var(--vanilla);font-size:.82rem;text-align:center;padding:.45rem var(--gutter);letter-spacing:.02em}
+.demo-ribbon b{color:var(--strawberry)}
+header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(255,246,233,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(74,44,42,.08)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:.7rem}
+.logo{font-family:var(--f-logo);font-size:1.75rem;text-decoration:none;color:var(--ganache);line-height:1;display:flex;align-items:center;gap:.5rem}
+.logo .dot{width:12px;height:12px;border-radius:50%;background:var(--strawberry);box-shadow:14px -6px 0 -3px var(--mint),8px 8px 0 -4px var(--caramel)}
+.nav ul{list-style:none;display:flex;gap:1.6rem;margin:0;padding:0;font-family:var(--f-display);font-weight:500}
+.nav ul a{text-decoration:none;position:relative}
+.nav ul a::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:3px;border-radius:3px;background:var(--strawberry);transform:scaleX(0);transition:transform .25s}
+.nav ul a:hover::after{transform:scaleX(1)}
+.nav .btn{padding:.6rem 1.1rem;font-size:.95rem}
+.menu-btn{display:none;background:none;border:0;padding:.4rem;cursor:pointer}
+.menu-btn span{display:block;width:24px;height:3px;border-radius:3px;background:var(--ganache);margin:4px 0}
+@media (max-width:860px){
+  .nav ul{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:var(--vanilla);border-bottom:1px solid rgba(74,44,42,.1);padding:.5rem var(--gutter) 1rem}
+  .nav ul.open{display:flex}
+  .nav ul li a{display:block;padding:.7rem 0}
+  .menu-btn{display:block}
+  .nav .order-cta{display:none}
+}
+
+/* ---------- drip dividers ---------- */
+.drip{display:block;width:100%;height:56px;margin-bottom:-1px}
+.drip-wrap{line-height:0}
+
+/* ---------- hero ---------- */
+.hero{padding-block:clamp(2.5rem,6vw,5rem) clamp(2rem,4vw,3rem);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:2rem;align-items:center}
+.hero h1{font-size:clamp(2.6rem,7vw,5.2rem);font-weight:700;letter-spacing:-.01em}
+.hero h1 em{font-style:normal;font-family:var(--f-logo);font-weight:400;color:var(--strawberry-deep);display:inline-block;transform:rotate(-4deg);font-size:.9em}
+.hero .lede{font-size:1.15rem}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.8rem}
+.hero-facts{display:flex;flex-wrap:wrap;gap:1.6rem;margin-top:2.2rem;font-size:.92rem;color:var(--ganache-soft)}
+.hero-facts b{display:block;font-family:var(--f-display);font-size:1.5rem;color:var(--ganache);font-weight:600}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.stage{order:-1}}
+
+/* rotating cake */
+.stage{position:relative;display:grid;place-items:center;min-height:420px}
+.halo{position:absolute;width:min(380px,90%);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,var(--strawberry) 0 40%,rgba(247,161,181,0) 70%);opacity:.45;filter:blur(8px);animation:breathe 6s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.08);opacity:.6}}
+.big-cake{position:relative;display:flex;flex-direction:column;align-items:center;padding-top:60px}
+.tier{position:relative;height:74px;border-radius:0 0 50% 50%/0 0 22px 22px;background-repeat:repeat-x;animation:spin 7s linear infinite}
+.tier::before{content:"";position:absolute;left:0;right:0;top:-20px;height:40px;border-radius:50%;background:var(--top);z-index:1}
+.tier::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(90deg,rgba(74,44,42,.22),rgba(255,255,255,.18) 30%,rgba(255,255,255,0) 55%,rgba(74,44,42,.28));pointer-events:none}
+.tier + .tier{margin-top:-8px}
+.t1{width:150px;--top:var(--vanilla);background-color:var(--strawberry);background-image:radial-gradient(circle at 10px 22px,var(--mint) 3px,transparent 4px),radial-gradient(circle at 30px 48px,var(--vanilla) 3px,transparent 4px),radial-gradient(circle at 44px 30px,var(--caramel) 2.5px,transparent 3.5px);background-size:52px 74px}
+.t2{width:220px;height:84px;--top:var(--strawberry);background-color:var(--vanilla-deep);background-image:repeating-linear-gradient(90deg,var(--mint) 0 10px,transparent 10px 34px),linear-gradient(transparent 60%,var(--caramel) 60% 68%,transparent 68%);background-size:68px 84px,100% 100%}
+.t3{width:290px;height:90px;--top:var(--vanilla-deep);background-color:var(--ganache-soft);background-image:radial-gradient(ellipse 14px 18px at 20px 0,var(--vanilla-deep) 98%,transparent),radial-gradient(circle at 20px 58px,var(--strawberry) 6px,transparent 7px);background-size:40px 90px}
+@keyframes spin{to{background-position-x:208px,208px,208px}}
+.t2{animation-name:spin2}
+.t3{animation-name:spin3}
+@keyframes spin3{to{background-position-x:200px,200px}}
+@keyframes spin2{to{background-position-x:272px,0}}
+.plate{width:340px;height:36px;border-radius:50%;background:linear-gradient(var(--paper),var(--vanilla-deep));box-shadow:0 18px 30px rgba(74,44,42,.18);margin-top:-18px;z-index:-1;position:relative}
+.cherry{position:absolute;top:22px;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ff9fb3,#D23F5E 60%,#9e2240);z-index:3;box-shadow:0 4px 8px rgba(74,44,42,.3)}
+.cherry::before{content:"";position:absolute;width:3px;height:26px;background:var(--mint-deep);left:16px;top:-22px;border-radius:3px;transform:rotate(14deg)}
+.floaty{position:absolute;font-family:var(--f-hand);font-size:1.35rem;background:var(--paper);padding:.3rem .9rem;border-radius:14px;box-shadow:0 8px 24px rgba(74,44,42,.12);animation:bob 5s ease-in-out infinite;white-space:nowrap}
+.floaty.a{top:14%;left:0}
+.floaty.b{bottom:22%;right:0;animation-delay:-2.5s}
+@keyframes bob{50%{transform:translateY(-10px) rotate(-2deg)}}
+@media (max-width:420px){.t3{width:250px}.plate{width:290px}.floaty{font-size:1.1rem}}
+
+/* ---------- fresh bakes carousel ---------- */
+.bakes{background:var(--paper);padding-block:3.5rem 4.5rem}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:1rem}
+.today{font-family:var(--f-hand);font-size:1.4rem;color:var(--strawberry-deep)}
+.car-ctrl{display:flex;gap:.5rem}
+.car-ctrl button{width:48px;height:48px;border-radius:50%;border:2px solid var(--ganache);background:transparent;cursor:pointer;font-size:1.2rem;transition:background .2s,color .2s}
+.car-ctrl button:hover{background:var(--ganache);color:var(--vanilla)}
+.track{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,260px);gap:1.2rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:1.8rem 4px 1rem;scrollbar-width:thin;scrollbar-color:var(--strawberry) transparent}
+.bake{scroll-snap-align:start;background:var(--vanilla);border-radius:var(--r-soft);padding:1.1rem 1.1rem 1.3rem;display:flex;flex-direction:column;gap:.6rem;transition:transform .25s,box-shadow .35s}
+.bake:hover{transform:translateY(-6px);box-shadow:0 0 0 4px rgba(247,161,181,.25),0 16px 40px rgba(247,161,181,.55)}
+.bake .art{height:150px;border-radius:16px;display:grid;place-items:center;background:var(--bg,var(--vanilla-deep))}
+.bake .art svg{width:110px;height:110px}
+.bake h3{font-size:1.25rem;margin-top:.3rem}
+.bake p{font-size:.92rem;color:var(--ganache-soft)}
+.bake .row{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:.4rem}
+.price{font-family:var(--f-display);font-weight:600;font-size:1.15rem;font-variant-numeric:tabular-nums}
+.tag{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;background:var(--mint);padding:.2rem .6rem;border-radius:999px}
+.tag.hot{background:var(--strawberry)}
+.add{border:0;width:40px;height:40px;border-radius:50%;background:var(--ganache);color:var(--vanilla);font-size:1.3rem;cursor:pointer;transition:transform .2s,box-shadow .3s}
+.add:hover{transform:rotate(90deg);box-shadow:0 0 18px rgba(247,161,181,.9)}
+
+/* ---------- builder ---------- */
+.builder{padding-block:4rem 4.5rem}
+.builder .grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-top:2.2rem;align-items:start}
+@media (max-width:860px){.builder .grid{grid-template-columns:1fr}}
+.preview{position:sticky;top:90px;background:var(--paper);border-radius:28px;padding:1.5rem;min-height:440px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;overflow:hidden}
+@media (max-width:860px){.preview{position:relative;top:0;min-height:380px}}
+.preview .bg-dots{position:absolute;inset:0;background-image:radial-gradient(var(--vanilla-deep) 2px,transparent 2.5px);background-size:22px 22px;opacity:.9}
+.b-stack{position:relative;display:flex;flex-direction:column-reverse;align-items:center;z-index:1}
+.b-tier{position:relative;height:66px;border-radius:12px 12px 16px 16px;transition:background .4s,width .4s;animation:drop .5s cubic-bezier(.3,1.6,.5,1) both;box-shadow:inset -18px 0 0 rgba(74,44,42,.12),inset 10px 0 0 rgba(255,255,255,.15)}
+.b-tier .fill{position:absolute;left:0;right:0;top:44%;height:9px;transition:background .4s}
+.b-tier .frost{position:absolute;left:-4px;right:-4px;top:-10px;height:34px;transition:color .4s}
+.b-tier .frost svg{width:100%;height:100%;display:block}
+.b-tier + .b-tier{margin-bottom:6px}
+@keyframes drop{from{transform:translateY(-60px);opacity:0}}
+.b-plate{width:300px;max-width:100%;height:22px;border-radius:50%;background:var(--vanilla-deep);box-shadow:0 12px 18px rgba(74,44,42,.14);margin-top:-6px;position:relative;z-index:0}
+.toppings{position:absolute;left:0;right:0;top:-34px;height:34px;z-index:2}
+.tp{position:absolute;bottom:4px}
+.tp.berry{width:20px;height:22px;border-radius:50% 50% 45% 45%/60% 60% 40% 40%;background:radial-gradient(circle at 40% 30%,#ff8fa6,#D23F5E 70%)}
+.tp.berry::before{content:"";position:absolute;top:-5px;left:5px;width:10px;height:7px;border-radius:50%;background:var(--mint-deep)}
+.tp.spr{width:4px;height:12px;border-radius:3px}
+.tp.shard{width:14px;height:22px;background:var(--ganache);clip-path:polygon(20% 0,100% 30%,70% 100%,0 80%)}
+.tp.candle{width:8px;height:34px;border-radius:3px;background:repeating-linear-gradient(-45deg,var(--paper) 0 5px,var(--strawberry) 5px 10px)}
+.tp.candle::before{content:"";position:absolute;top:-16px;left:-3px;width:14px;height:18px;border-radius:50% 50% 50% 50%/65% 65% 35% 35%;background:radial-gradient(circle at 50% 70%,#fff6c2,#FFB938 55%,rgba(255,120,40,0) 75%);animation:flick 1.2s ease-in-out infinite alternate}
+@keyframes flick{to{transform:scale(.85,1.1) rotate(4deg)}}
+.cake-name{position:relative;z-index:1;font-family:var(--f-hand);font-size:1.6rem;margin-top:1rem;text-align:center}
+.summary{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:1rem;width:100%;margin-top:1rem;padding-top:1rem;border-top:2px dashed var(--vanilla-deep);flex-wrap:wrap}
+.summary .price{font-size:1.6rem}
+.opt-group{margin-bottom:1.6rem}
+.opt-group h3{font-size:1.1rem;display:flex;align-items:center;gap:.6rem;margin-bottom:.7rem}
+.opt-group h3 .n{font-family:var(--f-hand);font-size:1.5rem;color:var(--strawberry-deep);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:.55rem}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip label{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem 1rem;border-radius:999px;background:var(--paper);border:2px solid transparent;cursor:pointer;font-weight:700;font-size:.93rem;transition:border-color .2s,box-shadow .3s,transform .15s}
+.chip label:hover{box-shadow:0 0 16px rgba(247,161,181,.55)}
+.chip input:checked + label{border-color:var(--ganache);background:var(--strawberry)}
+.chip input:focus-visible + label{outline:3px solid var(--caramel);outline-offset:2px}
+.sw{width:16px;height:16px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(74,44,42,.2)}
+.chip small{font-weight:600;color:var(--ganache-soft)}
+
+/* ---------- gallery ---------- */
+.gallery{background:var(--strawberry);padding-block:4rem 4.5rem}
+.gallery .eyebrow{color:var(--ganache)}
+.tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.6rem}
+.tabs button{border:0;cursor:pointer;padding:.65rem 1.3rem;border-radius:999px;font-family:var(--f-display);font-weight:600;background:rgba(255,246,233,.5);transition:background .2s}
+.tabs button[aria-selected="true"]{background:var(--ganache);color:var(--vanilla)}
+.g-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:1.8rem}
+@media (max-width:860px){.g-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.g-grid{grid-template-columns:1fr}}
+.g-card{background:var(--vanilla);border-radius:var(--r-soft);overflow:hidden;transition:transform .25s,box-shadow .35s;animation:pop .45s ease both}
+@keyframes pop{from{transform:scale(.96);opacity:.4}}
+.g-card:hover{transform:translateY(-6px) rotate(-.6deg);box-shadow:0 0 0 5px rgba(255,246,233,.6),0 18px 44px rgba(74,44,42,.22)}
+.g-art{height:200px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:22px;background:var(--gbg)}
+.g-body{padding:1rem 1.2rem 1.3rem}
+.g-body h3{font-size:1.2rem}
+.g-body .meta{display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;font-size:.9rem;color:var(--ganache-soft)}
+.mini{display:flex;flex-direction:column-reverse;align-items:center}
+.mini i{display:block;height:34px;border-radius:8px 8px 10px 10px;background:var(--c);box-shadow:inset -10px 0 0 rgba(74,44,42,.12),inset 0 7px 0 var(--f)}
+.mini i + i{margin-bottom:3px}
+.mini::after{content:"";order:-1}
+.mini .base{width:170px;height:10px;border-radius:50%;background:rgba(74,44,42,.14);margin-top:2px}
+.mini .deco{width:12px;height:12px;border-radius:50%;background:var(--d);margin-bottom:2px;box-shadow:-24px 6px 0 -2px var(--d),24px 6px 0 -2px var(--d)}
+
+/* ---------- story ---------- */
+.story{background:var(--ganache);color:var(--vanilla);padding-block:4.5rem}
+.story .eyebrow{color:var(--strawberry)}
+.story .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:3rem;align-items:center}
+@media (max-width:860px){.story .grid{grid-template-columns:1fr}}
+.story .lede{color:rgba(255,246,233,.8)}
+.oven{position:relative;aspect-ratio:1/1;max-width:420px;width:100%;margin-inline:auto;border-radius:36px;background:var(--ganache-soft);padding:24px;box-shadow:inset 0 0 0 10px rgba(255,246,233,.06)}
+.oven .window{position:relative;height:72%;border-radius:22px;background:radial-gradient(ellipse at 50% 100%,#FFB14A,#E0703A 45%,#5a2a1c 90%);overflow:hidden;box-shadow:inset 0 0 0 8px rgba(0,0,0,.25)}
+.oven .window::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.18) 0 18%,transparent 18% 30%,rgba(255,255,255,.08) 30% 36%,transparent 36%)}
+.oven .rise{position:absolute;left:50%;bottom:18%;width:52%;height:34%;transform:translateX(-50%);background:var(--caramel);border-radius:50% 50% 10px 10px/70% 70% 10px 10px;animation:rise 4s ease-in-out infinite alternate;box-shadow:inset 0 10px 0 #D9A273}
+@keyframes rise{from{height:22%}to{height:38%}}
+.oven .rack{position:absolute;left:10%;right:10%;bottom:16%;height:4px;background:rgba(0,0,0,.35);border-radius:3px}
+.oven .knobs{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-inline:8px}
+.oven .knob{width:34px;height:34px;border-radius:50%;background:var(--vanilla-deep);position:relative}
+.oven .knob::after{content:"";position:absolute;top:5px;left:15px;width:4px;height:12px;border-radius:3px;background:var(--ganache)}
+.oven .temp{font-family:var(--f-display);font-weight:600;font-size:1.3rem;color:var(--mint);font-variant-numeric:tabular-nums}
+.story-points{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2rem}
+@media (max-width:560px){.story-points{grid-template-columns:1fr}}
+.story-points div{border-top:2px solid rgba(255,246,233,.2);padding-top:.8rem}
+.story-points b{display:block;font-family:var(--f-display);font-size:1.9rem;color:var(--strawberry);font-weight:600;font-variant-numeric:tabular-nums}
+.story-points span{font-size:.92rem;color:rgba(255,246,233,.8)}
+.sign{font-family:var(--f-hand);font-size:1.8rem;color:var(--mint);margin-top:1.6rem}
+
+/* ---------- reviews ---------- */
+.reviews{padding-block:4rem 4.5rem}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin-top:2.2rem}
+@media (max-width:860px){.cards{grid-template-columns:1fr}}
+.recipe{position:relative;background:var(--paper);padding:1.5rem 1.5rem 1.3rem 2.4rem;border-radius:6px;box-shadow:0 10px 26px rgba(74,44,42,.1);background-image:linear-gradient(90deg,transparent 1.7rem,rgba(229,124,150,.5) 1.7rem 1.8rem,transparent 1.8rem),repeating-linear-gradient(transparent 0 31px,rgba(168,230,207,.8) 31px 32px);background-position:0 0,0 12px;transition:transform .25s,box-shadow .35s}
+.recipe:nth-child(1){transform:rotate(-1.5deg)}
+.recipe:nth-child(2){transform:rotate(1deg)}
+.recipe:nth-child(3){transform:rotate(-.6deg)}
+.recipe:hover{transform:rotate(0) translateY(-4px);box-shadow:0 0 0 4px rgba(247,161,181,.25),0 16px 40px rgba(247,161,181,.5)}
+.recipe::before{content:"";position:absolute;top:-12px;left:50%;width:90px;height:24px;transform:translateX(-50%) rotate(-3deg);background:rgba(168,230,207,.7)}
+.recipe .label{font-family:var(--f-display);text-transform:uppercase;font-size:.72rem;letter-spacing:.14em;color:var(--caramel);font-weight:600}
+.recipe .dish{font-family:var(--f-hand);font-size:1.7rem;line-height:1.1;font-weight:700;margin-top:.1rem}
+.recipe blockquote{margin:.6rem 0 0;font-family:var(--f-hand);font-size:1.35rem;line-height:32px}
+.recipe .by{display:flex;justify-content:space-between;align-items:center;margin-top:.8rem;font-size:.9rem;font-weight:700}
+.stars{color:var(--caramel);letter-spacing:2px}
+
+/* ---------- order ---------- */
+.order{background:var(--mint);padding-block:4rem 5rem}
+.order .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:2rem;margin-top:2rem;align-items:start}
+@media (max-width:860px){.order .grid{grid-template-columns:1fr}}
+form.order-form{background:var(--paper);border-radius:28px;padding:clamp(1.3rem,3vw,2rem);display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:560px){form.order-form{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:.35rem;min-width:0}
+.field.full{grid-column:1/-1}
+.field label{font-weight:800;font-size:.85rem}
+.field input,.field select,.field textarea{width:100%;border:2px solid var(--vanilla-deep);background:var(--vanilla);border-radius:14px;padding:.75rem .9rem;transition:border-color .2s,box-shadow .3s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--strawberry-deep);box-shadow:0 0 0 4px rgba(247,161,181,.3)}
+.field textarea{min-height:96px;resize:vertical}
+.form-foot{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem;margin-top:.3rem}
+.form-foot small{color:var(--ganache-soft)}
+.success{grid-column:1/-1;background:var(--strawberry);border-radius:16px;padding:1rem 1.2rem;font-weight:700}
+.side{display:flex;flex-direction:column;gap:1.2rem}
+.hours{background:var(--ganache);color:var(--vanilla);border-radius:28px;padding:1.6rem}
+.hours h3{font-size:1.3rem;margin-bottom:.8rem}
+.hours table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.95rem}
+.hours td{padding:.45rem 0;border-bottom:1px dashed rgba(255,246,233,.2)}
+.hours td:last-child{text-align:right}
+.hours tr.today td{color:var(--strawberry);font-weight:800}
+.open-now{display:inline-flex;align-items:center;gap:.45rem;font-size:.85rem;font-weight:700;margin-bottom:.8rem;background:rgba(168,230,207,.18);color:var(--mint);padding:.25rem .7rem;border-radius:999px}
+.open-now::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;animation:breathe 2s infinite}
+.wa-card{background:var(--paper);border-radius:28px;padding:1.6rem}
+.wa-card p{font-size:.95rem;color:var(--ganache-soft);margin:.4rem 0 1rem}
+.wa-card .num{font-family:var(--f-display);font-weight:600;font-size:1.3rem;user-select:all}
+.wa-card .actions{display:flex;flex-wrap:wrap;gap:.6rem}
+.copy{border:0;background:var(--vanilla-deep);border-radius:999px;padding:.85rem 1.1rem;font-weight:700;cursor:pointer}
+
+/* ---------- footer ---------- */
+footer{background:var(--ganache);color:var(--vanilla);padding-block:3rem 2.4rem}
+footer .top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2rem;align-items:flex-start}
+footer .logo{color:var(--vanilla);font-size:2.2rem}
+footer p{color:rgba(255,246,233,.75);font-size:.95rem;margin-top:.6rem;max-width:36ch}
+footer .cols{display:flex;flex-wrap:wrap;gap:3rem}
+footer h4{font-family:var(--f-display);font-weight:600;margin:0 0 .6rem;color:var(--strawberry)}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:.35rem;font-size:.95rem}
+footer ul a{text-decoration:none;opacity:.85}
+footer ul a:hover{opacity:1;color:var(--mint)}
+.credit{margin-top:2.4rem;padding-top:1.4rem;border-top:1px solid rgba(255,246,233,.15);display:flex;flex-wrap:wrap;justify-content:space-between;gap:.8rem;font-size:.88rem;color:rgba(255,246,233,.7)}
+.credit b{color:var(--mint)}
+
+/* ---------- toast + confetti ---------- */
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:100}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140%);background:var(--ganache);color:var(--vanilla);padding:.8rem 1.3rem;border-radius:999px;font-weight:700;z-index:90;transition:transform .35s cubic-bezier(.3,1.4,.5,1);box-shadow:0 12px 30px rgba(74,44,42,.3);max-width:calc(100% - 32px);text-align:center}
+.toast.show{transform:translate(-50%,0)}
+.basket-count{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:999px;background:var(--strawberry);color:var(--ganache);font-size:.78rem;padding:0 6px}
+
+
+.poster img,.cake-hero img,.logo img{height:auto}
+.hours tr.today{font-family:var(--f-body);font-size:inherit}
+/* ---------- real logo ---------- */
+.logo img{display:block;height:58px!important;width:auto}
+footer .logo img{height:84px!important}
+@media (max-width:560px){.logo img{height:48px!important}}
+
+/* ---------- hero photos ---------- */
+.photo-stage{min-height:460px}
+.ph{position:absolute;margin:0;border-radius:50%;overflow:hidden;border:8px solid var(--paper);box-shadow:0 18px 40px rgba(74,44,42,.18);background:var(--paper)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph-main{position:relative;width:min(340px,76vw);aspect-ratio:1;border-width:10px;z-index:1}
+.ph-s1{width:clamp(96px,26%,140px);aspect-ratio:1;left:2%;bottom:4%;z-index:2;animation:bob 6s ease-in-out infinite}
+.ph-s2{width:clamp(84px,22%,120px);aspect-ratio:1;right:4%;top:4%;z-index:2;animation:bob 7s ease-in-out infinite;animation-delay:-3s}
+.photo-stage .floaty{z-index:3}
+.photo-stage .floaty.a{top:auto;bottom:2%;left:auto;right:6%}
+.photo-stage .floaty.b{bottom:auto;top:10%;right:auto;left:0}
+
+/* ---------- cupcake photo cards ---------- */
+.bake .art.photo{height:auto;aspect-ratio:1;padding:0;overflow:hidden;background:#fff}
+.bake .art.photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.bake:hover .art.photo img{transform:scale(1.06)}
+.ask{font-size:.85rem;font-weight:700;color:var(--ganache-soft)}
+
+/* ---------- cake menu ---------- */
+.cakes{padding-block:4rem 4.5rem}
+.cake-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:2rem;margin-top:2.2rem;align-items:start}
+@media (max-width:900px){.cake-grid{grid-template-columns:1fr}}
+.cake-hero{margin:0;position:sticky;top:96px;border-radius:28px;overflow:hidden;background:var(--paper);box-shadow:0 16px 40px rgba(74,44,42,.12)}
+@media (max-width:900px){.cake-hero{position:relative;top:0}}
+.cake-hero img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.cake-hero figcaption{padding:1rem 1.2rem 1.2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.cake-hero figcaption b{font-family:var(--f-display);font-size:1.2rem;font-weight:600}
+.menu-cols{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:620px){.menu-cols{grid-template-columns:1fr}}
+.menu-card{background:var(--paper);border-radius:var(--r-soft);padding:1.3rem 1.3rem 1rem}
+.menu-card h3{font-family:var(--f-hand);font-size:1.75rem;font-weight:700;color:var(--strawberry-deep);margin-bottom:.4rem}
+.m-item{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:.6rem;padding:.55rem 0;border-bottom:1px dashed var(--vanilla-deep)}
+.m-item:last-child{border-bottom:0}
+.m-item b{font-family:var(--f-display);font-weight:600;font-size:1.02rem;display:block;line-height:1.25}
+.m-item small{display:block;color:var(--ganache-soft);font-size:.82rem;line-height:1.35}
+.m-price{font-family:var(--f-display);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right;line-height:1.2}
+.m-price i{display:block;font-style:normal;font-family:var(--f-body);font-size:.72rem;font-weight:700;color:var(--caramel);text-transform:uppercase;letter-spacing:.06em}
+.m-item .add{width:34px;height:34px;font-size:1.1rem}
+.menu-note{margin-top:1rem;font-size:.9rem;color:var(--ganache-soft)}
+dialog.menu-dlg{border:0;padding:0;border-radius:20px;max-width:min(560px,94vw);max-height:92vh;background:var(--paper);box-shadow:0 30px 80px rgba(0,0,0,.4)}
+dialog.menu-dlg::backdrop{background:rgba(74,44,42,.6)}
+dialog.menu-dlg img{display:block;width:100%;height:auto}
+dialog.menu-dlg .close{position:sticky;top:10px;float:right;margin:10px 10px -54px 0;z-index:2;width:44px;height:44px;border-radius:50%;border:0;background:var(--ganache);color:var(--vanilla);font-size:1.3rem;cursor:pointer}
+
+/* ---------- builder on paper ---------- */
+.builder{background:var(--paper)}
+.builder .preview{background:var(--vanilla)}
+.builder .chip label{background:var(--vanilla)}
+.builder .chip input:checked + label{background:var(--strawberry)}
+.from-note{font-size:.82rem;color:var(--ganache-soft);margin-top:.15rem}
+.chip small.cp{font-weight:700;color:var(--caramel);font-size:.78rem}
+.chip input:checked + label small.cp{color:var(--ganache)}
+#cakePrice{display:inline-block;font-size:2rem}
+#cakePrice.bump{animation:bump .45s ease}
+@keyframes bump{40%{transform:scale(1.12);color:var(--strawberry-deep)}}
+.sent-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.8rem}
+.sent-actions .btn{font-size:.95rem;padding:.7rem 1.2rem}
+
+/* ---------- donuts ---------- */
+.donuts{background:var(--ganache);color:var(--vanilla);padding-block:4rem 0;overflow:hidden}
+.donuts .eyebrow{color:var(--strawberry)}
+.donuts .lede{color:rgba(255,246,233,.82)}
+.donut-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:3rem;align-items:center}
+@media (max-width:860px){.donut-grid{grid-template-columns:1fr;gap:2rem}}
+.poster{position:relative;max-width:400px;width:100%;margin-inline:auto;transform:rotate(-2.5deg);transition:transform .4s}
+.poster:hover{transform:rotate(0) scale(1.02)}
+.poster img{display:block;width:100%;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.poster .badge{position:absolute;top:-18px;right:-14px;width:96px;height:96px;border-radius:50%;background:var(--mint);color:var(--ganache);display:grid;place-items:center;text-align:center;font-family:var(--f-display);font-weight:700;line-height:1;font-size:1.6rem;transform:rotate(12deg);box-shadow:0 10px 24px rgba(0,0,0,.3);animation:bob 5s ease-in-out infinite}
+.poster .badge small{display:block;font-size:.75rem;letter-spacing:.08em}
+.donuts h2 em{font-style:normal;font-family:var(--f-logo);font-weight:400;color:var(--strawberry);display:inline-block;transform:rotate(-3deg)}
+.flavours{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.4rem}
+.flavours span{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .9rem;border-radius:999px;background:rgba(255,246,233,.1);font-weight:700;font-size:.92rem}
+.flavours span::before{content:"";width:14px;height:14px;border-radius:50%;background:var(--d);box-shadow:inset 0 0 0 4px rgba(0,0,0,.18)}
+.offer-line{margin-top:1.3rem;display:inline-flex;align-items:center;gap:.55rem;font-family:var(--f-hand);font-size:1.5rem;color:var(--mint)}
+.donuts .ctas{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.4rem}
+.btn.light{background:transparent;color:var(--vanilla);box-shadow:inset 0 0 0 2px var(--vanilla)}
+.btn.light:hover{box-shadow:inset 0 0 0 2px var(--vanilla),0 0 0 6px rgba(168,230,207,.25),0 10px 30px rgba(168,230,207,.35)}
+.strip{margin-top:3.5rem;overflow:hidden;line-height:0}
+.strip-track{display:flex;width:max-content;animation:roll 40s linear infinite}
+.strip-track img{height:clamp(110px,16vw,170px);width:auto;display:block}
+@keyframes roll{to{transform:translateX(-50%)}}
+
+/* ---------- celebration photo cards ---------- */
+.g-grid.photos{grid-template-columns:repeat(4,1fr)}
+@media (max-width:980px){.g-grid.photos{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.g-grid.photos{grid-template-columns:1fr}}
+.g-photo{aspect-ratio:4/3;overflow:hidden;background:#fff}
+.g-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.g-card:hover .g-photo img{transform:scale(1.06)}
+.g-body .meta a{font-weight:800;color:var(--strawberry-deep);text-decoration:none}
+.g-body .meta a:hover{text-decoration:underline}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+
+<div class="demo-ribbon">Website concept for <b>Bake Away</b> · designed by Trace Solutions</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top"><img data-img="logo-chocolate.png" alt="Bake Away" width="600" height="409"></a>
+    <nav aria-label="Main">
+      <ul id="menu">
+        <li><a href="#bakes">Cupcakes</a></li>
+        <li><a href="#cakes">Cakes</a></li>
+        <li><a href="#donuts">Donuts</a></li>
+        <li><a href="#gallery">Celebrations</a></li>
+        <li><a href="#order">Visit &amp; Order</a></li>
+      </ul>
+    </nav>
+    <div style="display:flex;align-items:center;gap:.5rem">
+      <a class="btn pink order-cta confetti-btn" href="#order">Order now <span class="basket-count" id="basketCount">0</span></a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Cupcakes · Cakes · Donuts · Nugegoda</div>
+      <h1 style="margin-top:.6rem">Bake Away <em>your worries</em></h1>
+      <p class="lede">A little escape in every bite. Piled-high cupcakes, butter-soft cakes and freshly glazed donuts, baked every day. Pick something from the counter, or let us bake the centrepiece of your next celebration.</p>
+      <div class="ctas">
+        <a class="btn confetti-btn" href="#bakes">See our cupcakes</a>
+        <a class="btn ghost" href="#cakes">View the cake menu</a>
+      </div>
+      <div class="hero-facts">
+        <div><b>8 am – 10 pm</b>Open every day</div>
+        <div><b>Rs 1,500</b>Cakes start from</div>
+        <div><b>25% off</b>Donuts this weekend</div>
+      </div>
+    </div>
+    <div class="stage photo-stage">
+      <div class="halo" aria-hidden="true"></div>
+      <div class="floaty a" aria-hidden="true">fresh every morning!</div>
+      <div class="floaty b" aria-hidden="true">piled high ♡</div>
+      <figure class="ph ph-main"><img data-img="cupcake-chocolate-chip.jpg" alt="Chocolate chip fudge cupcake from Bake Away" width="800" height="800"></figure>
+      <figure class="ph ph-s1"><img data-img="cupcake-red-velvet.jpg" alt="Red velvet cupcake with a fresh strawberry" width="800" height="800"></figure>
+      <figure class="ph ph-s2"><img data-img="cupcake-cherry-sundae.jpg" alt="Cherry sundae cupcake" width="800" height="800"></figure>
+    </div>
+  </div>
+</section>
+
+<div class="drip-wrap"><svg class="drip" data-top="var(--vanilla)" data-bottom="var(--paper)" preserveAspectRatio="none" viewBox="0 0 1200 56" aria-hidden="true"></svg></div>
+
+<!-- FRESH BAKES -->
+<section class="bakes" id="bakes">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">On the counter now</div>
+        <h2 class="h2">Our Cupcakes</h2>
+        <p class="today" id="todayLine">Baked this morning</p>
+      </div>
+      <div class="car-ctrl">
+        <button id="prev" aria-label="Previous cupcakes">←</button>
+        <button id="next" aria-label="Next cupcakes">→</button>
+      </div>
+    </div>
+    <div class="track" id="track" tabindex="0" aria-label="Our cupcakes"></div>
+  </div>
+</section>
+
+<div class="drip-wrap"><svg class="drip" data-top="var(--paper)" data-bottom="var(--vanilla)" preserveAspectRatio="none" viewBox="0 0 1200 56" aria-hidden="true"></svg></div>
+
+<!-- CAKES -->
+<section class="cakes" id="cakes">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">The cake menu</div>
+        <h2 class="h2">Cakes, baked to order</h2>
+        <p class="lede">From an everyday butter cake to a fondant showstopper. Tap + to add any cake to your order.</p>
+      </div>
+      <button class="btn ghost" id="openMenu" type="button">See the printed menu</button>
+    </div>
+    <div class="cake-grid">
+      <figure class="cake-hero">
+        <img data-img="cake-chocolate-layer.jpg" alt="Chocolate layer cake topped with fresh strawberries" width="1200" height="675">
+        <figcaption><div><b>Chocolate cake</b><div style="font-size:.9rem;color:var(--ganache-soft)">Rich, moist and full of chocolate goodness</div></div><span class="price">Rs 1,800</span></figcaption>
+      </figure>
+      <div>
+        <div class="menu-cols" id="menuCols"></div>
+        <p class="menu-note">Prices in Sri Lankan rupees. "From" prices depend on size and decoration, and we confirm the final price before baking.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<dialog class="menu-dlg" id="menuDlg" aria-label="Bake Away printed menu">
+  <button class="close" id="closeMenu" aria-label="Close menu">×</button>
+  <img data-img="bakeaway-menu.jpg" alt="Bake Away printed cake menu with prices" width="1100" height="1556">
+</dialog>
+
+<div class="drip-wrap"><svg class="drip" data-top="var(--vanilla)" data-bottom="var(--paper)" preserveAspectRatio="none" viewBox="0 0 1200 56" aria-hidden="true"></svg></div>
+
+<!-- BUILDER -->
+<section class="builder" id="builder">
+  <div class="wrap">
+    <div class="eyebrow">Your cake, your way</div>
+    <h2 class="h2">Build Your Dream Cake</h2>
+    <p class="lede">Want something made just for you? Pick each layer and watch your cake come together, then send it straight to our bakers.</p>
+    <div class="grid">
+      <div class="preview" aria-live="polite">
+        <div class="bg-dots" aria-hidden="true"></div>
+        <div class="b-stack" id="bStack"></div>
+        <div class="b-plate" aria-hidden="true"></div>
+        <div class="cake-name" id="cakeName"></div>
+        <div class="summary">
+          <div><div class="eyebrow">Estimated price</div><div class="price" id="cakePrice">Rs 0</div><div class="from-note" id="priceBreak"></div><div class="from-note">Final price confirmed by our bakers</div></div>
+          <button class="btn confetti-btn" id="sendCake">Order this cake</button>
+        </div>
+      </div>
+      <div id="options"></div>
+    </div>
+  </div>
+</section>
+
+<div class="drip-wrap"><svg class="drip" data-top="var(--paper)" data-bottom="var(--ganache)" preserveAspectRatio="none" viewBox="0 0 1200 56" aria-hidden="true"></svg></div>
+
+<!-- DONUTS -->
+<section class="donuts" id="donuts">
+  <div class="wrap donut-grid">
+    <div class="poster">
+      <img data-img="donuts-weekend-offer.jpg" alt="Bake Away poster: this weekend only, 25% off donuts" width="900" height="1273">
+      <div class="badge" aria-hidden="true"><div>25%<small>OFF</small></div></div>
+    </div>
+    <div>
+      <div class="eyebrow">Weekend special</div>
+      <h2 class="h2">Donuts, <em>25% off</em> this weekend</h2>
+      <p class="lede">Soft, fluffy rings, glazed and dipped fresh. Grab a box for the office, the kids or yourself, and we'll deliver anywhere we can reach from Nugegoda.</p>
+      <div class="flavours">
+        <span style="--d:#3B2420">Chocolate glazed</span>
+        <span style="--d:#F3E2C3">Sugar dusted</span>
+        <span style="--d:conic-gradient(#F7A1B5 0 25%,#A8E6CF 0 50%,#FFB938 0 75%,#6FA8E6 0)">Rainbow sprinkles</span>
+        <span style="--d:#E3A35E">Classic glazed</span>
+      </div>
+      <div class="offer-line" id="offerLine">This weekend only</div>
+      <div class="ctas">
+        <a class="btn pink confetti-btn" href="https://wa.me/94776480144?text=Hi%20Bake%20Away!%20I'd%20like%20to%20order%20donuts%20with%20the%2025%25%20weekend%20offer." target="_blank" rel="noopener">Order donuts on WhatsApp</a>
+        <button class="btn light confetti-btn" type="button" data-add="Box of donuts (weekend 25% off)">Add a box to my order</button>
+      </div>
+    </div>
+  </div>
+  <div class="strip" aria-hidden="true"><div class="strip-track"><img data-img="donuts-row.jpg" alt=""><img data-img="donuts-row.jpg" alt=""><img data-img="donuts-row.jpg" alt=""><img data-img="donuts-row.jpg" alt=""></div></div>
+</section>
+
+<div class="drip-wrap"><svg class="drip" data-top="var(--ganache)" data-bottom="var(--strawberry)" preserveAspectRatio="none" viewBox="0 0 1200 56" aria-hidden="true"></svg></div>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="wrap">
+    <div class="eyebrow">Celebrations</div>
+    <h2 class="h2">Something sweet for every big day</h2>
+    <p class="lede" style="color:var(--ganache)">Weddings, birthdays and the holidays in between. Tell us the theme and we'll bake to match.</p>
+    <div class="g-grid photos" id="gGrid"></div>
+  </div>
+</section>
+
+<div class="drip-wrap"><svg class="drip" data-top="var(--strawberry)" data-bottom="var(--ganache)" preserveAspectRatio="none" viewBox="0 0 1200 56" aria-hidden="true"></svg></div>
+
+<!-- STORY -->
+<section class="story" id="story">
+  <div class="wrap grid">
+    <div class="oven" aria-hidden="true">
+      <div class="window"><div class="rack"></div><div class="rise"></div></div>
+      <div class="knobs"><span class="knob"></span><span class="temp">180°C</span><span class="knob" style="transform:rotate(60deg)"></span></div>
+    </div>
+    <div>
+      <div class="eyebrow">From Our Oven</div>
+      <h2 class="h2">Two sisters, one secret sponge recipe</h2>
+      <p class="lede">Bake Away started on a kitchen table, with a hand-me-down mixer and our grandmother's butter cake written on the back of an envelope. We still fold every batter by hand, cream real butter with jaggery-brown sugar, and let each sponge rest overnight before it meets its frosting.</p>
+      <p class="lede">No premixes and no shortcuts. Just the slow, happy kind of baking that makes a kitchen smell like a birthday.</p>
+      <div class="story-points">
+        <div><b>2014</b><span>First cake sold from our front porch</span></div>
+        <div><b>38,000+</b><span>Cakes baked for birthdays, weddings and Tuesdays</span></div>
+        <div><b>0</b><span>Premixes, ever. Everything starts from flour and eggs</span></div>
+      </div>
+      <p class="sign">— Nadia &amp; Tharushi, head bakers</p>
+    </div>
+  </div>
+</section>
+
+<div class="drip-wrap"><svg class="drip" data-top="var(--ganache)" data-bottom="var(--vanilla)" preserveAspectRatio="none" viewBox="0 0 1200 56" aria-hidden="true"></svg></div>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="eyebrow">Kind words</div>
+    <h2 class="h2">Recipes for a happy customer</h2>
+    <div class="cards">
+      <article class="recipe">
+        <div class="label">Recipe card no. 17</div>
+        <div class="dish">Strawberry Dream, 2 tiers</div>
+        <blockquote>The sponge was so light it practically floated. Every single guest asked where the cake came from.</blockquote>
+        <div class="by"><span>Amaya P. · Birthday</span><span class="stars" aria-label="5 out of 5 stars">★★★★★</span></div>
+      </article>
+      <article class="recipe">
+        <div class="label">Recipe card no. 42</div>
+        <div class="dish">Vanilla &amp; Pearl Wedding Cake</div>
+        <blockquote>They matched our flowers perfectly and delivered it right on time. Our photographer loved it.</blockquote>
+        <div class="by"><span>Dilan &amp; Shehani · Wedding</span><span class="stars" aria-label="5 out of 5 stars">★★★★★</span></div>
+      </article>
+      <article class="recipe">
+        <div class="label">Recipe card no. 88</div>
+        <div class="dish">Saturday morning croissants</div>
+        <blockquote>Flaky, buttery and still warm at 7 am. My weekend now officially starts at Bake Away.</blockquote>
+        <div class="by"><span>Rehan M. · Regular</span><span class="stars" aria-label="5 out of 5 stars">★★★★★</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="drip-wrap"><svg class="drip" data-top="var(--vanilla)" data-bottom="var(--mint)" preserveAspectRatio="none" viewBox="0 0 1200 56" aria-hidden="true"></svg></div>
+
+<!-- ORDER -->
+<section class="order" id="order">
+  <div class="wrap">
+    <div class="eyebrow" style="color:var(--ganache)">Visit &amp; Order</div>
+    <h2 class="h2">Reserve a cake for pickup</h2>
+    <p class="lede" style="color:var(--ganache)">Tell us what you'd like and when. We'll confirm your order during opening times, 8 am to 10 pm every day.</p>
+    <div class="grid">
+      <form class="order-form" id="orderForm" novalidate>
+        <div class="field"><label for="f-name">Your name</label><input id="f-name" required placeholder="Amaya Perera"></div>
+        <div class="field"><label for="f-phone">Phone</label><input id="f-phone" type="tel" required placeholder="077 123 4567"></div>
+        <div class="field"><label for="f-item">What would you like?</label>
+          <select id="f-item">
+            <option>Items added from the menu</option>
+            <option>Custom cake (from builder)</option>
+            <option>Cupcakes</option>
+            <option>Donuts</option>
+            <option>Celebration order</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div class="field"><label for="f-email">Email <small style="font-weight:600;color:var(--ganache-soft)">(optional)</small></label><input id="f-email" type="email" placeholder="you@example.com"></div>
+        <div class="field"><label for="f-how">Pickup or delivery?</label><select id="f-how"><option>Pickup from Nugegoda</option><option>Delivery</option></select></div>
+        <div class="field"><label for="f-date">Date needed</label><input id="f-date" type="date" required></div>
+        <div class="field"><label for="f-addr">Delivery address <small style="font-weight:600;color:var(--ganache-soft)">(if delivery)</small></label><input id="f-addr" placeholder="Street, town"></div>
+        <div class="field full"><label for="f-note">Your order, message on the cake &amp; any notes</label><textarea id="f-note" placeholder="Happy 30th, Kavi! Egg-free please."></textarea></div>
+        <div class="form-foot">
+          <small>No payment now. Your order goes straight to Bake Away on WhatsApp and email, and we confirm by phone.</small>
+          <button class="btn confetti-btn" type="submit" id="submitBtn">Send my order</button>
+        </div>
+        <div class="success" id="success" hidden></div>
+      </form>
+      <div class="side">
+        <div class="hours">
+          <span class="open-now" id="openNow">Open today</span>
+          <h3>Opening hours</h3>
+          <table id="hoursTable"></table>
+          <p style="margin-top:1rem;font-size:.92rem;opacity:.85">Nugegoda, Sri Lanka · Instagram @bakeaway</p>
+        </div>
+        <div class="wa-card">
+          <h3 style="font-size:1.3rem">Order on WhatsApp</h3>
+          <p>Send a photo of your dream cake, or ask for today's cupcakes and donuts.</p>
+          <div class="num" id="waNum">+94 77 648 0144</div>
+          <div class="actions" style="margin-top:.9rem">
+            <a class="btn wa confetti-btn" href="https://wa.me/94776480144?text=Hi%20Bake%20Away!%20I'd%20like%20to%20order%20a%20cake." target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg>
+              Chat on WhatsApp
+            </a>
+            <button class="copy" id="copyNum">Copy number</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="drip-wrap" style="background:var(--mint)"><svg class="drip" data-top="var(--mint)" data-bottom="var(--ganache)" preserveAspectRatio="none" viewBox="0 0 1200 56" aria-hidden="true"></svg></div>
+
+<footer>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div class="logo"><img data-img="logo-white.png" alt="Bake Away" width="600" height="409"></div>
+        <p>Cupcakes, cakes and donuts, baked fresh every day in Nugegoda.</p>
+      </div>
+      <div class="cols">
+        <div><h4>Explore</h4><ul><li><a href="#bakes">Cupcakes</a></li><li><a href="#cakes">Cake menu</a></li><li><a href="#donuts">Donuts</a></li><li><a href="#builder">Build a cake</a></li></ul></div>
+        <div><h4>Visit</h4><ul><li>Nugegoda, Sri Lanka</li><li>Daily 8 am – 10 pm</li><li>+94 77 648 0144</li></ul></div>
+        <div><h4>Follow</h4><ul><li>Instagram · @bakeaway</li><li>Facebook · Bake Away</li></ul></div>
+      </div>
+    </div>
+    <div class="credit">
+      <span>© 2026 Bake Away. Photos and menu by Bake Away; reviews, story and phone number are sample content.</span>
+      <span>Website designed &amp; built by <b>Trace Solutions</b></span>
+    </div>
+  </div>
+</footer>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>window.BA_IMG={"bakeaway-menu.jpg": "img/bakeaway-menu.jpg", "cake-chocolate-layer.jpg": "img/cake-chocolate-layer.jpg", "cupcake-cherry-sundae.jpg": "img/cupcake-cherry-sundae.jpg", "cupcake-chocolate-chip.jpg": "img/cupcake-chocolate-chip.jpg", "cupcake-red-velvet.jpg": "img/cupcake-red-velvet.jpg", "donuts-row.jpg": "img/donuts-row.jpg", "donuts-weekend-offer.jpg": "img/donuts-weekend-offer.jpg", "logo-chocolate.png": "img/logo-chocolate.png", "logo-white.png": "img/logo-white.png", "cupcake-halloween.jpg": "img/cupcake-halloween.jpg", "cupcake-salted-caramel.jpg": "img/cupcake-salted-caramel.jpg", "cupcake-vanilla-caramel.jpg": "img/cupcake-vanilla-caramel.jpg", "cupcakes-christmas.jpg": "img/cupcakes-christmas.jpg", "cupcakes-wedding.jpg": "img/cupcakes-wedding.jpg"};function baImgs(r){(r||document).querySelectorAll("img[data-img]").forEach(function(i){if(!i.src)i.src=BA_IMG[i.dataset.img]})}</script>
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const rs=n=>"Rs. "+n.toLocaleString("en-LK");
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- drip dividers ---- */
+  function dripPath(seed){
+    let r=seed;const rnd=()=>{r=(r*9301+49297)%233280;return r/233280};
+    let d="M0 0 H1200 V14 ";let x=1200;
+    while(x>0){
+      const w=40+rnd()*70, len=14+rnd()*34, dw=10+rnd()*10;
+      const x1=Math.max(0,x-w);const mid=(x+x1)/2;
+      d+=`C${x-8} 14 ${mid+dw} 14 ${mid+dw*0.6} ${14+len*0.6} `;
+      d+=`Q${mid} ${14+len+8} ${mid-dw*0.6} ${14+len*0.6} `;
+      d+=`C${mid-dw} 14 ${x1+8} 14 ${x1} 14 `;
+      x=x1;
+    }
+    return d+"Z";
+  }
+  document.querySelectorAll(".drip").forEach((svg,i)=>{
+    svg.style.background=svg.dataset.bottom;
+    svg.innerHTML=`<path d="${dripPath(17+i*31)}" style="fill:${svg.dataset.top}"/>`;
+  });
+
+  /* ---- mobile menu ---- */
+  const menuBtn=$("#menuBtn"),menu=$("#menu");
+  menuBtn.addEventListener("click",()=>{const o=menu.classList.toggle("open");menuBtn.setAttribute("aria-expanded",o)});
+  menu.addEventListener("click",e=>{if(e.target.tagName==="A"){menu.classList.remove("open");menuBtn.setAttribute("aria-expanded","false")}});
+
+  /* ---- toast ---- */
+  let tt;function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),2600)}
+
+  /* ---- add to order (shared) ---- */
+  let count=0;
+  function addItem(name){
+    count++;$("#basketCount").textContent=count;
+    const note=$("#f-note");note.value=(note.value?note.value.replace(/\s*$/,"")+"\n":"")+"1 × "+name;
+    $("#f-item").selectedIndex=0;
+    toast(name+" added to your order");
+  }
+  document.addEventListener("click",e=>{const b=e.target.closest("[data-add]");if(b)addItem(b.dataset.add)});
+
+  /* ---- cupcakes ---- */
+  const bakes=[
+    {n:"Chocolate Chip Fudge",d:"Chocolate sponge, whipped mocha frosting, piled with chocolate chips",img:"cupcake-chocolate-chip.jpg",t:"Bestseller",hot:1},
+    {n:"Red Velvet & Strawberry",d:"Red velvet crumb, cloud of vanilla cream and a fresh strawberry",img:"cupcake-red-velvet.jpg",t:"Favourite",hot:1},
+    {n:"Salted Caramel Crumble",d:"Caramel buttercream, crunchy crumble and a salted caramel drizzle",img:"cupcake-salted-caramel.jpg",t:"Indulgent"},
+    {n:"Cherry Sundae",d:"Berry swirl, chocolate fudge drip, cream and a cherry on top",img:"cupcake-cherry-sundae.jpg",t:"Fun"},
+    {n:"Vanilla Caramel Crunch",d:"Light vanilla sponge, caramel frosting and honeycomb crunch",img:"cupcake-vanilla-caramel.jpg",t:"Classic"},
+    {n:"Halloween Witch",d:"Vanilla cupcake, green buttercream and a pair of witch's legs",img:"cupcake-halloween.jpg",t:"Seasonal",hot:1}
+  ];
+  const track=$("#track");
+  track.innerHTML=bakes.map((b,k)=>`<article class="bake"><div class="art photo"><img data-img="${b.img}" alt="${b.n} cupcake" width="800" height="800"></div><span class="tag ${b.hot?"hot":""}" style="align-self:flex-start">${b.t}</span><h3>${b.n}</h3><p>${b.d}</p><div class="row"><span class="ask">Single or box of 6</span><button class="add confetti-btn" data-add="${b.n} cupcake" aria-label="Add ${b.n} cupcake to order">+</button></div></article>`).join("");
+  const step=()=>track.querySelector(".bake").offsetWidth+19;
+  $("#prev").onclick=()=>track.scrollBy({left:-step(),behavior:reduce?"auto":"smooth"});
+  $("#next").onclick=()=>track.scrollBy({left:step(),behavior:reduce?"auto":"smooth"});
+
+  /* ---- cake menu (from Bake Away's printed menu) ---- */
+  const cakeMenu=[
+    {h:"Everyday cakes",items:[["Butter Cake","Soft, buttery and a classic favourite",1500],["Chocolate Cake","Rich, moist and full of chocolate goodness",1800],["Ribbon Cake","Colourful layers with a soft, sweet taste",1800],["Marble Cake","Vanilla and chocolate swirled into one",1800],["Fruit Cake","Loaded with dried fruit and nuts",2000],["Date Cake","Naturally sweet and moist with dates",2500]]},
+    {h:"Icing & celebration",items:[["Icing Butter Cake","Light butter cake topped with sweet icing",3500,1],["Icing Chocolate Cake","Chocolate cake with creamy icing",4500,1],["Fondant Icing Cake","Smooth fondant, ideal for special occasions",4500,1],["Gateaux of any kind","Freshly made, perfect for any celebration",5000,1]]},
+    {h:"Signature cakes",items:[["Coffee Cake","Moist, fluffy and infused with coffee flavour",5000],["Red Velvet Cake","Velvety red sponge with cream cheese frosting",6000],["Customised Swiss Roll","Soft sponge rolled with your choice of filling",1800,1]]},
+    {h:"By the piece",items:[["Lamingtons","Sponge squares coated in chocolate and coconut",180,0,1],["Chocolate Brownies","Fudgy, rich and perfectly sweet",200,0,1]]}
+  ];
+  const rsn=n=>"Rs "+n.toLocaleString("en-LK");
+  $("#menuCols").innerHTML=cakeMenu.map(g=>`<div class="menu-card"><h3>${g.h}</h3>${g.items.map(([n,d,p,from,pc])=>`<div class="m-item"><div><b>${n}</b><small>${d}</small></div><div class="m-price">${from?"<i>from</i>":""}${rsn(p)}${pc?"<i>per piece</i>":""}</div><button class="add confetti-btn" data-add="${n}" aria-label="Add ${n} to order">+</button></div>`).join("")}</div>`).join("");
+  const dlg=$("#menuDlg");
+  $("#openMenu").onclick=()=>{if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","")};
+  $("#closeMenu").onclick=()=>dlg.close?dlg.close():dlg.removeAttribute("open");
+  dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
+
+  const now=new Date();
+  $("#todayLine").textContent="Fresh today, "+now.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"});
+  /* weekend donut offer line */
+  const wd=now.getDay();
+  $("#offerLine").textContent=(wd===6||wd===0)?"🍩 On now: this weekend only!":"🍩 Starts Saturday: "+(6-wd)+" day"+(6-wd===1?"":"s")+" to go";
+
+  /* ---- cake builder ---- */
+  const opts={
+    /* PRICES (Rs): tiers = base price; cake, filling and frosting = extra per tier; toppings = extra per cake. Change any number here. */
+    tiers:{h:"How many tiers?",base:1,items:[{id:"1",l:"One tier",p:3500},{id:"2",l:"Two tiers",p:5000},{id:"3",l:"Three tiers",p:9000}]},
+    sponge:{h:"Choose your cake",per:1,items:[{id:"butter",l:"Butter",c:"#F3D9A4",p:0},{id:"choc",l:"Chocolate",c:"#6B3E2E",p:1000},{id:"velvet",l:"Red velvet",c:"#B8323F",p:2000},{id:"coffee",l:"Coffee",c:"#A0714F",p:1500},{id:"marble",l:"Marble",c:"repeating-linear-gradient(115deg,#F3D9A4 0 18px,#6B3E2E 18px 26px,#F3D9A4 26px 40px)",p:500}]},
+    filling:{h:"Pick a filling",per:1,items:[{id:"straw",l:"Strawberry jam",c:"#D23F5E",p:0},{id:"caramel",l:"Caramel",c:"#C98B5A",p:300},{id:"ganache",l:"Chocolate ganache",c:"#3A211F",p:500},{id:"cream",l:"Fresh cream",c:"#FFFDF8",p:300}]},
+    frosting:{h:"Frost it",per:1,items:[{id:"pink",l:"Strawberry buttercream",c:"#F7A1B5",p:0},{id:"cream",l:"Vanilla buttercream",c:"#FFF6E9",p:0},{id:"choc",l:"Chocolate icing",c:"#4A2C2A",p:500},{id:"fondant",l:"Fondant (white)",c:"#FFFFFF",p:1000},{id:"mint",l:"Mint buttercream",c:"#A8E6CF",p:300}]},
+    toppings:{h:"Add toppings",multi:1,items:[{id:"berry",l:"Fresh strawberries",p:800},{id:"spr",l:"Rainbow sprinkles",p:200},{id:"shard",l:"Chocolate shards",p:500},{id:"candle",l:"Birthday candles",p:150}]}
+  };
+  const state={tiers:"2",sponge:"butter",filling:"straw",frosting:"pink",toppings:new Set(["berry","candle"])};
+  const O=$("#options");let n=0;
+  O.innerHTML=Object.entries(opts).map(([key,g])=>{n++;return `<div class="opt-group"><h3><span class="n">${n}.</span>${g.h}</h3><div class="chips">${g.items.map(it=>{const id=`o-${key}-${it.id}`;const checked=g.multi?state[key].has(it.id):state[key]===it.id;return `<div class="chip"><input type="${g.multi?"checkbox":"radio"}" name="${key}" id="${id}" value="${it.id}" ${checked?"checked":""}><label for="${id}">${it.c?`<span class="sw" style="background:${it.c}"></span>`:""}${it.l} <small class="cp">${g.base?rsn(it.p):it.p?"+"+rsn(it.p)+(g.per?" / tier":""):"included"}</small></label></div>`}).join("")}</div></div>`}).join("");
+  O.addEventListener("change",e=>{const i=e.target;if(i.type==="checkbox"){i.checked?state.toppings.add(i.value):state.toppings.delete(i.value)}else state[i.name]=i.value;render(i.name==="tiers")});
+  const get=(k,id)=>opts[k].items.find(x=>x.id===id);
+  function frostSVG(){return `<svg viewBox="0 0 100 34" preserveAspectRatio="none"><path fill="currentColor" d="M0 6Q0 0 6 0H94Q100 0 100 6V14Q96 14 95 20Q93 28 90 20Q88 14 82 14Q76 14 75 24Q73 32 70 24Q68 14 60 14Q54 14 53 18Q51 24 48 18Q46 14 38 14Q32 14 31 26Q29 34 26 26Q24 14 16 14Q10 14 9 20Q7 26 4 20Q2 14 0 14Z"/></svg>`}
+  let shown=0,pr=null;
+  function setPrice(v){
+    const el=$("#cakePrice");el.dataset.v=v;
+    if(reduce||!shown){shown=v;el.textContent=rsn(v);return}
+    const from=shown,t0=performance.now();cancelAnimationFrame(pr);
+    el.classList.remove("bump");void el.offsetWidth;el.classList.add("bump");
+    (function f(now){const k=Math.min(1,(now-t0)/450),e=1-Math.pow(1-k,3);shown=Math.round(from+(v-from)*e);el.textContent=rsn(shown);if(k<1)pr=requestAnimationFrame(f)})(t0);
+  }
+  function render(anim){
+    const t=+state.tiers,sp=get("sponge",state.sponge),fi=get("filling",state.filling),fr=get("frosting",state.frosting);
+    const widths=[260,200,140].slice(0,t);if(t===1)widths[0]=220;if(t===2){widths[0]=250;widths[1]=180}
+    const stack=$("#bStack");
+    stack.innerHTML=widths.map((w,k)=>`<div class="b-tier" style="width:${w}px;max-width:90%;background:${sp.c};${anim?`animation-delay:${k*.12}s`:"animation:none"}"><span class="fill" style="background:${fi.c}"></span><span class="frost" style="color:${fr.c}">${frostSVG()}</span>${k===t-1?`<div class="toppings" id="tops"></div>`:""}</div>`).join("");
+    const tops=$("#tops");let html="";
+    const tp=state.toppings;
+    if(tp.has("spr")){const cols=["#F7A1B5","#A8E6CF","#C98B5A","#FFFFFF","#FFB938"];for(let k=0;k<14;k++)html+=`<span class="tp spr" style="left:${6+k*6.5}%;bottom:${-6+(k%3)*4}px;background:${cols[k%5]};transform:rotate(${(k*47)%180}deg)"></span>`}
+    if(tp.has("shard"))[18,48,74].forEach((l,k)=>html+=`<span class="tp shard" style="left:${l}%;transform:rotate(${k*25-20}deg)"></span>`);
+    if(tp.has("berry"))[10,32,58,80].forEach(l=>html+=`<span class="tp berry" style="left:${l}%"></span>`);
+    if(tp.has("candle"))[38,50,62].forEach(l=>html+=`<span class="tp candle" style="left:${l}%"></span>`);
+    tops.innerHTML=html;
+    const tierP=get("tiers",state.tiers).p,flav=(sp.p+fi.p+fr.p)*t,topP=[...tp].reduce((a,id)=>a+get("toppings",id).p,0);
+    setPrice(tierP+flav+topP);
+    $("#priceBreak").textContent=`${get("tiers",state.tiers).l} ${rsn(tierP)}`+(flav?` + flavours ${rsn(flav)}`:"")+(topP?` + toppings ${rsn(topP)}`:"");
+    $("#cakeName").textContent=`${get("tiers",state.tiers).l}: ${sp.l.toLowerCase()} cake with ${fi.l.toLowerCase()} and ${fr.l.toLowerCase()}`+(tp.size?`, topped with ${[...tp].map(id=>get("toppings",id).l.toLowerCase()).join(" & ")}`:"");
+  }
+  render(true);
+  $("#sendCake").addEventListener("click",()=>{
+    const note=$("#f-note");note.value=(note.value?note.value.replace(/\s*$/,"")+"\n":"")+"Custom cake: "+$("#cakeName").textContent+" (estimated "+rsn(+$("#cakePrice").dataset.v)+")";
+    $("#f-item").selectedIndex=1;count++;$("#basketCount").textContent=count;
+    toast("Cake added to your order form below");
+    setTimeout(()=>document.getElementById("order").scrollIntoView({behavior:reduce?"auto":"smooth"}),400);
+  });
+
+  /* ---- celebrations ---- */
+  const gal=[
+    {n:"Weddings",d:"Mr & Mrs cupcakes in ivory buttercream, made to match your colours",img:"cupcakes-wedding.jpg"},
+    {n:"Birthdays",d:"Chocolate layer cake with fresh strawberries, or any cake from the menu",img:"cake-chocolate-layer.jpg"},
+    {n:"Christmas",d:"Chocolate cupcakes with festive trees, holly and Santa hats",img:"cupcakes-christmas.jpg"},
+    {n:"Halloween",d:"Spooky witch cupcakes for parties, classrooms and trick-or-treaters",img:"cupcake-halloween.jpg"}
+  ];
+  $("#gGrid").innerHTML=gal.map(c=>`<article class="g-card"><div class="g-photo"><img data-img="${c.img}" alt="${c.n} bakes from Bake Away"></div><div class="g-body"><h3>${c.n}</h3><p style="font-size:.93rem;color:var(--ganache-soft)">${c.d}</p><div class="meta"><a href="https://wa.me/94776480144?text=${encodeURIComponent("Hi Bake Away! I'd like a quote for a "+c.n.toLowerCase()+" order.")}" target="_blank" rel="noopener">Ask for a quote →</a></div></div></article>`).join("");
+
+  /* ---- hours ---- */
+  const hours=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"].map(d=>[d,"8:00 am – 10:00 pm"]);
+  const di=(now.getDay()+6)%7;
+  $("#hoursTable").innerHTML=hours.map((h,i)=>`<tr class="${i===di?"today":""}"><td>${h[0]}${i===di?" (today)":""}</td><td>${h[1]}</td></tr>`).join("");
+  $("#openNow").textContent="Open today · "+hours[di][1];
+
+  /* ---- form ---- */
+  const dateIn=$("#f-date");const min=new Date(now.getTime()+2*864e5);dateIn.min=min.toISOString().slice(0,10);dateIn.value=dateIn.min;
+  /* Where orders go. whatsapp = Bake Away's WhatsApp number (country code, no +).
+     email = the inbox that receives orders. endpoint = order.php on your own hosting (sends the email automatically). */
+  const ORDER={whatsapp:"94776480144",email:"",endpoint:"order.php"};
+  const live=/^https?:$/.test(location.protocol)&&!/claude|usercontent/.test(location.hostname);
+  const esc=t=>t.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  $("#orderForm").addEventListener("submit",async e=>{
+    e.preventDefault();
+    const v=id=>$(id).value.trim();
+    const name=$("#f-name"),phone=$("#f-phone"),mail=$("#f-email");let ok=true;
+    [name,phone].forEach(f=>{if(!f.value.trim()){f.style.borderColor="#D23F5E";ok=false}else f.style.borderColor=""});
+    if(mail.value.trim()&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail.value.trim())){mail.style.borderColor="#D23F5E";ok=false}else mail.style.borderColor="";
+    const s=$("#success");s.hidden=false;
+    if(!ok){s.style.background="#FDE3EA";s.textContent="Please add your name and phone number (and check your email address) so we can confirm your order.";return}
+    s.style.background="";
+    const when=new Date(dateIn.value).toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+    const order={name:v("#f-name"),phone:v("#f-phone"),email:v("#f-email"),type:$("#f-item").value,how:$("#f-how").value,date:when,address:v("#f-addr"),details:v("#f-note")};
+    const text=`*New Bake Away order*\n\nName: ${order.name}\nPhone: ${order.phone}`+(order.email?`\nEmail: ${order.email}`:"")+`\nOrder type: ${order.type}\n${order.how} on ${order.date}`+(order.address?`\nAddress: ${order.address}`:"")+(order.details?`\n\nOrder & notes:\n${order.details}`:"");
+    const wa=`https://wa.me/${ORDER.whatsapp}?text=${encodeURIComponent(text)}`;
+    const mailto=ORDER.email?`mailto:${ORDER.email}?subject=${encodeURIComponent("New Bake Away order from "+order.name)}&body=${encodeURIComponent(text.replace(/\*/g,""))}`:"";
+    const w=window.open(wa,"_blank");if(w)try{w.opener=null}catch(err){}
+    let emailed=false;
+    if(live&&ORDER.endpoint){
+      const b=$("#submitBtn");b.disabled=true;b.textContent="Sending...";
+      try{const r=await fetch(ORDER.endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(order)});emailed=(await r.json()).ok===true}catch(err){}
+      b.disabled=false;b.textContent="Send my order";
+    }
+    s.innerHTML=`<div>Thank you, ${esc(order.name.split(" ")[0])}! ${emailed?"Your order has been emailed to Bake Away. ":""}${w?"WhatsApp has opened with your order filled in. Just press send so it reaches us.":"Tap the button below to send your order to us on WhatsApp."}</div><div class="sent-actions"><a class="btn wa" href="${wa}" target="_blank" rel="noopener">Send order on WhatsApp</a>${mailto&&!emailed?`<a class="btn" href="${mailto}">Send by email instead</a>`:""}</div>`;
+  });
+
+  /* ---- copy number ---- */
+  $("#copyNum").addEventListener("click",()=>{
+    const txt=$("#waNum").textContent;
+    const fallback=()=>{const r=document.createRange();r.selectNodeContents($("#waNum"));const sel=getSelection();sel.removeAllRanges();sel.addRange(r);toast("Number selected. Press copy to save it")};
+    try{navigator.clipboard.writeText(txt).then(()=>toast("Number copied"),fallback)}catch(err){fallback()}
+  });
+
+  /* ---- confetti ---- */
+  const cv=$("#confetti"),ctx=cv.getContext("2d");let parts=[],raf=null;
+  function size(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+  size();addEventListener("resize",size);
+  const cols=["#F7A1B5","#A8E6CF","#C98B5A","#FFF6E9","#E57C96","#FFB938"];
+  function burst(x,y){
+    if(reduce)return;
+    for(let i=0;i<34;i++){const a=Math.random()*Math.PI*2,sp=3+Math.random()*6;parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-4,w:3+Math.random()*3,h:8+Math.random()*6,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:cols[i%cols.length],life:70+Math.random()*30})}
+    if(!raf)raf=requestAnimationFrame(tick);
+  }
+  function tick(){
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    parts=parts.filter(p=>p.life>0);
+    parts.forEach(p=>{p.vy+=.25;p.vx*=.98;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.life--;ctx.save();ctx.globalAlpha=Math.min(1,p.life/30);ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;ctx.beginPath();ctx.roundRect?ctx.roundRect(-p.w/2,-p.h/2,p.w,p.h,2):ctx.rect(-p.w/2,-p.h/2,p.w,p.h);ctx.fill();ctx.restore()});
+    raf=parts.length?requestAnimationFrame(tick):null;
+    if(!raf)ctx.clearRect(0,0,innerWidth,innerHeight);
+  }
+  document.addEventListener("click",e=>{const b=e.target.closest(".confetti-btn, .btn");if(b){const r=b.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2)}});
+  baImgs();
+})();
+</script>
+
+</body></html>
