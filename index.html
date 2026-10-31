@@ -672,7 +672,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 
 /* ---------- Offices (inside "Talk to a real person") ---------- */
-.offices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-items: start; margin-top: clamp(2rem, 4vw, 3rem); }
+.offices { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; align-items: start; margin-top: clamp(2rem, 4vw, 3rem); }
 @media (max-width: 900px) { .offices { grid-template-columns: 1fr; } }
 .office { background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 1.3rem 1.4rem; display: grid; gap: 1rem; align-content: start; min-width: 0; }
 .office--dark { background: var(--navy); border-color: var(--navy); color: var(--white); }
@@ -681,8 +681,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .office-head small { display: block; font-size: 0.84rem; color: var(--ink-soft); }
 .office--dark .office-head small { color: rgba(255, 255, 255, 0.65); }
 .office-code { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-family: var(--f-mono); font-weight: 500; font-size: 0.85rem; letter-spacing: 0.06em; background: var(--mint-soft); color: var(--green-deep); flex: none; }
+.office-code svg { width: 22px; height: 22px; }
 .office--dark .office-code { background: var(--coral-btn); color: var(--white); }
 .office-people { list-style: none; margin: 0; padding: 0; display: grid; }
+@media (min-width: 900px) { .office-people { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 2.5rem; } }
 .office-people li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem 1rem; padding: 0.8rem 0; border-top: 1px solid var(--line); }
 .office--dark .office-people li { border-top-color: rgba(255, 255, 255, 0.12); }
 .office-people .who { display: grid; min-width: 0; }
@@ -873,7 +875,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
         </li>
         <li class="step">
           <span class="step-num">03</span>
-          <span class="meta">Typically 1 to 4 weeks</span>
+          <span class="meta">1–4, 3–5 or 5–8 weeks, by project size</span>
           <h3>We design, build &amp; launch</h3>
           <p>You review every stage. We handle hosting, your domain and a handover session for your team.</p>
         </li>
@@ -972,14 +974,14 @@ button, input, select, textarea { font: inherit; color: inherit; }
   </div>
 
   <!-- ============ PRICING ============ -->
-  <section class="section pricing" id="pricing" aria-labelledby="pricingTitle" hidden>
+  <section class="section pricing" id="pricing" aria-labelledby="pricingTitle">
     <div class="container">
       <div class="section-head">
         <div>
           <span class="eyebrow">Pricing</span>
-          <h2 class="h2" id="pricingTitle">Clear starting prices, in US dollars</h2>
+          <h2 class="h2" id="pricingTitle">Three packages, sized to your project</h2>
         </div>
-        <p class="lede">Every project gets a fixed price in your proposal, so you know the full cost before we start. These are starting prices for each package.</p>
+        <p class="lede">Every website fits one of three packages, depending on its size. Your proposal gives a fixed price in US dollars, so you know the full cost before we start.</p>
       </div>
       <div class="price-grid" id="priceGrid"></div>
       <p class="price-note">Domain, hosting and paid third-party tools are extra where needed, and listed in your proposal. <a href="terms.html">Terms of service</a></p>
@@ -992,7 +994,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
       <div class="why-copy">
         <span class="eyebrow">About us</span>
         <h2 class="h2">A studio that shows you, instead of telling you</h2>
-        <p class="lede">Trace Solutions Global is a web studio based in Sri Lanka, with a UK contact number, building websites for businesses all over the world. Wherever you are, you get the same care: a team that listens, works around your time zone and treats your business with the respect it deserves.</p>
+        <p class="lede">Trace Solutions Global is a web studio based in Sri Lanka, building websites for businesses in the UK, the US, Australia and Sri Lanka. Wherever you are, you get the same care: a team that listens, works around your time zone and treats your business with the respect it deserves.</p>
         <p class="lede">Our name comes from the first step of any good design: tracing the outline before filling in the detail. We work the same way with every client, in every country. Agree on the shape first, then build exactly what you need.</p>
         <a class="link-arrow" href="#contact">Talk to the team <span>→</span></a>
       </div>
@@ -1028,12 +1030,12 @@ button, input, select, textarea { font: inherit; color: inherit; }
         <div class="live-copy">
           <span class="live-badge"><span class="dot" aria-hidden="true"></span>Real people, not bots</span>
           <h2 class="h2" id="liveTitle">Talk to a real person</h2>
-          <p class="lede">Questions before you start? Call, WhatsApp or text our team directly. We're based in Sri Lanka with a UK number too, and a real member of the team picks up every message, wherever you are in the world.</p>
+          <p class="lede">Questions before you start? Call, WhatsApp or text our team directly. We're based in Sri Lanka and work with clients in the UK, the US, Australia and Sri Lanka, and a real member of the team picks up every message.</p>
         </div>
         <div class="live-ways">
           <a class="live-way live-way--wa" data-site-link="whatsapp" href="#" target="_blank" rel="noopener">
             <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg></span>
-            <span class="txt"><b>Chat on WhatsApp</b><small>Message our UK team and a real person picks it up</small></span>
+            <span class="txt"><b>Chat on WhatsApp</b><small>Message our team and a real person picks it up</small></span>
             <span class="go" aria-hidden="true">→</span>
           </a>
           <a class="live-way" data-site-link="whatsappCall" href="#" target="_blank" rel="noopener">
@@ -1177,20 +1179,18 @@ TS.site = {
   /* Full page URLs. Leave one blank ("") to hide its link. */
   instagram: "https://www.instagram.com/tracesolutionsglobal/",
   facebook: "https://www.facebook.com/p/Trace-Solutions-61594900683412/",
-  location: "Based in Sri Lanka, with a UK number",
+  location: "Based in Sri Lanka, serving the UK, US, Australia and Sri Lanka",
   hours: "Replies within one working day",
   website: "tracesolutionsglobal.com",
-  /* Starting prices in US dollars for the Pricing section, one per package.
-     The section stays hidden until at least one price is filled in (0 = not set). */
+  /* Optional starting prices in US dollars for the Pricing section, one per package.
+     0 = not set: that card shows "Fixed quote" instead of a "From" price. */
   pricing: { starter: 0, growth: 0, pro: 0 },
 
   /* Offices and direct numbers shown in "Talk to a real person".
      Each number gets Call, WhatsApp and Text buttons. */
   offices: [
-    { country: "United Kingdom", label: "UK number", code: "UK", note: "WhatsApp, calls and texts", people: [
-      { name: "Sales line", phone: "+44 7548 692972" }
-    ] },
-    { country: "Sri Lanka", label: "Sri Lanka team", code: "LK", note: "Calls, WhatsApp and texts", people: [
+    { label: "Contact our team", code: "", note: "WhatsApp, call or text any of us", people: [
+      { name: "Sales line", phone: "+44 7548 692972" },
       { name: "Azzy", phone: "+94 76 831 0321" },
       { name: "Ocean", phone: "+94 77 723 4441" },
       { name: "Mandy", phone: "+94 77 780 9199" }
@@ -1982,7 +1982,7 @@ window.TS = window.TS || {};
     const waText = encodeURIComponent("Hi Trace Solutions Global, I'd like to talk about a website.");
     el.innerHTML = (TS.site.offices || []).map((o, i) => `
       <article class="office${i === 0 ? " office--dark" : ""}">
-        <div class="office-head"><span class="office-code">${o.code}</span><div><h3>${o.label || o.country + " office"}</h3><small>${o.note || ""}</small></div></div>
+        <div class="office-head"><span class="office-code">${o.code || TS.icon("chat")}</span><div><h3>${o.label || o.country + " office"}</h3><small>${o.note || ""}</small></div></div>
         <ul class="office-people">
           ${o.people.map(pp => `<li>
             <div class="who"><b>${pp.name}</b><span class="num">${pp.phone}</span></div>
@@ -2129,18 +2129,14 @@ window.TS = window.TS || {};
   function initPricing() {
     const pr = TS.site.pricing || {};
     const PKG = [
-      { id: "starter", name: "Starter", weeks: "2–3 weeks", desc: "A polished business website with the essentials.", points: ["Mobile-first design", "WhatsApp and contact buttons", "Google search basics"] },
+      { id: "starter", name: "Starter", weeks: "1–4 weeks", desc: "A polished business website with the essentials.", points: ["Mobile-first design", "WhatsApp and contact buttons", "Google search basics"] },
       { id: "growth", name: "Growth", weeks: "3–5 weeks", desc: "More pages and tools that bring in bookings and enquiries.", points: ["Everything in Starter", "Bookings, enquiry forms or a menu", "Reviews, gallery and maps"], featured: true },
       { id: "pro", name: "Pro", weeks: "5–8 weeks", desc: "Online sales, bookings or several languages, built to scale.", points: ["Everything in Growth", "Online store or payments", "Several languages"] }
     ];
-    const has = PKG.some(p => +pr[p.id] > 0);
-    $("#pricing").hidden = !has;
-    $$("[data-pricing-link]").forEach(a => { a.closest("li").hidden = !has; });
-    if (!has) return;
     const money = n => "$" + Number(n).toLocaleString("en-US");
     $("#priceGrid").innerHTML = PKG.map(p => `<article class="price-card${p.featured ? " is-featured" : ""}">
       <div class="pc-top"><h3>${p.name}</h3><span class="tag">${p.weeks}</span></div>
-      <div class="pc-price">${+pr[p.id] > 0 ? `<small>From</small>${money(pr[p.id])}` : `<small>Price</small>On request`}</div>
+      <div class="pc-price">${+pr[p.id] > 0 ? `<small>From</small>${money(pr[p.id])}` : `<small>Price</small>Fixed quote`}</div>
       <p>${p.desc}</p>
       <ul>${p.points.map(x => `<li>${x}</li>`).join("")}</ul>
       <a class="btn ${p.featured ? "btn--coral" : "btn--outline"}" href="build.html">Build your concept <span class="arrow">→</span></a>
