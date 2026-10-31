@@ -8,16 +8,16 @@
     email: "sales@tracesolutionsglobal.com",
     instagram: "https://www.instagram.com/tracesolutionsglobal/",
     facebook: "https://www.facebook.com/p/Trace-Solutions-61594900683412/",
-    location: "Based in Sri Lanka, with a UK number",
+    location: "Based in Sri Lanka, serving the UK, US, Australia and Sri Lanka",
     hours: "Replies within one working day",
     /* Show "Pricing" in the footer once starting prices are set in index.html (TS.site.pricing). */
-    showPricing: false,
+    showPricing: true,
     /* First number is the main line used by the header buttons. */
     phones: [
-      { name: "UK sales line", phone: "+44 7548 692972" },
-      { name: "Azzy · Sri Lanka", phone: "+94 76 831 0321" },
-      { name: "Ocean · Sri Lanka", phone: "+94 77 723 4441" },
-      { name: "Mandy · Sri Lanka", phone: "+94 77 780 9199" }
+      { name: "Sales line", phone: "+44 7548 692972" },
+      { name: "Azzy", phone: "+94 76 831 0321" },
+      { name: "Ocean", phone: "+94 77 723 4441" },
+      { name: "Mandy", phone: "+94 77 780 9199" }
     ]
   };
   window.TS_CONTACT = C;
@@ -47,8 +47,9 @@
 @media (max-width:520px){.tsf-grid{grid-template-columns:1fr}}
 .tsf a{color:inherit;text-decoration:none}
 .tsf a:hover{color:#fff}
+.tsf ul > li > a{display:inline-block;padding:.3rem 0}
 .tsf h4{color:#fff;font-size:.95rem;font-weight:700;margin:0 0 .9rem;letter-spacing:0}
-.tsf ul{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.tsf ul{list-style:none;margin:0;padding:0;display:grid;gap:.25rem}
 .tsf-logo{display:inline-flex;align-items:center;gap:.6rem;color:#fff;font:600 .9rem/1 Montserrat,"Plus Jakarta Sans",sans-serif;letter-spacing:.12em}
 .tsf-logo svg{width:32px;height:24px}
 .tsf-logo .g{color:#3DDC84}
@@ -57,7 +58,7 @@
 .tsf-phone small{display:block;font-size:.78rem;color:rgba(255,255,255,.55)}
 .tsf-phone b{color:#fff;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
 .tsf-pa{display:inline-flex;gap:.35rem}
-.tsf-pa a{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .65rem;border-radius:999px;font-size:.8rem;font-weight:700;background:rgba(255,255,255,.08)}
+.tsf-pa a{display:inline-flex;align-items:center;gap:.3rem;min-height:36px;padding:.45rem .8rem;border-radius:999px;font-size:.8rem;font-weight:700;background:rgba(255,255,255,.08)}
 .tsf-pa a.wa{background:#25D366;color:#06331A}
 .tsf-pa a svg{width:14px;height:14px}
 .tsf-bottom{margin-top:2.6rem;padding-top:1.4rem;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-wrap:wrap;justify-content:space-between;gap:.8rem 1.4rem;font-size:.85rem}
@@ -101,7 +102,7 @@
         </ul>
       </div>
       <div>
-        <h4>Talk to a real person</h4>
+        <h4>Contact our team</h4>
         <ul>${C.phones.map(phone).join("")}</ul>
       </div>
       <div>
