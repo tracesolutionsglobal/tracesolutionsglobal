@@ -427,10 +427,42 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
 
 <script src="supabase.js"></script>
 <script src="lead-finder.js"></script>
+<script src="pdf-plan.js"></script>
 <script>
 (function(){
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+  /* ---------- customer PDF plans ----------
+     Rebuilds the exact PDF the customer got in the Concept Builder from the saved brief.
+     Keep these details in step with TS.site in build.html. */
+  const PDF_SITE = { name: "Trace Solutions Global", email: "sales@tracesolutionsglobal.com", phoneDisplay: "+44 7548 692972", whatsapp: "447548692972" };
+  function downloadPdf(brief){
+    if (!brief || !window.TS || !TS.pdf) return toast("The PDF tool didn't load. Refresh and try again.");
+    try {
+      const blob = new Blob([TS.pdf.plan(brief, PDF_SITE)], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob), a = document.createElement("a");
+      a.href = url; a.download = `Trace-website-plan-${brief.ref || "concept"}.pdf`;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    } catch (e) { toast("Couldn't create the PDF."); }
+  }
+  const pdfBtn = p => p && p.brief ? `<button type="button" class="btn btn-ghost" data-pdf="${esc(p.id)}">Download customer's PDF plan</button>` : "";
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-pdf]");
+    if (b) downloadPdf((projects.find(p => p.id === b.dataset.pdf) || {}).brief);
+  });
+  /* Emails from the Concept Builder link to admin.html#pdf=REF: open that concept and download its PDF. */
+  let pdfFromLink = (location.hash.match(/^#pdf=(.+)$/) || [])[1];
+  function openPdfFromLink(){
+    if (!pdfFromLink) return;
+    const ref = decodeURIComponent(pdfFromLink), p = projects.find(x => x.brief && x.brief.ref === ref);
+    pdfFromLink = "";
+    history.replaceState(null, "", location.pathname);
+    if (!p) return toast(`Concept ${ref} wasn't found.`);
+    openDrawer(p);
+    downloadPdf(p.brief);
+  }
 
   const STAGES = [
     {id:"lead",     label:"Lead",          c:"var(--ink-3)"},
@@ -543,6 +575,7 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
       <p>What the customer submitted. Use the fields below to turn this into a project.</p>
       ${rows ? `<dl>${rows}</dl>` : ""}
       ${msg ? `<div class="msg">${esc(msg)}</div>` : ""}
+      ${pdfBtn(p)}
     </div>`;
   }
   function cardHTML(p){
@@ -758,11 +791,12 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
     }
     if (!editing) render();
     renderConcepts();
+    if (loaded) openPdfFromLink();
   }
   function renderConcepts(){
     const host = $("#conceptList"), stats = $("#conceptStats");
     if (!host) return;
-    const items = projects.filter(p => p.brief).map(p => ({ ...p.brief, received_at: p.createdAt || p.extra && p.extra.createdAt, code: p.code }))
+    const items = projects.filter(p => p.brief).map(p => ({ ...p.brief, received_at: p.createdAt || p.extra && p.extra.createdAt, code: p.code, pid: p.id }))
       .sort((a, b) => String(b.created_at || b.received_at).localeCompare(String(a.created_at || a.received_at)));
     const weekAgo = Date.now() - 7 * 864e5;
     const recent = items.filter(i => Date.parse(i.received_at || i.created_at) > weekAgo).length;
@@ -778,7 +812,8 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
       const notes = (it.notes || []).map(nt => `<dt>${esc(nt.step)}</dt><dd>${esc(nt.text)}</dd>`).join("");
       return `<article class="rev">
         <div class="f" style="grid-column:1/-1"><h3 style="font-size:1.05rem">${esc(b.name || "Unnamed business")} <span class="mono">${esc(it.ref || it.code || "")}</span></h3>
-        <p style="color:var(--ink-2)">${esc([b.type_label, w.type_label, date].filter(Boolean).join(" · "))}</p></div>
+        <p style="color:var(--ink-2)">${esc([b.type_label, w.type_label, date].filter(Boolean).join(" · "))}</p>
+        <p style="margin-top:.6rem">${pdfBtn({ id: it.pid, brief: it })}</p></div>
         <div class="f"><label>Contact</label><div>${esc(c.name || "–")}</div></div>
         <div class="f"><label>Phone</label><div>${esc(c.phone || "–")}</div></div>
         <div class="f"><label>Email</label><div>${esc(c.email || "–")}</div></div>
