@@ -40,6 +40,12 @@
 .tsh-call:hover{border-color:#012228}
 @media (max-width:720px){.tsh-btn{width:40px;padding:0;justify-content:center}.tsh-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
 @media (max-width:480px){.tsh-call{display:none}}
+/* Phones: shrink the logo text so logo, WhatsApp and menu always fit on one row */
+@media (max-width:560px){.site-header .logo .word{font-size:.8rem;letter-spacing:.07em}.site-header .container{gap:.6rem}.tsh-acts{gap:.3rem}}
+@media (max-width:420px){.site-header .logo .word{font-size:.7rem;letter-spacing:.04em}.site-header .logo svg.mark{width:28px;height:21px}.site-header .logo{gap:.45rem}}
+@media (max-width:359px){.tsh-wa{display:none}}
+/* Desktop widths where the full menu shows: keep the header to one row */
+@media (min-width:1241px) and (max-width:1440px){.tsh-btn{width:40px;padding:0;justify-content:center}.tsh-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.tsh-call{display:none}}
 .tsf{background:#012228;color:rgba(255,255,255,.78);padding:3.5rem 0 2rem;font:15px/1.6 "Plus Jakarta Sans",system-ui,sans-serif}
 .tsf .tsf-in{max-width:1200px;margin:0 auto;padding-inline:clamp(16px,4vw,32px)}
 .tsf-grid{display:grid;grid-template-columns:1.2fr 1fr 1.5fr 1.1fr;gap:2.2rem}
