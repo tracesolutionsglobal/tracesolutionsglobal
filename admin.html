@@ -79,6 +79,7 @@ p{margin:0}
 .search svg{width:16px;height:16px;color:var(--ink-3);flex:none}
 .seg{display:inline-flex;background:var(--surface);border:1.5px solid var(--line);border-radius:999px;padding:3px}
 .seg button{border:0;background:transparent;border-radius:999px;padding:.4rem .85rem;font-weight:700;font-size:.85rem;cursor:pointer;color:var(--ink-2)}
+.seg button[hidden]{display:none}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 .select{background:var(--surface);border:1.5px solid var(--line);border-radius:999px;padding:.5rem .9rem;font-weight:600;font-size:.88rem;max-width:100%}
 
@@ -237,20 +238,37 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
 .lf-saved-bar h2{margin-right:auto;font-size:1.2rem}
 .lf-saved-bar h2 b{font-variant-numeric:tabular-nums}
 .lf-history{display:grid;gap:.4rem;margin:0;padding:0;list-style:none}
+.lf-check{display:flex;align-items:center;gap:.4rem;font-size:.84rem;font-weight:700;color:var(--ink-2)}
+.lf-check input{accent-color:var(--green)}
+.lf-contact{white-space:nowrap}
+#lfTableWrap table,#lfSavedWrap table{min-width:1100px}
 .lf-history li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.55rem .8rem;font-size:.86rem;color:var(--ink-2)}
+body.agent{
+  --bg:#d4d4d4; --surface:#f2f2f2; --surface-2:#e7e7e7; --ink:#1a1a1a; --ink-2:#3f3f3f; --ink-3:#5e5e5e;
+  --line:#c6c6c6; --line-2:#dadada;
+  --green:#2a2a2a; --green-deep:#1a1a1a; --mint:#e5e5e5; --mint-soft:#ececec;
+  --coral:#2a2a2a; --coral-soft:#e5e5e5; --amber:#3f3f3f; --amber-soft:#e5e5e5;
+  --grey-soft:#e5e5e5; --shadow:none;
+}
+body.agent .brand svg,body.agent .brand-admin{display:none}
+body.agent .brand-agent{display:block}
+.brand-agent{display:none;font-family:var(--f-ui);font-weight:700;letter-spacing:0;font-size:1rem}
+body.agent .top{background:#cfcfcf;border-bottom-color:#bdbdbd}
+body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
 </style>
 
 <header class="top">
   <div class="wrap">
     <div class="brand">
       <svg viewBox="0 0 322 244" aria-hidden="true" style="color:var(--ink)"><g fill="currentColor"><path d="M4 4h314l-36 56H39z"/><path d="M68 93h59l62 123-48 24z"/><path d="M168 93h87l-45 87z" fill="#1FA75A"/></g></svg>
-      <div><b>TRACE SOLUTIONS <span>G</span>LOBAL</b><small id="whoGuest">Admin</small><small class="who" id="who" hidden></small></div>
+      <div><b class="brand-admin">TRACE SOLUTIONS <span>G</span>LOBAL</b><b class="brand-agent">Lead finder</b><small id="whoGuest">Admin</small><small class="who" id="who" hidden></small></div>
     </div>
     <div class="seg" role="group" aria-label="Section" id="tabs" hidden>
-      <button type="button" data-tab="projects" aria-pressed="true">Projects</button>
-      <button type="button" data-tab="concepts" aria-pressed="false">Concepts</button>
-      <button type="button" data-tab="reviews" aria-pressed="false">Reviews</button>
+      <button type="button" data-tab="projects" data-admin-only aria-pressed="true">Projects</button>
+      <button type="button" data-tab="concepts" data-admin-only aria-pressed="false">Concepts</button>
+      <button type="button" data-tab="reviews" data-admin-only aria-pressed="false">Reviews</button>
       <button type="button" data-tab="finder" aria-pressed="false">Lead finder</button>
+      <button type="button" data-tab="tracker" aria-pressed="false">Lead tracker</button>
     </div>
     <button class="btn btn-primary" id="newBtn" disabled hidden>+ New project</button>
     <button class="btn btn-ghost" id="signOut" hidden>Sign out</button>
@@ -258,8 +276,8 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
 </header>
 
 <form class="login" id="loginView" hidden novalidate>
-  <h1>Admin sign-in</h1>
-  <p>Projects, the lead finder, website orders and customer reviews for Trace Solutions Global.</p>
+  <h1>Team sign-in</h1>
+  <p>Admins open the full dashboard. Agents open the lead finder and their own lead tracker.</p>
   <div class="f"><label for="l-email">Email</label><input id="l-email" type="email" autocomplete="username" required></div>
   <div class="f"><label for="l-pass">Password</label><div class="pass-row"><input id="l-pass" type="password" autocomplete="current-password" required><button type="button" id="showPass" aria-pressed="false" aria-controls="l-pass" aria-label="Show password">Show</button></div></div>
   <div class="err" id="loginErr" hidden></div>
@@ -363,32 +381,40 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
   <p class="lf-status" id="lfStatus" aria-live="polite"></p>
   <div class="list-wrap" id="lfTableWrap" hidden>
     <table>
-      <thead><tr><th>Business</th><th>Type</th><th>Address</th><th>Distance</th><th>Website</th></tr></thead>
+      <thead><tr><th>Business</th><th>Type</th><th>Address</th><th>Distance</th><th>Phone</th><th>Email</th><th>Website</th></tr></thead>
       <tbody id="lfRows"></tbody>
     </table>
   </div>
+  <footer class="lf-foot">
+    <span>Place names and postcodes from <a href="https://postcodes.io" rel="noopener noreferrer">postcodes.io</a> (Ordnance Survey Open Names). Businesses, public phone numbers, public emails, and area boundaries from <a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer">OpenStreetMap</a> via the public Overpass API. A business with no published contact shows “Not listed”. A mile radius is sent with the search. Entire city / area uses the OpenStreetMap boundary, which is too large for some cities on the free service.</span>
+    <span id="lfSaveNote"></span>
+  </footer>
+</main>
+
+<main class="wrap" id="trackerView" hidden>
+  <div class="lf-head">
+    <h2>Lead tracker</h2>
+    <p id="lfTrackerIntro">Leads saved from the lead finder.</p>
+  </div>
   <section class="lf-saved" aria-labelledby="lfSavedTitle">
     <div class="lf-saved-bar">
-      <h2 id="lfSavedTitle">Saved leads <b id="lfLeadCount">0</b></h2>
+      <h2 id="lfSavedTitle"><span id="lfSavedLabel">Saved leads</span> <b id="lfLeadCount">0</b></h2>
       <label class="lf-field" style="min-width:12rem"><span style="position:absolute;width:1px;height:1px;overflow:hidden">Sector</span>
         <select id="lfSectorFilter" aria-label="Filter saved leads by sector"><option value="">All sectors</option></select>
       </label>
+      <label class="lf-check"><input type="checkbox" id="lfReachable"> Has phone or email</label>
       <button type="button" class="btn btn-ghost" id="lfExport">Export CSV</button>
     </div>
     <p class="lf-note" id="lfDbNote"></p>
     <div class="list-wrap" id="lfSavedWrap" hidden>
       <table>
-        <thead><tr><th>Business</th><th>Sector</th><th>Category</th><th>Address</th><th>Area</th><th>Website</th></tr></thead>
+        <thead><tr><th>Business</th><th>Sector</th><th>Category</th><th>Address</th><th>Area</th><th>Phone</th><th>Email</th><th>Website</th><th>Saved by</th></tr></thead>
         <tbody id="lfSavedRows"></tbody>
       </table>
     </div>
     <h3 style="font-size:1rem">Search history</h3>
     <ul class="lf-history" id="lfHistory"></ul>
   </section>
-  <footer class="lf-foot">
-    <span>Place names and postcodes from <a href="https://postcodes.io" rel="noopener noreferrer">postcodes.io</a> (Ordnance Survey Open Names). Businesses and area boundaries from <a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer">OpenStreetMap</a> via the public Overpass API. A mile radius is sent with the search. Entire city / area uses the OpenStreetMap boundary, which is too large for some cities on the free service.</span>
-    <span id="lfSaveNote"></span>
-  </footer>
 </main>
 
 <main class="wrap" id="projectsView" hidden>
@@ -896,44 +922,81 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
   $("#rq").addEventListener("input", renderReviews);
 
   /* ---------- sign-in and tabs ---------- */
-  let tab = "projects", timer = null;
+  let tab = "projects", timer = null, role = "";
   function showTab(t){
+    if (role === "agent" && t !== "finder" && t !== "tracker") t = "finder";
     tab = t;
     document.querySelectorAll("[data-tab]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.tab === t)));
     $("#projectsView").hidden = t !== "projects";
     $("#conceptsView").hidden = t !== "concepts";
     $("#reviewsView").hidden = t !== "reviews";
     $("#finderView").hidden = t !== "finder";
-    $("#newBtn").hidden = t !== "projects";
+    $("#trackerView").hidden = t !== "tracker";
+    $("#newBtn").hidden = role !== "admin" || t !== "projects";
     if (t === "reviews") loadReviews();
-    else if (t === "finder" && window.TSLeadFinder) TSLeadFinder.show();
-    else loadProjects();
+    else if (t === "finder" || t === "tracker") { if (window.TSLeadFinder) TSLeadFinder.show(); }
+    else if (role === "admin") loadProjects();
   }
   document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
   function adminLabel(email){
     const known = {
-      "ocean.tracesolutions@outlook.com": "Ocean",
-      "azzy.tracesolutions@outlook.com": "Azzy",
-      "mandy.tracesolutions@outlook.com": "Mandy"
+      "ocean@tracesolutions.com": "Ocean",
+      "azzy@tracesolutions.com": "Azzy",
+      "mandy@tracesolutions.com": "Mandy",
+      "shifar@tracesolutions.com": "Shifar",
+      "ummer@tracesolutions.com": "Ummer"
     };
     const e = String(email || "").toLowerCase();
-    return known[e] || (e.split("@")[0] || "Admin");
+    return known[e] || (e.split("@")[0] || "Team");
   }
-  function signedIn(){
-    canWrite = true;
+  function applyRoleChrome(){
+    document.body.classList.toggle("agent", role === "agent");
+    document.querySelectorAll("[data-admin-only]").forEach(el => { el.hidden = role !== "admin"; });
+    $("#newBtn").hidden = role !== "admin";
+    $("#newBtn").disabled = role !== "admin";
+  }
+  async function enter(){
+    let admin = false, agent = false;
+    try { admin = !!(await TSDB.rest("rpc/is_admin", { method:"POST", body:{} })); } catch (e) {}
+    if (!admin) {
+      try { agent = !!(await TSDB.rest("rpc/is_agent", { method:"POST", body:{} })); } catch (e) {}
+    }
+    if (!admin && !agent) {
+      TSDB.signOut();
+      signOut();
+      const err = $("#loginErr");
+      if (err) { err.textContent = "This account doesn't have access."; err.hidden = false; }
+      return;
+    }
+    role = admin ? "admin" : "agent";
+    canWrite = role === "admin";
     const email = (TSDB.session() && TSDB.session().email) || "";
-    $("#who").textContent = "Signed in as " + adminLabel(email) + (email ? "\n" + email : "");
+    let label = adminLabel(email);
+    if (role === "agent") {
+      try {
+        const rows = await TSDB.rest("agents?select=name&limit=1");
+        if (rows && rows[0] && rows[0].name) label = rows[0].name;
+      } catch (e) {}
+    }
+    $("#who").textContent = "Signed in as " + label + (role === "agent" ? " · Agent" : "") + (email ? "\n" + email : "");
     $("#who").hidden = false;
     $("#whoGuest").hidden = true;
     $("#loginView").hidden = true;
-    $("#tabs").hidden = false; $("#signOut").hidden = false; $("#newBtn").disabled = false;
-    showTab(tab);
+    $("#tabs").hidden = false;
+    $("#signOut").hidden = false;
+    applyRoleChrome();
+    if (window.TSLeadFinder) TSLeadFinder.setRole(role);
+    showTab(role === "agent" ? "finder" : "projects");
     clearInterval(timer);
-    timer = setInterval(() => { if (document.hidden) return; if (tab === "reviews") { if (!draftNew && !document.activeElement.closest("[data-rev]")) loadReviews(); } else if (tab !== "finder") loadProjects(); }, 30000);
+    timer = null;
+    if (role === "admin") {
+      timer = setInterval(() => { if (document.hidden) return; if (tab === "reviews") { if (!draftNew && !document.activeElement.closest("[data-rev]")) loadReviews(); } else if (tab !== "finder" && tab !== "tracker") loadProjects(); }, 30000);
+    }
   }
   function signOut(){
-    TSDB.signOut(); clearInterval(timer); canWrite = false; loaded = false; projects = []; reviews = [];
-    $("#projectsView").hidden = true; $("#conceptsView").hidden = true; $("#reviewsView").hidden = true; $("#finderView").hidden = true;
+    TSDB.signOut(); clearInterval(timer); timer = null; canWrite = false; loaded = false; projects = []; reviews = []; role = "";
+    document.body.classList.remove("agent");
+    $("#projectsView").hidden = true; $("#conceptsView").hidden = true; $("#reviewsView").hidden = true; $("#finderView").hidden = true; $("#trackerView").hidden = true;
     if (window.TSLeadFinder) TSLeadFinder.reset();
     $("#tabs").hidden = true; $("#signOut").hidden = true; $("#newBtn").hidden = true;
     $("#who").hidden = true; $("#whoGuest").hidden = false;
@@ -954,19 +1017,19 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
     err.hidden = true; btn.disabled = true;
     try {
       await TSDB.signIn($("#l-email").value.trim(), $("#l-pass").value);
-      if (!(await TSDB.rest("rpc/is_admin", { method:"POST", body:{} }))) { TSDB.signOut(); throw new Error("This account doesn't have admin access."); }
-      $("#l-pass").value = ""; signedIn();
+      $("#l-pass").value = "";
+      await enter();
     }
     catch (ex) { err.textContent = ex.message === "Invalid login credentials" ? "That email and password don't match." : ex.message; err.hidden = false; }
     finally { btn.disabled = false; }
   });
-  document.addEventListener("visibilitychange", () => { if (!document.hidden && TSDB.session() && tab === "projects" && !editing) loadProjects(); });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && role === "admin" && TSDB.session() && tab === "projects" && !editing) loadProjects(); });
 
   render();
   if (!TSDB.ready()) {
     $("#loginView").hidden = false;
     $("#loginView").innerHTML = `<h1>Database not connected</h1><p>Paste your Supabase Project URL and anon key into <span class="mono">supabase.js</span>, then reload this page.</p>`;
-  } else if (TSDB.session()) signedIn();
+  } else if (TSDB.session()) enter();
   else signOut();
 })();
 </script>

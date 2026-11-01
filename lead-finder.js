@@ -2,6 +2,7 @@
    Postcodes and places: https://api.postcodes.io (no key, CORS open).
    Area boundaries and businesses: OpenStreetMap Nominatim and Overpass.
    Nominatim is only asked after a place is chosen or a search starts, not on every keystroke.
+   Phone and email come only from public OpenStreetMap contact tags on that business.
    Website status uses Cloudflare DNS. No private keys. */
 (function () {
   const root = document.getElementById("finderView");
@@ -28,6 +29,7 @@
   const savedWrap = $("lfSavedWrap");
   const leadCountEl = $("lfLeadCount");
   const sectorFilter = $("lfSectorFilter");
+  const contactOnly = $("lfReachable");
   const historyEl = $("lfHistory");
   const dbNote = $("lfDbNote");
   const exportBtn = $("lfExport");
@@ -93,7 +95,7 @@
 
   const cache = new Map();
   const webCache = new Map();
-  const state = { location: null, saved: [], savesMode: "local", loaded: false, active: -1, options: [], suggestGen: 0, searchGen: 0, leads: [], history: [], dbOk: null };
+  const state = { location: null, saved: [], savesMode: "local", loaded: false, active: -1, options: [], suggestGen: 0, searchGen: 0, leads: [], history: [], dbOk: null, contactCols: null, role: "admin" };
   let lastSearch = null;
   let suggestTimer = null;
   let suggestAbort = null;
@@ -473,7 +475,7 @@
     if ([...savedEl.options].some((o) => o.value === current)) savedEl.value = current;
     removeBtn.disabled = !savedEl.value;
     saveNote.textContent = state.savesMode === "db"
-      ? "Saved destinations are stored on your admin account."
+      ? (state.role === "agent" ? "Saved destinations are stored on your login." : "Saved destinations are stored on your admin account.")
       : "Saved destinations are kept in this browser until you run the saved_destinations section of supabase-setup.sql.";
     renderChrome();
   }
@@ -604,6 +606,35 @@
     throw new Error(lastErr);
   }
 
+  function cleanPhone(tags) {
+    const raw = tags.phone || tags["contact:phone"] || tags.mobile || tags["contact:mobile"] || "";
+    const first = String(raw).split(/[;,]/)[0].replace(/^tel:/i, "").trim().replace(/\s+/g, " ");
+    const digits = first.replace(/\D/g, "");
+    if (digits.length < 10 || digits.length > 15) return "";
+    if (/[a-z]/i.test(first)) return "";
+    return first.slice(0, 40);
+  }
+  function cleanEmail(tags) {
+    let raw = String(tags.email || tags["contact:email"] || "").split(/[;,]/)[0].trim();
+    const angled = raw.match(/<([^>]+)>/);
+    if (angled) raw = angled[1].trim();
+    raw = raw.toLowerCase();
+    if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(raw)) return "";
+    if (raw.endsWith("@example.com") || raw.startsWith("noreply@") || raw.startsWith("no-reply@")) return "";
+    return raw.slice(0, 160);
+  }
+  function contactLink(kind, value) {
+    if (!value) return "Not listed";
+    if (kind === "phone") {
+      let dial = value.replace(/[^\d+]/g, "");
+      if (dial.startsWith("+440")) dial = "+44" + dial.slice(4);
+      return `<a href="tel:${esc(dial)}">${esc(value)}</a>`;
+    }
+    return `<a href="mailto:${esc(value)}">${esc(value)}</a>`;
+  }
+  function missingColumn(err) {
+    return /column/i.test(err && err.message || "") && /phone|email/i.test(err.message || "");
+  }
   function cleanWeb(raw) {
     let s = String(raw || "").trim().split(/[;\s]/)[0];
     if (!s) return "";
@@ -625,6 +656,8 @@
       name: tags.name || tags.brand || "Unnamed place",
       kind: tags.amenity || tags.shop || tags.tourism || tags.leisure || tags.office || "place",
       address: [tags["addr:housenumber"], tags["addr:street"], tags["addr:postcode"], tags["addr:city"]].filter(Boolean).join(" "),
+      phone: cleanPhone(tags),
+      email: cleanEmail(tags),
       website, miles: milesBetween(centre.lat, centre.lon, lat, lon), lat, lon,
       dedupe: `${type}/${el.id}`,
       osm: `https://www.openstreetmap.org/${type}/${el.id}`
@@ -639,6 +672,8 @@
       <td>${esc(row.kind)}</td>
       <td>${esc(row.address || "—")}</td>
       <td class="num">${esc(formatMiles(row.miles))}</td>
+      <td class="lf-contact">${contactLink("phone", row.phone)}</td>
+      <td class="lf-contact">${contactLink("email", row.email)}</td>
       <td>${row.website ? `<a href="${esc(row.website)}" target="_blank" rel="noopener noreferrer">${esc(new URL(row.website).hostname)}</a> <span class="pill web-wait" data-host="${esc(new URL(row.website).hostname)}" data-key="${esc(row.dedupe)}">Checking domain…</span>` : '<span class="pill web-none">No website listed</span>'}</td>
     </tr>`).join("");
   }
@@ -697,7 +732,7 @@
     });
     for (const [text, keys] of groups) {
       try {
-        await TSDB.rest("saved_leads?dedupe_key=in.(" + inFilter(keys) + ")", {
+        await TSDB.rest("saved_leads?dedupe_key=in.(" + inFilter(keys) + ")" + (state.role === "agent" && email() ? "&found_by=eq." + encodeURIComponent(email()) : ""), {
           method: "PATCH", prefer: "return=minimal", body: { website_status: text.slice(0, 120) }
         });
       } catch (e) {}
@@ -723,20 +758,37 @@
     const dash = document.getElementById("sLeads");
     const sub = document.getElementById("sLeadsSub");
     if (dash) dash.textContent = state.dbOk === false ? "–" : String(n);
-    if (sub) sub.textContent = state.dbOk === false ? "Needs the leads table" : "Stored for the team";
+    if (sub) sub.textContent = state.dbOk === false ? "Needs the leads table" : (state.role === "agent" ? "On your login" : "Stored for the team");
   }
   function visibleLeads() {
     const sector = sectorFilter ? sectorFilter.value : "";
-    return state.leads.filter((lead) => !sector || lead.sector === sector);
+    const reachable = contactOnly && contactOnly.checked;
+    return state.leads.filter((lead) => (!sector || lead.sector === sector) && (!reachable || lead.phone || lead.email));
   }
   function paintLibrary() {
     const leads = state.leads;
     setLeadCount(leads.length);
+    const label = document.getElementById("lfSavedLabel");
+    const intro = document.getElementById("lfTrackerIntro");
+    if (label) label.textContent = state.role === "agent" ? "Your leads" : "Saved leads";
+    if (intro) intro.textContent = state.role === "agent"
+      ? "Leads from your searches. This login only shows your own list."
+      : "Leads saved by the team from the lead finder.";
     if (dbNote) {
       dbNote.className = "lf-note" + (state.dbOk === false ? " warn" : "");
-      dbNote.textContent = state.dbOk === false
-        ? "Leads are not being stored yet. In Supabase, open SQL Editor and run the saved_leads section at the end of supabase-setup.sql, then search again."
-        : (leads.length ? "" : "Named businesses from a search are stored here for the whole team.");
+      const contactNote = state.contactCols === false
+        ? " Phone and email show on each search, but they are not stored yet. In Supabase SQL Editor, run the phone and email block at the end of supabase-setup.sql, then search again."
+        : "";
+      const filterNote = leads.length && contactOnly && contactOnly.checked && !visibleLeads().length
+        ? " None of the saved leads have a public phone or email yet."
+        : "";
+      const empty = state.role === "agent"
+        ? "Businesses you find are stored here, on your login only."
+        : "Named businesses from a search are stored here for the whole team.";
+      const missing = state.role === "agent"
+        ? "Your leads are not being stored yet. In Supabase, open SQL Editor and run the agents section at the end of supabase-setup.sql, then search again."
+        : "Leads are not being stored yet. In Supabase, open SQL Editor and run the saved_leads section at the end of supabase-setup.sql, then search again.";
+      dbNote.textContent = state.dbOk === false ? missing : ((leads.length ? "" : empty) + contactNote + filterNote);
     }
     const sectors = [...new Set(leads.map((lead) => lead.sector).filter(Boolean))].sort();
     if (sectorFilter) {
@@ -753,7 +805,10 @@
         <td>${esc(lead.category || "—")}</td>
         <td>${esc(lead.address || "—")}</td>
         <td>${esc(lead.area || "—")}${lead.radius ? " · " + esc(lead.radius) : ""}</td>
+        <td class="lf-contact">${contactLink("phone", lead.phone)}</td>
+        <td class="lf-contact">${contactLink("email", lead.email)}</td>
         <td>${lead.website ? `<a href="${esc(lead.website)}" target="_blank" rel="noopener noreferrer">${esc(lead.website_status || "Website")}</a>` : esc(lead.website_status || "No website listed")}</td>
+        <td>${esc(lead.found_by || "—")}</td>
       </tr>`).join("");
     }
     if (historyEl) {
@@ -762,13 +817,21 @@
         : `<li>No searches stored yet.</li>`;
     }
   }
+  const LEAD_SELECT = "dedupe_key,name,sector,category,address,area,radius,phone,email,website,website_status,osm_url,found_by,created_at";
+  const LEAD_SELECT_PLAIN = "dedupe_key,name,sector,category,address,area,radius,website,website_status,osm_url,found_by,created_at";
   async function loadLibrary() {
     if (!window.TSDB || !TSDB.session()) return;
     try {
-      const [leads, history] = await Promise.all([
-        TSDB.rest("saved_leads?select=dedupe_key,name,sector,category,address,area,radius,website,website_status,osm_url,created_at&order=created_at.desc&limit=500"),
-        TSDB.rest("lead_searches?select=sector,area,radius,result_count,new_count,created_at&order=created_at.desc&limit=20")
-      ]);
+      const history = await TSDB.rest("lead_searches?select=sector,area,radius,result_count,new_count,created_at&order=created_at.desc&limit=20");
+      let leads;
+      try {
+        leads = await TSDB.rest("saved_leads?select=" + LEAD_SELECT + "&order=created_at.desc&limit=500");
+        state.contactCols = true;
+      } catch (e) {
+        if (!missingColumn(e)) throw e;
+        leads = await TSDB.rest("saved_leads?select=" + LEAD_SELECT_PLAIN + "&order=created_at.desc&limit=500");
+        state.contactCols = false;
+      }
       state.leads = leads || [];
       state.history = history || [];
       state.dbOk = true;
@@ -791,7 +854,7 @@
     let existing = [];
     try {
       if (named.length) {
-        existing = await TSDB.rest("saved_leads?select=dedupe_key&dedupe_key=in.(" + inFilter(named.map((lead) => lead.dedupe)) + ")") || [];
+        existing = await TSDB.rest("saved_leads?select=dedupe_key,found_by&dedupe_key=in.(" + inFilter(named.map((lead) => lead.dedupe)) + ")") || [];
       }
       state.dbOk = true;
     } catch (e) {
@@ -802,28 +865,83 @@
     const have = new Set(existing.map((row) => row.dedupe_key));
     const fresh = named.filter((lead) => !have.has(lead.dedupe));
     record.new_count = fresh.length;
-    try {
-      if (fresh.length) {
+    function leadRow(lead, withContact) {
+      const row = {
+        dedupe_key: clip(lead.dedupe, 80),
+        name: clip(lead.name, 160),
+        sector: clip(sector.label, 80),
+        category: clip(lead.kind, 80),
+        address: clip(lead.address, 240),
+        area: clip(loc.label, 120),
+        radius: clip(radiusText(radius), 40),
+        miles: lead.miles == null ? null : Math.round(lead.miles * 100) / 100,
+        website: clip(lead.website, 500),
+        website_status: lead.website ? "Checking domain…" : "No website listed",
+        osm_url: clip(lead.osm, 200),
+        latitude: lead.lat,
+        longitude: lead.lon,
+        found_by: email()
+      };
+      if (withContact) {
+        row.phone = clip(lead.phone, 40);
+        row.email = clip(lead.email, 160);
+      }
+      return row;
+    }
+    async function insertLeads(body) {
+      try {
+        await TSDB.rest("saved_leads?on_conflict=dedupe_key,found_by", {
+          method: "POST",
+          prefer: "return=minimal,resolution=ignore-duplicates",
+          body
+        });
+      } catch (e) {
+        if (!/unique|conflict|constraint/i.test(e.message || "")) throw e;
         await TSDB.rest("saved_leads?on_conflict=dedupe_key", {
           method: "POST",
           prefer: "return=minimal,resolution=ignore-duplicates",
-          body: fresh.map((lead) => ({
-            dedupe_key: clip(lead.dedupe, 80),
-            name: clip(lead.name, 160),
-            sector: clip(sector.label, 80),
-            category: clip(lead.kind, 80),
-            address: clip(lead.address, 240),
-            area: clip(loc.label, 120),
-            radius: clip(radiusText(radius), 40),
-            miles: lead.miles == null ? null : Math.round(lead.miles * 100) / 100,
-            website: clip(lead.website, 500),
-            website_status: lead.website ? "Checking domain…" : "No website listed",
-            osm_url: clip(lead.osm, 200),
-            latitude: lead.lat,
-            longitude: lead.lon,
-            found_by: email()
-          }))
+          body
         });
+      }
+    }
+    async function fillContacts(rows) {
+      const byKey = new Map();
+      existing.forEach((row) => {
+        if (!byKey.has(row.dedupe_key)) byKey.set(row.dedupe_key, []);
+        byKey.get(row.dedupe_key).push(row.found_by);
+      });
+      for (const lead of rows) {
+        const body = {};
+        if (lead.phone) body.phone = clip(lead.phone, 40);
+        if (lead.email) body.email = clip(lead.email, 160);
+        if (!Object.keys(body).length) continue;
+        const owners = state.role === "agent" ? [email()] : (byKey.get(lead.dedupe) || [email()]);
+        for (const owner of owners) {
+          await TSDB.rest(
+            "saved_leads?dedupe_key=eq." + encodeURIComponent(lead.dedupe) + "&found_by=eq." + encodeURIComponent(owner),
+            { method: "PATCH", prefer: "return=minimal", body }
+          );
+        }
+      }
+    }
+    try {
+      if (fresh.length) {
+        const withContact = state.contactCols !== false;
+        try {
+          await insertLeads(fresh.map((lead) => leadRow(lead, withContact)));
+          if (withContact) state.contactCols = true;
+        } catch (e) {
+          if (!withContact || !missingColumn(e)) throw e;
+          state.contactCols = false;
+          await insertLeads(fresh.map((lead) => leadRow(lead, false)));
+        }
+      }
+      if (state.contactCols !== false) {
+        const known = named.filter((lead) => have.has(lead.dedupe) && (lead.phone || lead.email));
+        if (known.length) {
+          try { await fillContacts(known); state.contactCols = true; }
+          catch (e) { if (!missingColumn(e)) throw e; state.contactCols = false; }
+        }
       }
       await TSDB.rest("lead_searches", { method: "POST", prefer: "return=minimal", body: record });
       await loadLibrary();
@@ -914,8 +1032,13 @@
       const storeNote = !stored.ok
         ? " These results were not stored."
         : ` Saved ${stored.added} new${stored.skipped ? `, ${stored.skipped} already stored` : ""}.`;
+      const reachable = leads.filter((lead) => lead.phone || lead.email).length;
+      const contactNote = !leads.length ? ""
+        : reachable
+          ? ` ${reachable} list a public phone or email.`
+          : " None of these list a public phone or email on the map.";
       if (!leads.length) setStatus(`No ${sector.label.toLowerCase()} were mapped ${where}. OpenStreetMap does not list every business.${storeNote}`, false);
-      else setStatus(`${leads.length} mapped ${leads.length === 1 ? "business" : "businesses"} ${where}.${extra || limited ? " Narrow the radius if you need a tighter set." : ""}${storeNote}`, false);
+      else setStatus(`${leads.length} mapped ${leads.length === 1 ? "business" : "businesses"} ${where}.${contactNote}${extra || limited ? " Narrow the radius if you need a tighter set." : ""}${storeNote}`, false);
       checkSites(gen);
     } catch (e) {
       if (gen !== state.searchGen) return;
@@ -973,13 +1096,14 @@
   });
   goBtn.addEventListener("click", () => { runSearch(); });
   if (sectorFilter) sectorFilter.addEventListener("change", paintLibrary);
+  if (contactOnly) contactOnly.addEventListener("change", paintLibrary);
   if (exportBtn) exportBtn.addEventListener("click", () => {
     const rows = visibleLeads();
     if (!rows.length) { setStatus("There are no saved leads to export.", true); return; }
-    const header = ["Name", "Sector", "Category", "Address", "Area", "Radius", "Website", "Website status", "Map", "Saved"];
+    const header = ["Name", "Sector", "Category", "Address", "Area", "Radius", "Phone", "Email", "Website", "Website status", "Saved by", "Map", "Saved"];
     const lines = [header.join(",")].concat(rows.map((lead) => [
       lead.name, lead.sector, lead.category, lead.address, lead.area, lead.radius,
-      lead.website, lead.website_status, lead.osm_url, lead.created_at
+      lead.phone, lead.email, lead.website, lead.website_status, lead.found_by, lead.osm_url, lead.created_at
     ].map(csvCell).join(",")));
     const file = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
     const link = document.createElement("a");
@@ -990,6 +1114,10 @@
   });
 
   window.TSLeadFinder = {
+    setRole(next) {
+      state.role = next === "agent" ? "agent" : "admin";
+      paintLibrary();
+    },
     show() {
       if (!state.loaded) { state.loaded = true; loadSaved(); }
       loadLibrary();
@@ -1001,6 +1129,8 @@
       state.leads = [];
       state.history = [];
       state.dbOk = null;
+      state.contactCols = null;
+      state.role = "admin";
       state.searchGen++;
       input.value = "";
       closeMenu();
