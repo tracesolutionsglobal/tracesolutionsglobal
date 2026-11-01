@@ -12,20 +12,17 @@
     hours: "Replies within one working day",
     /* Show "Pricing" in the footer once starting prices are set in index.html (TS.site.pricing). */
     showPricing: true,
-    /* First number is the main line used by the header buttons. */
-    phones: [
-      { name: "Sales line", phone: "+44 7548 692972" },
-      { name: "Azzy", phone: "+94 76 831 0321" },
-      { name: "Ocean", phone: "+94 77 723 4441" },
-      { name: "Mandy", phone: "+94 77 780 9199" }
-    ]
+    countries: ["United Kingdom", "United States", "Australia", "Sri Lanka"],
+    /* Every team number, shown on contact.html. The first is the main line used by the header
+       buttons; the first two are the ones shown in the footer and on the homepage. */
+    phones: ["+44 7548 692972", "+94 76 831 0321", "+94 77 723 4441", "+94 77 780 9199"]
   };
   window.TS_CONTACT = C;
 
   const digits = s => String(s).replace(/\D/g, "");
   const waHref = (phone, text) => `https://wa.me/${digits(phone)}?text=${encodeURIComponent(text || "Hi Trace Solutions Global, I'd like to talk about a website.")}`;
   const telHref = phone => `tel:+${digits(phone)}`;
-  const WA_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg>';
+  const WA_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M9.2 7.7c.2-.4.4-.4.6-.4h.5c.2 0 .4.1.5.4l.7 1.6c.1.2.1.4 0 .6l-.4.6c-.1.2-.1.4 0 .5a6.3 6.3 0 0 0 2.6 2.4c.2.1.4.1.5-.1l.6-.7c.1-.2.4-.2.6-.1l1.6.8c.3.1.4.3.4.5 0 .6-.3 1.2-.8 1.5-.5.4-1.2.5-1.8.4a7.7 7.7 0 0 1-5.6-5.3c-.2-.9 0-1.8.5-2.4z" fill="currentColor"/></svg>';
   const CALL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>';
   const here = location.pathname.split("/").pop() || "index.html";
   const home = here === "index.html" ? "" : "index.html";
@@ -44,6 +41,8 @@
 @media (max-width:560px){.site-header .logo .word{font-size:.8rem;letter-spacing:.07em}.site-header .container{gap:.6rem}.tsh-acts{gap:.3rem}}
 @media (max-width:420px){.site-header .logo .word{font-size:.7rem;letter-spacing:.04em}.site-header .logo svg.mark{width:28px;height:21px}.site-header .logo{gap:.45rem}}
 @media (max-width:359px){.tsh-wa{display:none}}
+/* Simple pages (contact, privacy, terms): the logo already links home, so the Home link can go on phones */
+@media (max-width:560px){.site-header .home-link{display:none!important}.site-header .logo>span{font-size:.72rem;letter-spacing:.06em;white-space:nowrap}.site-header .logo{flex-shrink:0;gap:.4rem}.site-header .logo>svg{width:28px;height:21px}.site-header .container>.tsh-acts{margin-left:auto}}
 /* Desktop widths where the full menu shows: keep the header to one row */
 @media (min-width:1241px) and (max-width:1440px){.tsh-btn{width:40px;padding:0;justify-content:center}.tsh-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.tsh-call{display:none}}
 .tsf{background:#012228;color:rgba(255,255,255,.78);padding:3.5rem 0 2rem;font:15px/1.6 "Plus Jakarta Sans",system-ui,sans-serif}
@@ -75,7 +74,7 @@
   document.head.appendChild(style);
 
   /* ---------- header: WhatsApp + Call, one tap from every page ---------- */
-  const main = C.phones[0].phone;
+  const main = C.phones[0];
   const acts = document.createElement("div");
   acts.className = "tsh-acts";
   acts.innerHTML = `<a class="tsh-btn tsh-wa" href="${waHref(main)}" target="_blank" rel="noopener" aria-label="WhatsApp us on ${main}">${WA_ICON}<span>WhatsApp</span></a>`
@@ -88,8 +87,8 @@
   const f = document.getElementById("siteFooter");
   if (!f) return;
   f.className = "tsf";
-  const phone = p => `<li class="tsf-phone"><span><small>${p.name}</small><b>${p.phone}</b></span>
-    <span class="tsf-pa"><a class="wa" href="${waHref(p.phone)}" target="_blank" rel="noopener" aria-label="WhatsApp ${p.name}">${WA_ICON}WhatsApp</a><a href="${telHref(p.phone)}" aria-label="Call ${p.name}">${CALL_ICON}Call</a></span></li>`;
+  const phone = n => `<li class="tsf-phone"><b>${n}</b>
+    <span class="tsf-pa"><a class="wa" href="${waHref(n)}" target="_blank" rel="noopener" aria-label="WhatsApp ${n}">${WA_ICON}WhatsApp</a><a href="${telHref(n)}" aria-label="Call ${n}">${CALL_ICON}Call</a></span></li>`;
   f.innerHTML = `<div class="tsf-in">
     <div class="tsf-grid">
       <div class="tsf-brand">
@@ -105,11 +104,12 @@
           <li${C.showPricing ? "" : " hidden"}><a href="${home}#pricing" data-pricing-link>Pricing</a></li>
           <li><a href="${home}#about">About</a></li>
           <li data-reviews-link hidden><a href="${home}#reviews">Reviews</a></li>
+          <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
       <div>
         <h4>Contact our team</h4>
-        <ul>${C.phones.map(phone).join("")}</ul>
+        <ul>${C.phones.slice(0, 2).map(phone).join("")}<li><a href="contact.html">All contact details →</a></li></ul>
       </div>
       <div>
         <h4>Contact</h4>

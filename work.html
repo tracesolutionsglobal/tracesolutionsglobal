@@ -826,6 +826,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .w-card.s5 .w-visual .browser-body { height: clamp(330px, 34vw, 430px); }
 @media (max-width: 860px) { .w-card.s5 .w-visual .browser-body { height: 380px; } }
 .w-featured .browser-body { max-height: 440px; overflow: hidden; }
+.w-shot { display: block; width: 100%; height: auto; }
+.w-visual .browser-body picture, .w-featured .browser-body picture { display: block; height: 100%; }
+.w-visual .browser-body .w-shot, .w-featured .browser-body .w-shot { height: 100%; object-fit: cover; object-position: top center; }
+.w-featured .browser-body:has(.w-shot) { aspect-ratio: 16 / 10; }
 .w-num { position: absolute; left: 1rem; top: 0.8rem; z-index: 3; font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.1em; color: rgba(1, 34, 40, 0.55); }
 .w-open { position: absolute; right: 1rem; bottom: 1rem; z-index: 3; display: inline-flex; align-items: center; gap: 0.4rem; background: var(--navy); color: var(--white); border-radius: var(--r-pill); padding: 0.5rem 0.9rem; font-weight: 700; font-size: 0.82rem; opacity: 0; transform: translateY(6px); transition: opacity 0.3s, transform 0.3s var(--ease); }
 .w-card:hover .w-open, .w-card:focus-visible .w-open { opacity: 1; transform: none; }
@@ -907,7 +911,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
         <li><a href="build.html">Concept Builder</a></li>
         <li><a href="index.html#services">Services</a></li>
         <li><a href="index.html#about">About</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="contact.html">Contact</a></li>
         <li class="mobile-cta"><a class="btn btn--coral" href="build.html">Build Your Website Concept</a></li>
       </ul>
     </nav>
@@ -1004,7 +1008,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 <script src="site-common.js"></script>
 
 <a class="wa-float" data-site-link="whatsapp" href="#" target="_blank" rel="noopener" aria-label="Chat with our team on WhatsApp">
-  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg><span>Chat with us</span>
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M9.2 7.7c.2-.4.4-.4.6-.4h.5c.2 0 .4.1.5.4l.7 1.6c.1.2.1.4 0 .6l-.4.6c-.1.2-.1.4 0 .5a6.3 6.3 0 0 0 2.6 2.4c.2.1.4.1.5-.1l.6-.7c.1-.2.4-.2.6-.1l1.6.8c.3.1.4.3.4.5 0 .6-.3 1.2-.8 1.5-.5.4-1.2.5-1.8.4a7.7 7.7 0 0 1-5.6-5.3c-.2-.9 0-1.8.5-2.4z" fill="currentColor"/></svg><span>Chat with us</span>
 </a>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -1037,11 +1041,9 @@ TS.site = {
   /* Offices and direct numbers shown in "Talk to a real person".
      Each number gets Call, WhatsApp and Text buttons. */
   offices: [
-    { label: "Contact our team", code: "", note: "WhatsApp, call or text any of us", people: [
-      { name: "Sales line", phone: "+44 7548 692972" },
-      { name: "Azzy", phone: "+94 76 831 0321" },
-      { name: "Ocean", phone: "+94 77 723 4441" },
-      { name: "Mandy", phone: "+94 77 780 9199" }
+    { label: "Contact our team", code: "", note: "WhatsApp, call or text either number. All our numbers are on the contact page.", people: [
+      { phone: "+44 7548 692972" },
+      { phone: "+94 76 831 0321" }
     ] }
   ]
 };
@@ -1300,7 +1302,7 @@ window.TS = window.TS || {};
       <div class="pv-cards">${cards}</div>
       ${blocks(cfg, feats, p)}
       ${footer}
-      ${feats.includes("whatsapp") ? `<span class="pv-wa" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg></span>` : ""}
+      ${feats.includes("whatsapp") ? `<span class="pv-wa" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M9.2 7.7c.2-.4.4-.4.6-.4h.5c.2 0 .4.1.5.4l.7 1.6c.1.2.1.4 0 .6l-.4.6c-.1.2-.1.4 0 .5a6.3 6.3 0 0 0 2.6 2.4c.2.1.4.1.5-.1l.6-.7c.1-.2.4-.2.6-.1l1.6.8c.3.1.4.3.4.5 0 .6-.3 1.2-.8 1.5-.5.4-1.2.5-1.8.4a7.7 7.7 0 0 1-5.6-5.3c-.2-.9 0-1.8.5-2.4z" fill="currentColor"/></svg></span>` : ""}
     </div>`;
   }
 
@@ -1375,6 +1377,7 @@ window.TS = window.TS || {};
 TS.portfolio = [
   {
     id: "bake-away", tint: "#FDE8EE", status: "live", url: "demos/bake-away/",
+    shots: { hero: "assets/work/bake-away-hero.jpg", full: "assets/work/bake-away-full.jpg", mobile: "assets/work/bake-away-mobile.jpg" },
     type: "Cakes & Bakery", category: "Food & drink", build: "restaurant",
     title: "Bake Away",
     summary: "A storybook bakery site with a build-your-own-cake tool that stacks the cake and prices it live, plus pickup orders and WhatsApp ordering.",
@@ -1409,6 +1412,7 @@ TS.portfolio = [
   },
   {
     id: "lamp-login", tint: "#F3E6D3", status: "live", url: "demos/lamp-login/",
+    shots: { hero: "assets/work/lamp-login-hero.jpg", full: "assets/work/lamp-login-hero.jpg", mobile: "assets/work/lamp-login-mobile.jpg" },
     type: "Interactive Sign-in", category: "Web apps", build: "other",
     title: "Lamp Login",
     summary: "A sign-in page set in a dark room: pull the lamp's cord and the light flickers on, dust drifts through the beam and the sign-in card fades in. Pull again for dark.",
@@ -1602,6 +1606,16 @@ TS.portfolio = [
       .map(([v, l, n]) => `<button type="button" class="chip" data-filter="${esc(v)}" aria-pressed="${v === "all"}">${esc(l)} <small>${n}</small></button>`).join("");
   }
 
+  /* Real screenshots of the live demo where we have them, the drawn preview otherwise. */
+  function showPreview(body, urlEl, p, opts = {}) {
+    if (!p.shots) { TS.renderPreview(body, p.preview, { style: p.style, urlEl, trace: opts.trace }); return; }
+    const src = opts.size === "mobile" ? p.shots.mobile : opts.size === "full" ? p.shots.full : p.shots.hero;
+    const img = `<img class="w-shot" src="${src}" alt="${esc(p.title)} home page, as it looks live" loading="lazy" decoding="async">`;
+    /* Cards and the featured slot are phone-sized on phones: show the phone screenshot there. */
+    body.innerHTML = opts.size ? img : `<picture><source media="(max-width: 640px)" srcset="${p.shots.mobile}">${img}</picture>`;
+    if (urlEl) urlEl.innerHTML = `<span class="lock">https://</span>tracesolutionsglobal.com/${esc(String(p.url).replace(/^\//, ""))}`;
+  }
+
   /* Featured project */
   function initFeatured() {
     const p = P.find(x => x.id === featuredId);
@@ -1620,7 +1634,7 @@ TS.portfolio = [
           <button type="button" class="btn btn--ghost-light" data-case="${p.id}">Open the case</button>
         </div>
       </div>`;
-    TS.renderPreview($("#featBody"), p.preview, { style: p.style, urlEl: $("#featUrl") });
+    showPreview($("#featBody"), $("#featUrl"), p);
   }
 
   /* Wall of projects */
@@ -1637,11 +1651,12 @@ TS.portfolio = [
         <p class="sum">${esc(p.summary)}</p>
         <div class="w-card-foot"><span class="w-sig"><b>Signature</b>${esc(p.features[0])}</span>${palette(p.preview.colors)}</div>
       </button>`).join("");
-    wall.forEach(p => TS.renderPreview($(`[data-preview="${p.id}"]`), p.preview, { style: p.style, urlEl: $(`[data-url="${p.id}"]`) }));
+    wall.forEach(p => showPreview($(`[data-preview="${p.id}"]`), $(`[data-url="${p.id}"]`), p));
     layout();
     // Re-trace a preview when its card is hovered
     $("#wall").addEventListener("mouseenter", e => {
       const c = e.target.closest && e.target.closest(".w-card"); if (!c || reduceMotion || c._traced) return;
+      if (c.querySelector(".w-shot")) return;
       c._traced = true; TS.tracePreview($("[data-preview]", c)); setTimeout(() => { c._traced = false; }, 2600);
     }, true);
   }
@@ -1690,7 +1705,7 @@ TS.portfolio = [
         <a class="btn btn--coral" href="${buildLink(p)}" ${EXT}>Build something like this <span class="arrow">→</span></a>
         ${p.url ? `<a class="btn btn--outline" href="${p.url}" target="_blank" rel="noopener">View live demo</a>` : ""}
       </div>`;
-    TS.renderPreview($("#caseBody"), p.preview, { style: p.style, urlEl: $("#caseUrl"), trace: trace && !reduceMotion });
+    showPreview($("#caseBody"), $("#caseUrl"), p, { trace: trace && !reduceMotion, size: device === "mobile" ? "mobile" : "full" });
     $("#caseBody").scrollTop = 0;
   }
   function step(d) { const n = visibleList().length; caseIndex = (caseIndex + d + n) % n; renderCase(); }
