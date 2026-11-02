@@ -29,14 +29,13 @@
 
   const css = `
 .tsh-acts{display:inline-flex;gap:.4rem;align-items:center}
-.tsh-btn{display:inline-flex;align-items:center;gap:.4rem;height:40px;padding:0 .9rem;border-radius:999px;font:700 .88rem/1 "Plus Jakarta Sans",system-ui,sans-serif;text-decoration:none;white-space:nowrap;border:1.5px solid transparent}
-.tsh-btn svg{width:18px;height:18px;flex:none}
+.tsh-btn{display:inline-flex;align-items:center;gap:.3rem;height:32px;padding:0 .65rem;border-radius:999px;font:700 .75rem/1 "Plus Jakarta Sans",system-ui,sans-serif;text-decoration:none;white-space:nowrap;border:1.5px solid transparent}
+.tsh-btn svg{width:15px;height:15px;flex:none}
 .tsh-wa{background:#25D366;color:#06331A}
 .tsh-wa:hover{background:#1fbe5b}
 .tsh-call{background:transparent;color:#012228;border-color:rgba(1,34,40,.2)}
 .tsh-call:hover{border-color:#012228}
-@media (max-width:720px){.tsh-btn{width:40px;padding:0;justify-content:center}.tsh-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
-@media (max-width:480px){.tsh-call{display:none}}
+@media (max-width:720px){.tsh-btn{width:32px;height:32px;padding:0;justify-content:center}.tsh-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
 /* Phones: shrink the logo text so logo, WhatsApp and menu always fit on one row */
 @media (max-width:560px){.site-header .logo .word{font-size:.8rem;letter-spacing:.07em}.site-header .container{gap:.6rem}.tsh-acts{gap:.3rem}}
 @media (max-width:420px){.site-header .logo .word{font-size:.7rem;letter-spacing:.04em}.site-header .logo svg.mark{width:28px;height:21px}.site-header .logo{gap:.45rem}}
@@ -44,7 +43,7 @@
 /* Simple pages (contact, privacy, terms): the logo already links home, so the Home link can go on phones */
 @media (max-width:560px){.site-header .home-link{display:none!important}.site-header .logo>span{font-size:.72rem;letter-spacing:.06em;white-space:nowrap}.site-header .logo{flex-shrink:0;gap:.4rem}.site-header .logo>svg{width:28px;height:21px}.site-header .container>.tsh-acts{margin-left:auto}}
 /* Desktop widths where the full menu shows: keep the header to one row */
-@media (min-width:1241px) and (max-width:1440px){.tsh-btn{width:40px;padding:0;justify-content:center}.tsh-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.tsh-call{display:none}}
+@media (min-width:1241px) and (max-width:1440px){.tsh-btn{height:32px;padding:0 .5rem}}
 .tsf{background:#012228;color:rgba(255,255,255,.78);padding:3.5rem 0 2rem;font:15px/1.6 "Plus Jakarta Sans",system-ui,sans-serif}
 .tsf .tsf-in{max-width:1200px;margin:0 auto;padding-inline:clamp(16px,4vw,32px)}
 .tsf-grid{display:grid;grid-template-columns:1.2fr 1fr 1.5fr 1.1fr;gap:2.2rem}
@@ -63,9 +62,9 @@
 .tsf-phone small{display:block;font-size:.78rem;color:rgba(255,255,255,.55)}
 .tsf-phone b{color:#fff;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
 .tsf-pa{display:inline-flex;gap:.35rem}
-.tsf-pa a{display:inline-flex;align-items:center;gap:.3rem;min-height:36px;padding:.45rem .8rem;border-radius:999px;font-size:.8rem;font-weight:700;background:rgba(255,255,255,.08)}
+.tsf-pa a{display:inline-flex;align-items:center;gap:.25rem;min-height:28px;padding:.28rem .6rem;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(255,255,255,.08)}
 .tsf-pa a.wa{background:#25D366;color:#06331A}
-.tsf-pa a svg{width:14px;height:14px}
+.tsf-pa a svg{width:12px;height:12px}
 .tsf-bottom{margin-top:2.6rem;padding-top:1.4rem;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-wrap:wrap;justify-content:space-between;gap:.8rem 1.4rem;font-size:.85rem}
 .tsf-legal{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem}
 .tsf-legal a{text-decoration:underline;text-underline-offset:2px}`;

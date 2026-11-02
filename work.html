@@ -822,6 +822,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .w-card:hover .w-visual .browser, .w-card:focus-visible .w-visual .browser { transform: translateY(-6px) rotate(-0.5deg); box-shadow: var(--shadow-lg); }
 .w-visual .browser-body { height: clamp(250px, 26vw, 340px); overflow: hidden; }
 .w-card.s5 .w-visual .browser { max-width: 290px; margin-inline: auto; border-radius: 26px; border: 7px solid var(--navy); }
+.w-card.s5.is-land .w-visual .browser { max-width: none; margin-inline: 0; border-radius: var(--r-md); border: 0; }
 .w-card.s5 .w-visual .browser-bar { padding-block: 0.35rem; }
 .w-card.s5 .w-visual .browser-body { height: clamp(330px, 34vw, 430px); }
 @media (max-width: 860px) { .w-card.s5 .w-visual .browser-body { height: 380px; } }
@@ -829,6 +830,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .w-shot { display: block; width: 100%; height: auto; }
 .w-visual .browser-body picture, .w-featured .browser-body picture { display: block; height: 100%; }
 .w-visual .browser-body .w-shot, .w-featured .browser-body .w-shot { height: 100%; object-fit: cover; object-position: top center; }
+.w-card.is-land .w-visual .browser-body, .w-visual.is-land .browser-body { height: auto; aspect-ratio: 16 / 10; }
+.w-card.s5.is-land .w-visual .browser-body { height: auto; aspect-ratio: 16 / 10; }
+.w-card.is-land .w-shot { object-fit: cover; object-position: center; }
 .w-featured .browser-body:has(.w-shot) { aspect-ratio: 16 / 10; }
 .w-num { position: absolute; left: 1rem; top: 0.8rem; z-index: 3; font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.1em; color: rgba(1, 34, 40, 0.55); }
 .w-open { position: absolute; right: 1rem; bottom: 1rem; z-index: 3; display: inline-flex; align-items: center; gap: 0.4rem; background: var(--navy); color: var(--white); border-radius: var(--r-pill); padding: 0.5rem 0.9rem; font-weight: 700; font-size: 0.82rem; opacity: 0; transform: translateY(6px); transition: opacity 0.3s, transform 0.3s var(--ease); }
@@ -1411,8 +1415,25 @@ TS.portfolio = [
     }
   },
   {
-    id: "lamp-login", tint: "#F3E6D3", status: "live", url: "demos/lamp-login/",
-    shots: { hero: "assets/work/lamp-login-hero.jpg", full: "assets/work/lamp-login-hero.jpg", mobile: "assets/work/lamp-login-mobile.jpg" },
+    id: "harbour-cloth", tint: "#F4F0E8", status: "live", url: "demos/sample-store/",
+    type: "Apparel store", category: "Retail", build: "ecommerce",
+    title: "Harbour Cloth",
+    summary: "A sample storefront. The product tilts as you move the cursor, colours switch, and the related-items row can be dragged.",
+    signature: "A product stage that tilts in 3D, with a colour switcher and a draggable related-items rail.",
+    features: ["3D product tilt", "Colour switcher", "Draggable rail", "Quick add"],
+    style: "elegant",
+    preview: {
+      name: "Harbour Cloth", domain: "harbourcloth.shop", kicker: "Sample storefront",
+      headline: "Heavyweight tee", sub: "A sample shop, not a client site.",
+      cta: "Add to cart", links: ["Men", "Women", "New In"],
+      cards: [["shirt", "Product tilt"], ["sparkle", "Colour switch"], ["cart", "Quick add"]],
+      proof: "Sample storefront", art: "shirt",
+      colors: { primary: "#171717", accent: "#D8C4A4", soft: "#F4F0E8", dark: "#2A2A2A" }
+    }
+  },
+  {
+    id: "lamp-login", tint: "#F3E6D3", status: "live", url: "demos/lamp-login/", landscape: true,
+    shots: { hero: "assets/work/lamp-login-hero.jpg", full: "assets/work/lamp-login-hero.jpg", mobile: "assets/work/lamp-login-hero.jpg" },
     type: "Interactive Sign-in", category: "Web apps", build: "other",
     title: "Lamp Login",
     summary: "A sign-in page set in a dark room: pull the lamp's cord and the light flickers on, dust drifts through the beam and the sign-in card fades in. Pull again for dark.",
@@ -1609,10 +1630,9 @@ TS.portfolio = [
   /* Real screenshots of the live demo where we have them, the drawn preview otherwise. */
   function showPreview(body, urlEl, p, opts = {}) {
     if (!p.shots) { TS.renderPreview(body, p.preview, { style: p.style, urlEl, trace: opts.trace }); return; }
-    const src = opts.size === "mobile" ? p.shots.mobile : opts.size === "full" ? p.shots.full : p.shots.hero;
+    const src = p.landscape ? p.shots.hero : (opts.size === "mobile" ? p.shots.mobile : opts.size === "full" ? p.shots.full : p.shots.hero);
     const img = `<img class="w-shot" src="${src}" alt="${esc(p.title)} home page, as it looks live" loading="lazy" decoding="async">`;
-    /* Cards and the featured slot are phone-sized on phones: show the phone screenshot there. */
-    body.innerHTML = opts.size ? img : `<picture><source media="(max-width: 640px)" srcset="${p.shots.mobile}">${img}</picture>`;
+    body.innerHTML = (p.landscape || opts.size) ? img : `<picture><source media="(max-width: 640px)" srcset="${p.shots.mobile}">${img}</picture>`;
     if (urlEl) urlEl.innerHTML = `<span class="lock">https://</span>tracesolutionsglobal.com/${esc(String(p.url).replace(/^\//, ""))}`;
   }
 
@@ -1640,7 +1660,7 @@ TS.portfolio = [
   /* Wall of projects */
   function initWall() {
     $("#wall").innerHTML = wall.map((p, i) => `
-      <button type="button" class="w-card" data-case="${p.id}" data-cat="${esc(p.category)}" aria-label="Open the ${esc(p.title)} case study">
+      <button type="button" class="w-card${p.landscape ? " is-land" : ""}" data-case="${p.id}" data-cat="${esc(p.category)}" aria-label="Open the ${esc(p.title)} case study">
         <div class="w-visual" style="--tint:${p.tint}">
           <span class="w-num">${String(i + 2).padStart(2, "0")} / ${String(P.length).padStart(2, "0")}</span>
           <div class="browser browser--sm"><div class="browser-bar"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url" data-url="${p.id}"></span></div><div class="browser-body" data-preview="${p.id}"></div></div>
@@ -1705,7 +1725,8 @@ TS.portfolio = [
         <a class="btn btn--coral" href="${buildLink(p)}" ${EXT}>Build something like this <span class="arrow">→</span></a>
         ${p.url ? `<a class="btn btn--outline" href="${p.url}" target="_blank" rel="noopener">View live demo</a>` : ""}
       </div>`;
-    showPreview($("#caseBody"), $("#caseUrl"), p, { trace: trace && !reduceMotion, size: device === "mobile" ? "mobile" : "full" });
+    showPreview($("#caseBody"), $("#caseUrl"), p, { trace: trace && !reduceMotion, size: device === "mobile" && !p.landscape ? "mobile" : "full" });
+    $("#caseStage").classList.toggle("is-mobile", device === "mobile" && !p.landscape);
     $("#caseBody").scrollTop = 0;
   }
   function step(d) { const n = visibleList().length; caseIndex = (caseIndex + d + n) % n; renderCase(); }

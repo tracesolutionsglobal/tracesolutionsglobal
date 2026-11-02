@@ -7,7 +7,7 @@
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-<title>Easy websites, priced upfront | Trace</title>
+<title>Easy websites, live in days | Trace</title>
 <link rel="canonical" href="https://tracesolutionsglobal.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Trace Solutions Global">
@@ -18,7 +18,7 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="description" content="Simple websites, live in days, at a fixed price in US dollars. For restaurants, clinics and hotels in the UK, Sri Lanka, Australia and the US.">
+<meta name="description" content="Simple websites, live in days. For restaurants, clinics and hotels in the UK, Sri Lanka, Australia and the US.">
 <meta name="theme-color" content="#012228">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
@@ -26,7 +26,7 @@
     {"@type":"ContactPoint","telephone":"+44-7548-692972","contactType":"sales","areaServed":"GB","availableLanguage":"English"},
     {"@type":"ContactPoint","telephone":"+94-76-831-0321","contactType":"sales","areaServed":"LK","availableLanguage":"English"}
   ]},
-  {"@type":"Service","name":"Website design","provider":{"@type":"Organization","name":"Trace Solutions Global"},"areaServed":["GB","LK","AU","US"],"description":"Fixed-price websites for restaurants, clinics and hotels, with the price shown in US dollars before work starts."}
+  {"@type":"Service","name":"Website design","provider":{"@type":"Organization","name":"Trace Solutions Global"},"areaServed":["GB","LK","AU","US"],"description":"Websites for restaurants, clinics and hotels, with the package and timeline agreed before work starts."}
 ]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -829,8 +829,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
     <div class="container hero-grid">
       <div class="hero-copy">
         <span class="eyebrow">Your vision, built line by line</span>
-        <h1>Your website, live in days, at a price you see upfront.</h1>
-        <p class="lede">Simple sites, built fast, at a fixed price in US dollars. For restaurants, clinics, hotels and shops in the UK, Sri Lanka, Australia and the United States.</p>
+        <h1>Your website, live in days.</h1>
+        <p class="lede">Simple sites, built fast. For restaurants, clinics, hotels and shops in the UK, Sri Lanka, Australia and the United States.</p>
         <div class="hero-ctas">
           <a class="btn btn--coral" href="build.html">Build your concept in 2 minutes <span class="arrow">→</span></a>
           <a class="btn btn--outline" href="work.html">View Our Work</a>
@@ -859,19 +859,6 @@ button, input, select, textarea { font: inherit; color: inherit; }
     </div>
   </section>
 
-  <section class="section" id="sample-store" aria-labelledby="sampleTitle">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow">Sample storefront</span>
-          <h2 class="h2" id="sampleTitle">An example shop, not a client site</h2>
-        </div>
-        <p class="lede">Move the cursor over the shirt, switch colours, and drag the row. This is a sample of an online store we can build.</p>
-      </div>
-      <iframe src="demos/sample-store/" title="Sample apparel storefront, Harbour Cloth" style="width:100%;height:780px;border:0;border-radius:18px;background:#f4f0e8;box-shadow:0 18px 50px -28px rgba(1,34,40,.45)" loading="lazy"></iframe>
-    </div>
-  </section>
-
   <!-- ============ HOW IT WORKS ============ -->
   <section class="section how" id="how">
     <div class="container">
@@ -893,7 +880,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
           <span class="step-num">02</span>
           <span class="meta">Within 24 hours</span>
           <h3>Get your proposal</h3>
-          <p>We turn your concept into a clear plan with pages, features, timeline and a fixed price in US dollars.</p>
+          <p>We turn your concept into a clear plan with pages, features and a timeline.</p>
         </li>
         <li class="step">
           <span class="step-num">03</span>
@@ -1001,9 +988,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
       <div class="section-head">
         <div>
           <span class="eyebrow">Pricing</span>
-          <h2 class="h2" id="pricingTitle">A clear price, in US dollars</h2>
+          <h2 class="h2" id="pricingTitle">Three packages</h2>
         </div>
-        <p class="lede">Simple, fast, and fixed before we start. Edit the numbers in the pricing block at the top of this file.</p>
+        <p class="lede">Simple, fast, and agreed before we start. Your proposal confirms the package and the timeline.</p>
       </div>
       <div class="price-grid" id="priceGrid"></div>
       <ul class="hero-points" style="margin-top:1.4rem;justify-content:flex-start">
@@ -1036,7 +1023,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
         <article class="principle">
           <span class="ic" data-icon="pin"></span>
           <h3>Built for anywhere in the world</h3>
-          <p>Clear pricing in US dollars, international payment gateways, WhatsApp ordering and multi-language websites ready for customers in any country.</p>
+          <p>International payment gateways, WhatsApp ordering and multi-language websites ready for customers in any country.</p>
         </article>
         <article class="principle">
           <span class="ic" data-icon="phone"></span>
@@ -2155,16 +2142,13 @@ window.TS = window.TS || {};
 
   /* ---------- Pricing: starting prices from TS.site.pricing ---------- */
   function initPricing() {
-    const pr = TS.site.pricing || {};
     const PKG = [
       { id: "starter", name: "Starter", weeks: "Live in about 7 days", desc: "A simple business website with the essentials.", points: ["Mobile-first design", "WhatsApp and contact buttons", "Google search basics"] },
       { id: "business", name: "Business", weeks: "Live in about 14 days", desc: "More pages for bookings, menus and enquiries.", points: ["Everything in Starter", "Bookings, enquiry forms or a menu", "Reviews, gallery and maps"], featured: true },
       { id: "store", name: "Online Store", weeks: "Live in about 21 days", desc: "A shop with products, cart and checkout.", points: ["Everything in Business", "Product pages and cart", "Checkout and payments"] }
     ];
-    const money = n => "$" + Number(n).toLocaleString("en-US");
     $("#priceGrid").innerHTML = PKG.map(p => `<article class="price-card${p.featured ? " is-featured" : ""}">
       <div class="pc-top"><h3>${p.name}</h3><span class="tag">${p.weeks}</span></div>
-      <div class="pc-price">${+pr[p.id] > 0 ? `<small>From</small>${money(pr[p.id])}` : `<small>Price</small>Fixed quote`}</div>
       <p>${p.desc}</p>
       <ul>${p.points.map(x => `<li>${x}</li>`).join("")}</ul>
       <a class="btn ${p.featured ? "btn--coral" : "btn--outline"}" href="build.html">Build your concept in 2 minutes <span class="arrow">→</span></a>
