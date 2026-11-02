@@ -28,7 +28,7 @@
   const home = here === "index.html" ? "" : "index.html";
 
   const css = `
-.tsh-acts{display:inline-flex;gap:.4rem;align-items:center}
+.tsh-acts{display:inline-flex;gap:.75rem;align-items:center;flex-shrink:0}
 .tsh-btn{display:inline-flex;align-items:center;gap:.3rem;height:32px;padding:0 .65rem;border-radius:999px;font:700 .75rem/1 "Plus Jakarta Sans",system-ui,sans-serif;text-decoration:none;white-space:nowrap;border:1.5px solid transparent}
 .tsh-btn svg{width:15px;height:15px;flex:none}
 .tsh-wa{background:#25D366;color:#06331A}
@@ -43,7 +43,8 @@
 /* Simple pages (contact, privacy, terms): the logo already links home, so the Home link can go on phones */
 @media (max-width:560px){.site-header .home-link{display:none!important}.site-header .logo>span{font-size:.72rem;letter-spacing:.06em;white-space:nowrap}.site-header .logo{flex-shrink:0;gap:.4rem}.site-header .logo>svg{width:28px;height:21px}.site-header .container>.tsh-acts{margin-left:auto}}
 /* Desktop widths where the full menu shows: keep the header to one row */
-@media (min-width:1241px) and (max-width:1440px){.tsh-btn{height:32px;padding:0 .5rem}}
+@media (min-width:1241px) and (max-width:1440px){.tsh-btn{height:32px;padding:0 .55rem}}
+@media (min-width:1241px) and (max-width:1420px){.nav-links{gap:1.15rem}.site-header .container{padding-inline:1.15rem}}
 .tsf{background:#012228;color:rgba(255,255,255,.78);padding:3.5rem 0 2rem;font:15px/1.6 "Plus Jakarta Sans",system-ui,sans-serif}
 .tsf .tsf-in{max-width:1200px;margin:0 auto;padding-inline:clamp(16px,4vw,32px)}
 .tsf-grid{display:grid;grid-template-columns:1.2fr 1fr 1.5fr 1.1fr;gap:2.2rem}
