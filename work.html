@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <title>Our work · Trace Solutions Global</title>
 <link rel="canonical" href="https://tracesolutionsglobal.com/work.html">
@@ -1418,6 +1419,57 @@ TS.portfolio = [
     }
   },
   {
+    id: "twelve-clothing", tint: "#E3E6E2", status: "concept", redacted: true,
+    type: "Streetwear Store", category: "Retail", build: "ecommerce",
+    title: "Twelve Clothing",
+    summary: "An urban e-commerce concept built around limited drops, with a live countdown, a street-map lookbook and a fit finder.",
+    signature: "A drop countdown that turns the homepage into a launch event every Friday night.",
+    features: ["Drop countdown", "Lookbook", "Fit finder", "Online store"],
+    style: "bold",
+    preview: {
+      name: "TWELVE", domain: "twelveclothing.co", kicker: "Drop 07 · Friday 8 pm",
+      headline: "Made for every hour", sub: "Heavyweight tees, cargos and caps made for the city.",
+      cta: "Shop the drop", links: ["New", "Tees", "Hoodies"],
+      cards: [["timer", "Drop countdown"], ["shirt", "Complete the fit"], ["pin", "Street lookbook"]],
+      proof: "Next drop sells out fast", art: "shirt",
+      colors: { primary: "#C6FF00", accent: "#C6FF00", soft: "#1E1E1E", dark: "#121212" }
+    }
+  },
+  {
+    id: "harbour-dental", tint: "#E3F1F2", status: "concept",
+    type: "Dental Clinic", category: "Health & fitness", build: "clinic",
+    title: "Harbour Dental",
+    summary: "A calm, reassuring clinic site that explains treatments in plain words and lets nervous patients book without a phone call.",
+    signature: "A treatment timeline that walks patients through each visit before they book.",
+    features: ["Online booking", "Treatment timeline", "Price guide", "Patient forms"],
+    style: "fresh",
+    preview: {
+      name: "Harbour Dental", domain: "harbourdental.care", kicker: "Family dentistry · Open Saturdays",
+      headline: "Gentle dentistry, explained step by step", sub: "See exactly what happens at each visit, then book a time that suits you.",
+      cta: "Book a check-up", links: ["Treatments", "Prices", "Team"],
+      cards: [["calendar", "Book online"], ["file", "Treatment steps"], ["heart", "Nervous patients"]],
+      proof: "New patients welcome", art: "plus",
+      colors: { primary: "#0F7C8C", accent: "#F28C6B", soft: "#E8F5F6", dark: "#0B2E35" }
+    }
+  },
+  {
+    id: "kinetic-studio", tint: "#E7E3F3", status: "concept",
+    type: "Fitness Studio", category: "Health & fitness", build: "other",
+    title: "Kinetic Studio",
+    summary: "A high-energy studio site where the timetable is the homepage: live spaces left, instant booking and memberships that sell themselves.",
+    signature: "A live class timetable that shows spaces left and books a place in two taps.",
+    features: ["Class timetable", "Membership quiz", "Online payments", "Trainer profiles"],
+    style: "bold",
+    preview: {
+      name: "KINETIC", domain: "kineticstudio.fit", kicker: "HIIT · Strength · Mobility",
+      headline: "Move with people who push you", sub: "Small classes, real coaches and a timetable that fits your week.",
+      cta: "Book a class", links: ["Classes", "Coaches", "Join"],
+      cards: [["timer", "Live timetable"], ["bolt", "Find your plan"], ["card", "Pay online"]],
+      proof: "First class free", art: "bolt",
+      colors: { primary: "#7C5CFF", accent: "#7C5CFF", soft: "#1C1A26", dark: "#121018" }
+    }
+  },
+  {
     id: "harbour-cloth", tint: "#F4F0E8", status: "live", url: "demos/sample-store/",
     type: "Apparel store", category: "Retail", build: "ecommerce",
     title: "Harbour Cloth",
@@ -1432,6 +1484,40 @@ TS.portfolio = [
       cards: [["shirt", "Product tilt"], ["sparkle", "Colour switch"], ["cart", "Quick add"]],
       proof: "Sample storefront", art: "shirt",
       colors: { primary: "#171717", accent: "#D8C4A4", soft: "#F4F0E8", dark: "#2A2A2A" }
+    }
+  },
+  {
+    id: "grip-garage", tint: "#F2EAD6", status: "concept",
+    type: "Tyre Shop", category: "Automotive", build: "other",
+    title: "Grip Garage",
+    summary: "A pit-stop style tyre shop with a size finder, fitting bookings and a one-tap emergency call on mobile.",
+    signature: "A tyre finder that reads the size off your sidewall and books a fitting slot.",
+    features: ["Tyre finder", "Fitting bookings", "Service pricing", "Emergency call"],
+    style: "bold",
+    preview: {
+      name: "GRIP GARAGE", domain: "gripgarage.net", kicker: "Tyres · Alignment · Balancing",
+      headline: "Grip every road", sub: "Find your tyre size and book a fitting in minutes.",
+      cta: "Find my tyre", links: ["Tyres", "Services", "Book"],
+      cards: [["tyre", "Tyre finder"], ["wrench", "Wheel alignment"], ["calendar", "Book fitting"]],
+      proof: "Fitted in under 45 minutes", art: "tyre",
+      colors: { primary: "#FFC107", accent: "#FFC107", soft: "#262626", dark: "#1B1B1B" }
+    }
+  },
+  {
+    id: "nomad-stays", tint: "#EFE6D8", status: "concept",
+    type: "Boutique Hotel", category: "Hospitality", build: "hotel",
+    title: "Nomad Stays",
+    summary: "A quiet, editorial site for a twelve-room boutique hotel, made to win direct bookings away from the big travel sites.",
+    signature: "A room picker that builds a live “your stay” card with dates, extras and the price before checkout.",
+    features: ["Room picker", "Direct booking", "Local guide", "Gift vouchers"],
+    style: "elegant",
+    preview: {
+      name: "Nomad Stays", domain: "nomadstays.co", kicker: "Twelve rooms · Old town",
+      headline: "Stay somewhere that feels like a story", sub: "Slow mornings, hand-picked rooms and a guide to the streets outside.",
+      cta: "Choose your room", links: ["Rooms", "Guide", "Vouchers"],
+      cards: [["bed", "Pick your room"], ["pin", "Local guide"], ["gift", "Gift a stay"]],
+      proof: "Book direct for the best rate", art: "bed",
+      colors: { primary: "#8C5A3C", accent: "#C9A227", soft: "#F5EDE2", dark: "#2B211B" }
     }
   },
   {
@@ -1453,40 +1539,6 @@ TS.portfolio = [
     }
   },
   {
-    id: "twelve-clothing", tint: "#E3E6E2", status: "concept", redacted: true,
-    type: "Streetwear Store", category: "Retail", build: "ecommerce",
-    title: "Twelve Clothing",
-    summary: "An urban e-commerce concept built around limited drops, with a live countdown, a street-map lookbook and a fit finder.",
-    signature: "A drop countdown that turns the homepage into a launch event every Friday night.",
-    features: ["Drop countdown", "Lookbook", "Fit finder", "Online store"],
-    style: "bold",
-    preview: {
-      name: "TWELVE", domain: "twelveclothing.co", kicker: "Drop 07 · Friday 8 pm",
-      headline: "Made for every hour", sub: "Heavyweight tees, cargos and caps made for the city.",
-      cta: "Shop the drop", links: ["New", "Tees", "Hoodies"],
-      cards: [["timer", "Drop countdown"], ["shirt", "Complete the fit"], ["pin", "Street lookbook"]],
-      proof: "Next drop sells out fast", art: "shirt",
-      colors: { primary: "#C6FF00", accent: "#C6FF00", soft: "#1E1E1E", dark: "#121212" }
-    }
-  },
-  {
-    id: "nomad-stays", tint: "#EFE6D8", status: "concept",
-    type: "Boutique Hotel", category: "Hospitality", build: "hotel",
-    title: "Nomad Stays",
-    summary: "A quiet, editorial site for a twelve-room boutique hotel, made to win direct bookings away from the big travel sites.",
-    signature: "A room picker that builds a live “your stay” card with dates, extras and the price before checkout.",
-    features: ["Room picker", "Direct booking", "Local guide", "Gift vouchers"],
-    style: "elegant",
-    preview: {
-      name: "Nomad Stays", domain: "nomadstays.co", kicker: "Twelve rooms · Old town",
-      headline: "Stay somewhere that feels like a story", sub: "Slow mornings, hand-picked rooms and a guide to the streets outside.",
-      cta: "Choose your room", links: ["Rooms", "Guide", "Vouchers"],
-      cards: [["bed", "Pick your room"], ["pin", "Local guide"], ["gift", "Gift a stay"]],
-      proof: "Book direct for the best rate", art: "bed",
-      colors: { primary: "#8C5A3C", accent: "#C9A227", soft: "#F5EDE2", dark: "#2B211B" }
-    }
-  },
-  {
     id: "all-scent", tint: "#F1E8DA", status: "concept",
     type: "Perfume Boutique", category: "Retail", build: "ecommerce",
     title: "All Scent",
@@ -1504,23 +1556,6 @@ TS.portfolio = [
     }
   },
   {
-    id: "harbour-dental", tint: "#E3F1F2", status: "concept",
-    type: "Dental Clinic", category: "Health & fitness", build: "clinic",
-    title: "Harbour Dental",
-    summary: "A calm, reassuring clinic site that explains treatments in plain words and lets nervous patients book without a phone call.",
-    signature: "A treatment timeline that walks patients through each visit before they book.",
-    features: ["Online booking", "Treatment timeline", "Price guide", "Patient forms"],
-    style: "fresh",
-    preview: {
-      name: "Harbour Dental", domain: "harbourdental.care", kicker: "Family dentistry · Open Saturdays",
-      headline: "Gentle dentistry, explained step by step", sub: "See exactly what happens at each visit, then book a time that suits you.",
-      cta: "Book a check-up", links: ["Treatments", "Prices", "Team"],
-      cards: [["calendar", "Book online"], ["file", "Treatment steps"], ["heart", "Nervous patients"]],
-      proof: "New patients welcome", art: "plus",
-      colors: { primary: "#0F7C8C", accent: "#F28C6B", soft: "#E8F5F6", dark: "#0B2E35" }
-    }
-  },
-  {
     id: "new-mart", tint: "#E2F5EA", status: "concept",
     type: "Supermarket", category: "Retail", build: "ecommerce",
     title: "New Mart",
@@ -1535,40 +1570,6 @@ TS.portfolio = [
       cards: [["basket", "Smart basket"], ["truck", "Delivery slots"], ["star", "New Mart Rewards"]],
       proof: "Same-day delivery across the city", art: "basket",
       colors: { primary: "#2ECC71", accent: "#FFB400", soft: "#EAFBF1", dark: "#2D3436" }
-    }
-  },
-  {
-    id: "kinetic-studio", tint: "#E7E3F3", status: "concept",
-    type: "Fitness Studio", category: "Health & fitness", build: "other",
-    title: "Kinetic Studio",
-    summary: "A high-energy studio site where the timetable is the homepage: live spaces left, instant booking and memberships that sell themselves.",
-    signature: "A live class timetable that shows spaces left and books a place in two taps.",
-    features: ["Class timetable", "Membership quiz", "Online payments", "Trainer profiles"],
-    style: "bold",
-    preview: {
-      name: "KINETIC", domain: "kineticstudio.fit", kicker: "HIIT · Strength · Mobility",
-      headline: "Move with people who push you", sub: "Small classes, real coaches and a timetable that fits your week.",
-      cta: "Book a class", links: ["Classes", "Coaches", "Join"],
-      cards: [["timer", "Live timetable"], ["bolt", "Find your plan"], ["card", "Pay online"]],
-      proof: "First class free", art: "bolt",
-      colors: { primary: "#7C5CFF", accent: "#7C5CFF", soft: "#1C1A26", dark: "#121018" }
-    }
-  },
-  {
-    id: "grip-garage", tint: "#F2EAD6", status: "concept",
-    type: "Tyre Shop", category: "Automotive", build: "other",
-    title: "Grip Garage",
-    summary: "A pit-stop style tyre shop with a size finder, fitting bookings and a one-tap emergency call on mobile.",
-    signature: "A tyre finder that reads the size off your sidewall and books a fitting slot.",
-    features: ["Tyre finder", "Fitting bookings", "Service pricing", "Emergency call"],
-    style: "bold",
-    preview: {
-      name: "GRIP GARAGE", domain: "gripgarage.net", kicker: "Tyres · Alignment · Balancing",
-      headline: "Grip every road", sub: "Find your tyre size and book a fitting in minutes.",
-      cta: "Find my tyre", links: ["Tyres", "Services", "Book"],
-      cards: [["tyre", "Tyre finder"], ["wrench", "Wheel alignment"], ["calendar", "Book fitting"]],
-      proof: "Fitted in under 45 minutes", art: "tyre",
-      colors: { primary: "#FFC107", accent: "#FFC107", soft: "#262626", dark: "#1B1B1B" }
     }
   }
 ];
