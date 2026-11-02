@@ -7,7 +7,7 @@
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-<title>Trace Solutions Global — Websites for Restaurants, Hotels, Clinics &amp; Growing Businesses</title>
+<title>Easy websites, priced upfront | Trace</title>
 <link rel="canonical" href="https://tracesolutionsglobal.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Trace Solutions Global">
@@ -18,8 +18,17 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="description" content="Trace Solutions Global designs and builds modern websites for businesses all over the world. Build your website concept in minutes and see it before we write a line of code.">
+<meta name="description" content="Simple websites, live in days, at a fixed price in US dollars. For restaurants, clinics and hotels in the UK, Sri Lanka, Australia and the US.">
 <meta name="theme-color" content="#012228">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+  {"@type":"Organization","name":"Trace Solutions Global","url":"https://tracesolutionsglobal.com/","email":"sales@tracesolutionsglobal.com","logo":"https://tracesolutionsglobal.com/assets/logo/icon-512.png","areaServed":["GB","LK","AU","US"],"contactPoint":[
+    {"@type":"ContactPoint","telephone":"+44-7548-692972","contactType":"sales","areaServed":"GB","availableLanguage":"English"},
+    {"@type":"ContactPoint","telephone":"+94-76-831-0321","contactType":"sales","areaServed":"LK","availableLanguage":"English"}
+  ]},
+  {"@type":"Service","name":"Website design","provider":{"@type":"Organization","name":"Trace Solutions Global"},"areaServed":["GB","LK","AU","US"],"description":"Fixed-price websites for restaurants, clinics and hotels, with the price shown in US dollars before work starts."}
+]}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@500&family=Montserrat:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
@@ -820,11 +829,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
     <div class="container hero-grid">
       <div class="hero-copy">
         <span class="eyebrow">Your vision, built line by line</span>
-        <h1>Websites made for
-          <span class="accent-word">your business<svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 14C70 6 170 4 296 10"/></svg></span></h1>
-        <p class="lede">We design and build modern websites for restaurants, hotels, clinics and growing businesses, wherever they are in the world. Pick your business and style, and watch your website take shape before we write a single line of code.</p>
+        <h1>Your website, live in days, at a price you see upfront.</h1>
+        <p class="lede">Simple sites, built fast, at a fixed price in US dollars. For restaurants, clinics, hotels and shops in the UK, Sri Lanka, Australia and the United States.</p>
         <div class="hero-ctas">
-          <a class="btn btn--coral" href="build.html">Build Your Website Concept <span class="arrow">→</span></a>
+          <a class="btn btn--coral" href="build.html">Build your concept in 2 minutes <span class="arrow">→</span></a>
           <a class="btn btn--outline" href="work.html">View Our Work</a>
         </div>
         <ul class="hero-points">
@@ -848,6 +856,19 @@ button, input, select, textarea { font: inherit; color: inherit; }
         <div class="tracing-label" aria-live="polite"><span class="pulse"></span>Now tracing: <b id="heroType">Restaurant</b></div>
         <div class="hero-switch" id="heroSwitch" aria-label="Choose example"></div>
       </div>
+    </div>
+  </section>
+
+  <section class="section" id="sample-store" aria-labelledby="sampleTitle">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Sample storefront</span>
+          <h2 class="h2" id="sampleTitle">An example shop, not a client site</h2>
+        </div>
+        <p class="lede">Move the cursor over the shirt, switch colours, and drag the row. This is a sample of an online store we can build.</p>
+      </div>
+      <iframe src="demos/sample-store/" title="Sample apparel storefront, Harbour Cloth" style="width:100%;height:780px;border:0;border-radius:18px;background:#f4f0e8;box-shadow:0 18px 50px -28px rgba(1,34,40,.45)" loading="lazy"></iframe>
     </div>
   </section>
 
@@ -980,11 +1001,18 @@ button, input, select, textarea { font: inherit; color: inherit; }
       <div class="section-head">
         <div>
           <span class="eyebrow">Pricing</span>
-          <h2 class="h2" id="pricingTitle">Three packages, sized to your project</h2>
+          <h2 class="h2" id="pricingTitle">A clear price, in US dollars</h2>
         </div>
-        <p class="lede">Every website fits one of three packages, depending on its size. Your proposal gives a fixed price in US dollars, so you know the full cost before we start.</p>
+        <p class="lede">Simple, fast, and fixed before we start. Edit the numbers in the pricing block at the top of this file.</p>
       </div>
       <div class="price-grid" id="priceGrid"></div>
+      <ul class="hero-points" style="margin-top:1.4rem;justify-content:flex-start">
+        <li>Fixed price</li>
+        <li>No lock-in</li>
+        <li>You own your domain</li>
+        <li>Replies within one working day</li>
+      </ul>
+      <p style="margin-top:1rem"><a class="btn btn--coral" href="build.html">Build your concept in 2 minutes <span class="arrow">→</span></a></p>
       <p class="price-note">Domain, hosting and paid third-party tools are extra where needed, and listed in your proposal. <a href="terms.html">Terms of service</a></p>
     </div>
   </section>
@@ -1185,7 +1213,8 @@ TS.site = {
   website: "tracesolutionsglobal.com",
   /* Optional starting prices in US dollars for the Pricing section, one per package.
      0 = not set: that card shows "Fixed quote" instead of a "From" price. */
-  pricing: { starter: 0, growth: 0, pro: 0 },
+  /* Placeholder prices in US dollars. Change these three numbers. */
+  pricing: { starter: 750, business: 1400, store: 2400 },
 
   /* Offices and direct numbers shown in "Talk to a real person".
      Each number gets Call, WhatsApp and Text buttons. */
@@ -2128,9 +2157,9 @@ window.TS = window.TS || {};
   function initPricing() {
     const pr = TS.site.pricing || {};
     const PKG = [
-      { id: "starter", name: "Starter", weeks: "1–4 weeks", desc: "A polished business website with the essentials.", points: ["Mobile-first design", "WhatsApp and contact buttons", "Google search basics"] },
-      { id: "growth", name: "Growth", weeks: "3–5 weeks", desc: "More pages and tools that bring in bookings and enquiries.", points: ["Everything in Starter", "Bookings, enquiry forms or a menu", "Reviews, gallery and maps"], featured: true },
-      { id: "pro", name: "Pro", weeks: "5–8 weeks", desc: "Online sales, bookings or several languages, built to scale.", points: ["Everything in Growth", "Online store or payments", "Several languages"] }
+      { id: "starter", name: "Starter", weeks: "Live in about 7 days", desc: "A simple business website with the essentials.", points: ["Mobile-first design", "WhatsApp and contact buttons", "Google search basics"] },
+      { id: "business", name: "Business", weeks: "Live in about 14 days", desc: "More pages for bookings, menus and enquiries.", points: ["Everything in Starter", "Bookings, enquiry forms or a menu", "Reviews, gallery and maps"], featured: true },
+      { id: "store", name: "Online Store", weeks: "Live in about 21 days", desc: "A shop with products, cart and checkout.", points: ["Everything in Business", "Product pages and cart", "Checkout and payments"] }
     ];
     const money = n => "$" + Number(n).toLocaleString("en-US");
     $("#priceGrid").innerHTML = PKG.map(p => `<article class="price-card${p.featured ? " is-featured" : ""}">
@@ -2138,7 +2167,7 @@ window.TS = window.TS || {};
       <div class="pc-price">${+pr[p.id] > 0 ? `<small>From</small>${money(pr[p.id])}` : `<small>Price</small>Fixed quote`}</div>
       <p>${p.desc}</p>
       <ul>${p.points.map(x => `<li>${x}</li>`).join("")}</ul>
-      <a class="btn ${p.featured ? "btn--coral" : "btn--outline"}" href="build.html">Build your concept <span class="arrow">→</span></a>
+      <a class="btn ${p.featured ? "btn--coral" : "btn--outline"}" href="build.html">Build your concept in 2 minutes <span class="arrow">→</span></a>
     </article>`).join("");
   }
 

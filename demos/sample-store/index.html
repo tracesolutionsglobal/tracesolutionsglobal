@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sample storefront · Harbour Cloth</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--bg:#f4f0e8;--ink:#171717;--muted:#5c574e;--line:#e4ddd2;--card:#fffcf7;--r:16px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Plus Jakarta Sans",system-ui,sans-serif}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:1rem;padding:.85rem 4vw;background:rgba(244,240,232,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.logo{font-weight:800;letter-spacing:.14em;font-size:.82rem}
+nav{display:flex;gap:1.1rem;margin-left:auto;font-size:.86rem;font-weight:650}
+.icons{display:flex;gap:.7rem;margin-left:1rem;align-items:center}
+.icons button{border:0;background:transparent;cursor:pointer;position:relative}
+.badge{position:absolute;top:-6px;right:-8px;background:var(--ink);color:#fff;border-radius:99px;font-size:.65rem;min-width:16px;height:16px;display:grid;place-items:center}
+.stage-wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:2.5rem;padding:2rem 4vw 1rem;align-items:center}
+.stage{position:relative;min-height:520px;border-radius:18px;background:linear-gradient(180deg,#efe8dc,#f7f4ee);display:grid;place-items:center;perspective:900px;overflow:hidden}
+.tilt{transition:transform .45s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d}
+.tilt img,.tilt svg{width:min(420px,70%);height:auto;display:block;filter:drop-shadow(0 24px 30px rgba(0,0,0,.12))}
+.swatches{position:absolute;right:16px;bottom:16px;display:grid;gap:.45rem}
+.swatches button{width:54px;height:68px;border-radius:12px;border:1.5px solid transparent;background:#fff;padding:4px;cursor:pointer}
+.swatches button[aria-pressed="true"]{border-color:var(--ink)}
+.swatches svg{width:100%;height:100%}
+.info .eye{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.info h1{font-size:clamp(2rem,4vw,3.2rem);line-height:1.05;margin:.35rem 0}
+.price{font-size:1.35rem;font-weight:750}
+.desc{color:var(--muted);max-width:42ch}
+.add{margin-top:1rem;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:.85rem 1.4rem;font-weight:750;cursor:pointer}
+.add:hover{transform:translateY(-1px)}
+.add:active{transform:translateY(0)}
+.rail{padding:1.5rem 4vw 6.5rem}
+.hint{font-size:.8rem;color:var(--muted);font-weight:700;margin:0 0 .6rem}
+.scroller{display:flex;gap:.9rem;overflow-x:auto;scroll-snap-type:x mandatory;cursor:grab;padding-bottom:.4rem}
+.scroller:active{cursor:grabbing}
+.card{flex:0 0 200px;scroll-snap-align:start;background:var(--card);border-radius:var(--r);box-shadow:0 12px 30px -18px rgba(0,0,0,.35);padding:.7rem}
+.card svg{width:100%;height:140px;background:#efe8dc;border-radius:12px}
+.card b{display:block;margin-top:.55rem}
+.quick{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);display:flex;gap:.8rem;align-items:center;background:#fff;border-radius:999px;padding:.45rem .5rem .45rem 1rem;box-shadow:0 16px 40px -18px rgba(0,0,0,.45);white-space:nowrap}
+.quick button{background:var(--ink);color:#fff;border:0;border-radius:999px;padding:.65rem 1rem;font-weight:750;cursor:pointer}
+@media(max-width:860px){
+  nav{display:none}
+  .stage-wrap{grid-template-columns:1fr;padding-top:1rem}
+  .stage{min-height:380px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">HARBOUR CLOTH</div>
+  <nav><a href="#men">Men</a><a href="#women">Women</a><a href="#new">New In</a><a href="#sale">Sale</a></nav>
+  <div class="icons">
+    <button type="button" aria-label="Search">⌕</button>
+    <button type="button" aria-label="Account">☺</button>
+    <button type="button" aria-label="Cart">👜<span class="badge" id="count">0</span></button>
+  </div>
+</header>
+<p style="margin:0;padding:.45rem 4vw;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#5c574e">Sample storefront · not a real shop</p>
+<div class="stage-wrap">
+  <div class="stage" id="stage">
+    <div class="tilt" id="tilt"></div>
+    <div class="swatches" id="swatches"></div>
+  </div>
+  <div class="info">
+    <div class="eye">New arrival</div>
+    <h1 id="title">Heavyweight tee</h1>
+    <div class="price" id="price">$48</div>
+    <p class="desc" id="desc">A sample product page. The shirt tilts with your cursor, the colours switch, and the row below can be dragged.</p>
+    <button class="add" id="add" type="button">Add to cart</button>
+  </div>
+</div>
+<section class="rail">
+  <p class="hint">Drag to explore →</p>
+  <div class="scroller" id="rail"></div>
+</section>
+<div class="quick">
+  <span id="quickName">Heavyweight tee · $48 · M</span>
+  <button type="button" id="quick">Quick add</button>
+</div>
+<script>
+const colours = [
+  { id: "sand", name: "Sand", fill: "#d8c4a4", price: 48 },
+  { id: "ink", name: "Ink", fill: "#2a2a2a", price: 48 },
+  { id: "clay", name: "Clay", fill: "#b5654a", price: 52 }
+];
+function shirt(fill){
+  return `<svg viewBox="0 0 200 240" aria-hidden="true"><path d="M70 28l30 16 30-16 28 18-16 28v140H58V74L42 46z" fill="${fill}"/><path d="M86 44c6 10 22 10 28 0" fill="none" stroke="#fff" stroke-width="3" opacity=".55"/></svg>`;
+}
+const products = [
+  { name: "Heavyweight tee", price: 48, fill: "#d8c4a4", desc: "A sample product page. The shirt tilts with your cursor, the colours switch, and the row below can be dragged." },
+  { name: "Relaxed hoodie", price: 86, fill: "#3d4a55", desc: "Another sample piece in this made-up shop. Nothing here is for sale." },
+  { name: "Everyday overshirt", price: 74, fill: "#6e7c62", desc: "A sample overshirt, shown so you can see a product page with a related-items rail." },
+  { name: "Canvas cap", price: 28, fill: "#c4a574", desc: "A sample cap. The quick-add bar stays on screen while you scroll." }
+];
+let current = 0, colour = 0, cart = 0;
+const tilt = document.getElementById("tilt");
+const stage = document.getElementById("stage");
+function paint(){
+  const p = products[current];
+  const c = colours[colour];
+  tilt.innerHTML = shirt(current === 0 ? c.fill : p.fill);
+  document.getElementById("title").textContent = p.name;
+  document.getElementById("price").textContent = "$" + (current === 0 ? c.price : p.price);
+  document.getElementById("desc").textContent = p.desc;
+  document.getElementById("quickName").textContent = `${p.name} · $${current === 0 ? c.price : p.price} · M`;
+  document.getElementById("swatches").innerHTML = colours.map((col, i) => `<button type="button" aria-label="${col.name}" aria-pressed="${i===colour}">${shirt(col.fill)}</button>`).join("");
+  document.getElementById("swatches").querySelectorAll("button").forEach((btn, i) => btn.onclick = () => { colour = i; if (current !== 0) current = 0; paint(); });
+  tilt.style.opacity = "0.35";
+  requestAnimationFrame(() => { tilt.style.transition = "opacity .35s ease, transform .45s cubic-bezier(.2,.8,.2,1)"; tilt.style.opacity = "1"; });
+}
+paint();
+document.getElementById("rail").innerHTML = products.map((p, i) => `<button class="card" type="button" data-i="${i}">${shirt(p.fill)}<b>${p.name}</b><span>$${p.price}</span></button>`).join("");
+document.getElementById("rail").addEventListener("click", e => {
+  const card = e.target.closest("[data-i]");
+  if (!card || dragged) return;
+  current = +card.dataset.i; paint();
+});
+function add(){ cart++; document.getElementById("count").textContent = cart; }
+document.getElementById("add").onclick = add;
+document.getElementById("quick").onclick = add;
+stage.addEventListener("mousemove", e => {
+  const r = stage.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width - .5;
+  const y = (e.clientY - r.top) / r.height - .5;
+  const amp = matchMedia("(pointer: coarse)").matches ? 4 : 10;
+  tilt.style.transform = `rotateY(${x * amp}deg) rotateX(${-y * amp}deg)`;
+});
+stage.addEventListener("mouseleave", () => { tilt.style.transform = "rotateY(0) rotateX(0)"; });
+stage.addEventListener("touchmove", e => {
+  const t = e.touches[0], r = stage.getBoundingClientRect();
+  const x = (t.clientX - r.left) / r.width - .5;
+  const y = (t.clientY - r.top) / r.height - .5;
+  tilt.style.transform = `rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
+}, { passive: true });
+const rail = document.getElementById("rail");
+let down = false, startX = 0, startScroll = 0, dragged = false;
+rail.addEventListener("pointerdown", e => { down = true; dragged = false; startX = e.clientX; startScroll = rail.scrollLeft; rail.setPointerCapture(e.pointerId); });
+rail.addEventListener("pointermove", e => {
+  if (!down) return;
+  const dx = e.clientX - startX;
+  if (Math.abs(dx) > 4) dragged = true;
+  rail.scrollLeft = startScroll - dx;
+});
+rail.addEventListener("pointerup", () => { down = false; setTimeout(() => { dragged = false; }, 0); });
+</script>
+</body>
+</html>

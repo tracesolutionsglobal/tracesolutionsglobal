@@ -7,7 +7,7 @@
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-<title>Our Work: Website Examples &amp; Case Studies · Trace Solutions Global</title>
+<title>Our work · Trace Solutions Global</title>
 <link rel="canonical" href="https://tracesolutionsglobal.com/work.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Trace Solutions Global">
@@ -1593,7 +1593,7 @@ TS.portfolio = [
     ? `<div class="palette palette--lg">${["primary", "accent", "soft", "dark"].map(k => `<span><i style="background:${c[k]}"></i>${c[k].toUpperCase()}</span>`).join("")}</div>`
     : `<div class="palette" aria-label="Colour palette">${["primary", "accent", "soft", "dark"].map(k => `<i style="background:${c[k]}" title="${c[k]}"></i>`).join("")}</div>`;
   const buildLink = p => BUILD + (BUILD.startsWith("http") ? "" : `?type=${encodeURIComponent(p.build)}&style=${encodeURIComponent(p.style)}`);
-  const redactNote = `<p class="redacted-note"><span aria-hidden="true">⊘</span>The live feed for this project has been redacted to preserve the client's copyright. The preview shows the design direction only.</p>`;
+  const redactNote = `<p class="redacted-note"><span aria-hidden="true">⊘</span>Concept. The preview shows the design direction only.</p>`;
 
   /* Stats and filters, counted from the projects themselves */
   function initTop() {

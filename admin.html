@@ -305,12 +305,21 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
 <main class="wrap" id="finderView" hidden>
   <div class="lf-head">
     <h2>Lead finder</h2>
-    <p>Search mapped UK businesses around a postcode, town or city. Results come from OpenStreetMap, then each listed website is checked.</p>
+    <p>Search mapped businesses in the UK, Sri Lanka, Australia or the United States. Results come from OpenStreetMap.</p>
   </div>
   <div class="lf-panel">
     <div class="lf-grid">
+      <div class="lf-field">
+        <label for="lfCountry">Country</label>
+        <select id="lfCountry">
+          <option value="gb" selected>United Kingdom</option>
+          <option value="lk">Sri Lanka</option>
+          <option value="au">Australia</option>
+          <option value="us">United States</option>
+        </select>
+      </div>
       <div class="lf-loc" id="lfLoc">
-        <label for="lfQ">UK Postcode, Town or City</label>
+        <label for="lfQ" id="lfQLabel">UK Postcode, Town or City</label>
         <div class="lf-box">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/></svg>
           <input id="lfQ" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="lfList" autocomplete="off" spellcheck="false" placeholder="Enter a postcode, e.g. N15 4JA, or search London">

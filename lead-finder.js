@@ -44,6 +44,16 @@
     "https://overpass.kumi.systems/api/interpreter",
     "https://overpass.openstreetmap.fr/api/interpreter"
   ];
+  const COUNTRIES = {
+    gb: { label: "United Kingdom", code: "gb", postcodes: true },
+    lk: { label: "Sri Lanka", code: "lk", postcodes: false },
+    au: { label: "Australia", code: "au", postcodes: false },
+    us: { label: "United States", code: "us", postcodes: false }
+  };
+  function country() {
+    const el = document.getElementById("lfCountry");
+    return COUNTRIES[(el && el.value) || "gb"] || COUNTRIES.gb;
+  }
   const SECTORS = {
     cafe: { label: "Cafés and restaurants", tags: [["amenity", "cafe"], ["amenity", "restaurant"], ["amenity", "fast_food"]] },
     pub: { label: "Pubs and bars", tags: [["amenity", "pub"], ["amenity", "bar"]] },
@@ -179,7 +189,7 @@
     return {
       label: q, query: q, type: "place", verified: true,
       latitude: Number(hit.lat), longitude: Number(hit.lon), outcode: "",
-      detail: short, adminName: "", warning: "This name isn't in the UK postcode directory. The pin is the OpenStreetMap place, not a postcode.",
+      detail: short, adminName: "", warning: country().postcodes ? "This name isn't in the UK postcode directory. The pin is the OpenStreetMap place, not a postcode." : "Mapped centre in " + country().label + ".",
       osmType: hit.osm_type || "", osmId: hit.osm_id || ""
     };
   }
@@ -230,7 +240,7 @@
     if (wait > 0) await new Promise((r) => setTimeout(r, wait));
     if (signal && signal.aborted) throw new DOMException("Aborted", "AbortError");
     nomiAt = Date.now();
-    const url = "https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&countrycodes=gb&limit=5&q=" + encodeURIComponent(q);
+    const url = "https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&countrycodes=" + country().code + "&limit=5&q=" + encodeURIComponent(q);
     const res = await fetch(url, { signal, headers: { Accept: "application/json", "Accept-Language": "en" } });
     if (!res.ok) throw new Error("OpenStreetMap place search returned " + res.status + ".");
     const data = await res.json();
@@ -240,6 +250,11 @@
   async function resolveQuery(raw, opts, signal) {
     const q = String(raw || "").trim().replace(/\s+/g, " ");
     if (!q) return null;
+    if (!country().postcodes) {
+      const geo = await nominatimSearch(q, signal);
+      if (geo.length && geo[0].lat) return fromNominatim(geo[0], q);
+      return manual(q, `No place matched “${q}” in ${country().label}.`);
+    }
     const compact = compactOf(q);
     const hints = opts || {};
     if (hints.area || /^[A-Z]{1,2}$/.test(compact)) {
@@ -276,6 +291,10 @@
   }
 
   async function fetchMatches(q, signal) {
+    if (!country().postcodes) {
+      const geo = await nominatimSearch(q, signal);
+      return geo.slice(0, 6).map((hit) => optionFromLocation(fromNominatim(hit, hit.display_name || q)));
+    }
     const compact = compactOf(q);
     if (postcodeish(q)) {
       const jobs = [pcGet("/postcodes/" + encodeURIComponent(compact) + "/autocomplete?limit=6", signal)];
@@ -342,8 +361,8 @@
       options.push({ section: "Recently used" });
       recent.forEach((r) => options.push({ label: displayName(r), hint: radiusText(r.radius), run: async () => r }));
     }
-    const popular = POPULAR.filter((p) => !query || p.label.toLowerCase().includes(query));
-    if (!query || popular.length) {
+    const popular = country().postcodes ? POPULAR.filter((p) => !query || p.label.toLowerCase().includes(query)) : [];
+    if (country().postcodes && (!query || popular.length)) {
       options.push({ section: "Popular destinations" });
       (query ? popular : POPULAR).forEach((p) => options.push({
         label: p.label,
@@ -1049,6 +1068,16 @@
   }
 
   input.addEventListener("focus", () => { if (list.hidden) scheduleSuggest(); });
+  const countryEl = document.getElementById("lfCountry");
+  if (countryEl) countryEl.addEventListener("change", () => {
+    const label = document.getElementById("lfQLabel");
+    if (label) label.textContent = country().postcodes ? "UK Postcode, Town or City" : "Town or city";
+    input.placeholder = country().postcodes ? "Enter a postcode, e.g. N15 4JA, or search London" : "Search a town or city";
+    state.location = null;
+    input.value = "";
+    closeMenu();
+    renderNote();
+  });
   input.addEventListener("click", () => { if (list.hidden) scheduleSuggest(); });
   input.addEventListener("input", () => {
     if (state.location && input.value.trim() !== state.location.label) state.location = null;
