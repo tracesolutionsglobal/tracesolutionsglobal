@@ -1657,20 +1657,30 @@ TS.portfolio = [
     showPreview($("#featBody"), $("#featUrl"), p);
   }
 
-  /* Wall of projects */
+  /* Wall of projects: same split as the featured card. Night = bold work plus Lamp. */
   function initWall() {
-    $("#wall").innerHTML = wall.map((p, i) => `
-      <button type="button" class="w-card${p.landscape ? " is-land" : ""}" data-case="${p.id}" data-cat="${esc(p.category)}" aria-label="Open the ${esc(p.title)} case study">
-        <div class="w-visual" style="--tint:${p.tint}">
-          <span class="w-num">${String(i + 2).padStart(2, "0")} / ${String(P.length).padStart(2, "0")}</span>
-          <div class="browser browser--sm"><div class="browser-bar"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url" data-url="${p.id}"></span></div><div class="browser-body" data-preview="${p.id}"></div></div>
-          <span class="w-open">View case <span aria-hidden="true">→</span></span>
+    $("#wall").innerHTML = wall.map((p, i) => {
+      const night = p.style === "bold" || p.id === "lamp-login";
+      const kind = p.status === "live" ? "Live demo" : "Concept";
+      const primary = p.preview.colors.primary;
+      return `
+      <article class="w-card${night ? " is-night" : " is-day"}${i % 2 ? " is-mirror" : ""}${p.landscape ? " is-land" : ""}" data-cat="${esc(p.category)}" style="--tint:${p.tint};--glow:${primary};--sig:${primary}">
+        <div class="w-visual">
+          <div class="browser"><div class="browser-bar"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url" data-url="${p.id}"></span></div><div class="browser-body" data-preview="${p.id}"></div></div>
         </div>
-        <div class="w-meta"><span class="tag">${esc(p.type)}</span><span class="tag tag--style">${STYLE[p.style]}</span>${p.status === "live" ? `<span class="tag tag--coral">Live demo</span>` : `<span class="tag tag--style">Concept</span>`}</div>
-        <h3>${esc(p.title)}</h3>
-        <p class="sum">${esc(p.summary)}</p>
-        <div class="w-card-foot"><span class="w-sig"><b>Signature</b>${esc(p.features[0])}</span>${palette(p.preview.colors)}</div>
-      </button>`).join("");
+        <div class="w-copy">
+          <span class="w-feat-label">${kind} · ${esc(p.category)}</span>
+          <h3>${esc(p.title)}</h3>
+          <p class="sum">${esc(p.summary)}</p>
+          <div class="signature"><small>Signature feature</small><p>${esc(p.signature)}</p></div>
+          ${palette(p.preview.colors)}
+          <div class="actions">
+            ${p.url ? `<a class="btn btn--coral" href="${esc(p.url)}" target="_blank" rel="noopener">View live demo <span class="arrow">→</span></a>` : ""}
+            <button type="button" class="btn ${night ? "btn--ghost-light" : "btn--outline"}" data-case="${p.id}">Open the case</button>
+          </div>
+        </div>
+      </article>`;
+    }).join("");
     wall.forEach(p => showPreview($(`[data-preview="${p.id}"]`), $(`[data-url="${p.id}"]`), p));
     layout();
     // Re-trace a preview when its card is hovered
@@ -1680,15 +1690,8 @@ TS.portfolio = [
       c._traced = true; TS.tracePreview($("[data-preview]", c)); setTimeout(() => { c._traced = false; }, 2600);
     }, true);
   }
-  /* Staggered rhythm: wide + narrow pairs, recalculated after filtering */
   function layout() {
     const shown = $$(".w-card").filter(c => !c.classList.contains("is-hidden"));
-    shown.forEach((c, i) => {
-      c.classList.remove("s7", "s5", "solo");
-      if (i === shown.length - 1 && i % 2 === 0) { c.classList.add("solo"); return; }
-      const row = Math.floor(i / 2), first = i % 2 === 0;
-      c.classList.add((row % 2 === 0) === first ? "s7" : "s5");
-    });
     $("#wNone").hidden = shown.length> 0 || !$("#featuredWrap").classList.contains("is-hidden");
   }
   function setFilter(v) {
