@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery · Saffron &amp; Coal</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Saffron &amp; Coal, a Middle Eastern restaurant website concept by Trace Solutions Global: menu, gallery and table reservations.">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .gallery-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
+  }
+  @media(max-width:860px){ .gallery-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:560px){ .gallery-grid{ grid-template-columns:1fr; } }
+  .g-item{
+    border-radius:16px; overflow:hidden; position:relative; background:var(--card);
+    border:1px solid var(--line);
+  }
+  .g-item img{ width:100%; height:240px; object-fit:cover; display:block; }
+  .g-item .cap{
+    padding:12px 14px; font-size:13px; color:var(--muted);
+  }
+  .g-item.tall img{ height:360px; }
+</style>
+</head>
+<body>
+
+<div class="tag">CONCEPT DEMO · built by Trace Solutions Global</div>
+
+<header>
+  <a class="brand" href="index.html">Saffron <span>&amp; Coal</span></a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="menu.html">Menu</a>
+    <a href="gallery.html" class="active">Gallery</a>
+    <a href="reservation.html">Reservations</a>
+  </nav>
+  <div class="btn-group">
+    <a class="btn btn-wa" href="reservation.html">WhatsApp</a>
+    <a class="btn btn-call" href="reservation.html">Call Now</a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="eyebrow">Gallery</div>
+  <h1>A look at the food &amp; atmosphere</h1>
+  <p>A preview of the dishes and setting that make Saffron &amp; Coal a local favourite.</p>
+</div>
+
+<div class="note-banner">
+  <div class="inner">
+    <strong>Note:</strong> these images are AI-generated for concept purposes, not actual photos from Saffron &amp; Coal. Once approved, we'd replace these with real photography of the space and dishes.
+  </div>
+</div>
+
+<section class="std">
+  <div class="gallery-grid">
+    <div class="g-item tall"><img src="img/table_spread.jpg" alt="Full table spread"><div class="cap">A table built for sharing</div></div>
+    <div class="g-item"><img src="img/hero_mandi.jpg" alt="Mandi Rice with BBQ Chicken"><div class="cap">Mandi Rice with BBQ Chicken</div></div>
+    <div class="g-item"><img src="img/kabsa.jpg" alt="Mutton Mandi"><div class="cap">Mutton Mandi / Kabsa</div></div>
+    <div class="g-item"><img src="img/grilled_skewers.jpg" alt="Mixed Grill Skewers"><div class="cap">Charcoal Mixed Grill</div></div>
+    <div class="g-item"><img src="img/interior.jpg" alt="Interior floor seating"><div class="cap">Traditional floor seating</div></div>
+    <div class="g-item"><img src="img/lentil_soup.jpg" alt="Lentil Soup"><div class="cap">Arabian Lentil Soup</div></div>
+    <div class="g-item"><img src="img/butter_naan.jpg" alt="Butter Chicken & Naan"><div class="cap">Butter Chicken &amp; Naan</div></div>
+    <div class="g-item"><img src="img/mint_lemonade.jpg" alt="Mint Lemonade"><div class="cap">Fresh Mint Lemonade</div></div>
+    <div class="g-item"><img src="img/mandi.jpg" alt="Family Mandi Platter"><div class="cap">Family Mandi Platter</div></div>
+  </div>
+</section>
+
+<footer>
+  Concept website by <a href="/work.html">Trace Solutions Global</a>. Food and interior images are AI-generated for preview, and menu items and prices are illustrative.
+</footer>
+
+</body>
+</html>

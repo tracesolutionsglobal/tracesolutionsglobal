@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu · Saffron &amp; Coal</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Saffron &amp; Coal, a Middle Eastern restaurant website concept by Trace Solutions Global: menu, gallery and table reservations.">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .cat{ margin-bottom:54px; }
+  .cat h2{ font-size:22px; margin-bottom:20px; border-bottom:2px solid var(--line); padding-bottom:10px; }
+  .dish-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  @media(max-width:700px){ .dish-grid{ grid-template-columns:1fr; } }
+  .dish{
+    display:flex; gap:16px; background:var(--card); border:1px solid var(--line);
+    border-radius:14px; padding:14px; align-items:center;
+  }
+  .dish .thumb{ width:84px; height:84px; border-radius:10px; overflow:hidden; flex-shrink:0; background:linear-gradient(160deg,#fdf8f1,#eadcc6); }
+  .dish .thumb img{ width:100%; height:100%; object-fit:cover; }
+  .dish .meta{ flex:1; }
+  .dish .meta .row{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; }
+  .dish h3{ margin:0; font-size:15px; }
+  .dish .price{ font-size:14px; font-weight:700; color:var(--terracotta); white-space:nowrap; }
+  .dish p{ margin:4px 0 0; font-size:12.5px; color:var(--muted); line-height:1.5; }
+</style>
+</head>
+<body>
+
+<div class="tag">CONCEPT DEMO · built by Trace Solutions Global</div>
+
+<header>
+  <a class="brand" href="index.html">Saffron <span>&amp; Coal</span></a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="menu.html" class="active">Menu</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="reservation.html">Reservations</a>
+  </nav>
+  <div class="btn-group">
+    <a class="btn btn-wa" href="reservation.html">WhatsApp</a>
+    <a class="btn btn-call" href="reservation.html">Call Now</a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="eyebrow">Our Menu</div>
+  <h1>A full table of Yemeni &amp; Arabian classics</h1>
+  <p>Mandi, Kabsa, grills, and everything that goes with them. All prices in Sri Lankan Rupees.</p>
+</div>
+
+<div class="note-banner">
+  <div class="inner">
+    <strong>Sample menu for concept purposes.</strong> Dish names, descriptions and prices below are illustrative, built to show layout and structure — the final menu will be confirmed with Saffron &amp; Coal before this goes live.
+  </div>
+</div>
+
+<section class="std">
+
+  <div class="cat">
+    <h2>Starters &amp; Soups</h2>
+    <div class="dish-grid">
+      <div class="dish">
+        <div class="thumb"><img src="img/lentil_soup.jpg" alt="Lentil Soup"></div>
+        <div class="meta">
+          <div class="row"><h3>Arabian Lentil Soup</h3><span class="price">Rs 450</span></div>
+          <p>Warm spiced lentils finished with lemon and fresh herbs.</p>
+        </div>
+      </div>
+      <div class="dish">
+        <div class="thumb"><img src="img/table_spread.jpg" alt="Mixed Mezze Platter"></div>
+        <div class="meta">
+          <div class="row"><h3>Mixed Mezze Platter</h3><span class="price">Rs 1,200</span></div>
+          <p>Hummus, mutabbal, tabbouleh and warm pita, perfect for sharing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cat">
+    <h2>Mandi &amp; Kabsa</h2>
+    <div class="dish-grid">
+      <div class="dish">
+        <div class="thumb"><img src="img/hero_mandi.jpg" alt="Mandi Rice with BBQ Chicken"></div>
+        <div class="meta">
+          <div class="row"><h3>Mandi Rice with BBQ Chicken</h3><span class="price">Rs 1,650</span></div>
+          <p>Saffron rice slow-cooked beneath tender BBQ chicken.</p>
+        </div>
+      </div>
+      <div class="dish">
+        <div class="thumb"><img src="img/kabsa.jpg" alt="Mutton Mandi / Kabsa"></div>
+        <div class="meta">
+          <div class="row"><h3>Mutton Mandi / Kabsa</h3><span class="price">Rs 2,100</span></div>
+          <p>Spiced rice with slow-roasted mutton, raisins and almonds.</p>
+        </div>
+      </div>
+      <div class="dish">
+        <div class="thumb"><img src="img/mandi.jpg" alt="Family Mandi Platter"></div>
+        <div class="meta">
+          <div class="row"><h3>Family Mandi Platter</h3><span class="price">Rs 5,500</span></div>
+          <p>The full spread, built for sharing — serves 3–4 people.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cat">
+    <h2>Grills</h2>
+    <div class="dish-grid">
+      <div class="dish">
+        <div class="thumb"><img src="img/grilled_skewers.jpg" alt="Mixed Grill Skewers"></div>
+        <div class="meta">
+          <div class="row"><h3>Mixed Grill Skewers</h3><span class="price">Rs 1,850</span></div>
+          <p>Charcoal-grilled lamb and chicken skewers with grilled vegetables.</p>
+        </div>
+      </div>
+      <div class="dish">
+        <div class="thumb"><img src="img/butter_naan.jpg" alt="Butter Chicken Grill"></div>
+        <div class="meta">
+          <div class="row"><h3>Butter Chicken &amp; Naan</h3><span class="price">Rs 1,450</span></div>
+          <p>Rich, creamy butter chicken curry with fresh tandoor naan.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cat">
+    <h2>Drinks &amp; Desserts</h2>
+    <div class="dish-grid">
+      <div class="dish">
+        <div class="thumb"><img src="img/mint_lemonade.jpg" alt="Mint Lemonade"></div>
+        <div class="meta">
+          <div class="row"><h3>Fresh Mint Lemonade</h3><span class="price">Rs 450</span></div>
+          <p>A cool, refreshing pairing for the richer plates.</p>
+        </div>
+      </div>
+      <div class="dish">
+        <div class="thumb" style="display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;">Dessert</div>
+        <div class="meta">
+          <div class="row"><h3>Arabic Dessert Platter</h3><span class="price">Rs 900</span></div>
+          <p>A selection of traditional sweets, ask your server for today's options.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div class="info-cta" style="text-align:center; padding:0 32px 60px;">
+  <a class="btn btn-call" href="reservation.html">📞 Call to Order</a>
+  <a class="btn btn-wa" href="reservation.html">💬 Order on WhatsApp</a>
+</div>
+
+<footer>
+  Concept website by <a href="/work.html">Trace Solutions Global</a>. Food and interior images are AI-generated for preview, and menu items and prices are illustrative.
+</footer>
+
+</body>
+</html>

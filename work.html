@@ -830,7 +830,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .w-featured .browser-body { max-height: 440px; overflow: hidden; }
 .w-shot { display: block; width: 100%; height: auto; }
 .w-visual .browser-body picture, .w-featured .browser-body picture { display: block; height: 100%; }
-.w-visual .browser-body .w-shot, .w-featured .browser-body .w-shot { height: 100%; object-fit: cover; object-position: top center; }
+.w-visual .browser-body .w-shot, .w-featured .browser-body .w-shot { height: 100%; object-fit: cover; object-position: left top; }
 .w-card.is-land .w-visual .browser-body, .w-visual.is-land .browser-body { height: auto; aspect-ratio: 16 / 10; }
 .w-card.s5.is-land .w-visual .browser-body { height: auto; aspect-ratio: 16 / 10; }
 .w-card.is-land .w-shot { object-fit: cover; object-position: center; }
@@ -1399,6 +1399,42 @@ TS.portfolio = [
       cards: [["cake", "Build your cake"], ["calendar", "Order for pickup"], ["chat", "WhatsApp us"]],
       proof: "4.9★ from 1,200+ sweet tooths", art: "cake",
       colors: { primary: "#E57C96", accent: "#C98B5A", soft: "#FFF6E9", dark: "#4A2C2A" }
+    }
+  },
+  {
+    id: "forma-gym", tint: "#E6F5C8", status: "live", url: "demos/forma-gym/",
+    shots: { hero: "assets/work/forma-gym-hero.jpg", full: "assets/work/forma-gym-full.jpg", mobile: "assets/work/forma-gym-mobile.jpg" },
+    type: "Gym & Fitness Centre", category: "Health & fitness", build: "other",
+    title: "Forma Gym",
+    summary: "A bold, black gym site with real class and member videos, then-and-now results, weekly routines by goal, membership rates and a visit booking form.",
+    signature: "Routine tabs that show a full Monday-to-Sunday plan for losing weight, building muscle or just starting out.",
+    features: ["Visit & check-up booking", "Weekly routines", "Before & after results", "Embedded videos"],
+    style: "bold",
+    preview: {
+      name: "FORMA GYM", domain: "formagym.lk", kicker: "Colombo · Sri Lanka",
+      headline: "Train hard. Pay fair.", sub: "Two floors of equipment, certified coaches and a friendly crowd.",
+      cta: "Book a free visit", links: ["Classes", "Routines", "Rates"],
+      cards: [["calendar", "Book a visit"], ["bolt", "Weekly routines"], ["card", "Clear rates"]],
+      proof: "Free first visit", art: "bolt",
+      colors: { primary: "#C8F560", accent: "#C8F560", soft: "#171717", dark: "#0A0A0A" }
+    }
+  },
+  {
+    id: "mandi-house", tint: "#F6E6D6", status: "live", url: "demos/mandi-house/",
+    shots: { hero: "assets/work/mandi-house-hero.jpg", full: "assets/work/mandi-house-full.jpg", mobile: "assets/work/mandi-house-mobile.jpg" },
+    type: "Middle Eastern Restaurant", category: "Food & drink", build: "restaurant",
+    title: "Saffron & Coal",
+    summary: "A warm restaurant site for Mandi and Kabsa, with a full menu, food gallery and a reservation form that sends the booking straight to WhatsApp.",
+    signature: "A table booking form that writes the WhatsApp message for the guest: date, time, party size and seating.",
+    features: ["WhatsApp reservations", "Full menu with prices", "Food gallery", "Call and WhatsApp buttons"],
+    style: "fresh",
+    preview: {
+      name: "Saffron & Coal", domain: "saffronandcoal.lk", kicker: "Mandi · Kabsa · Grills",
+      headline: "Slow-roasted the old way", sub: "Saffron rice, charcoal grills and floor seating made for sharing.",
+      cta: "Reserve a table", links: ["Menu", "Gallery", "Reserve"],
+      cards: [["calendar", "Reserve a table"], ["chat", "WhatsApp booking"], ["cup", "Full menu"]],
+      proof: "Family platters for 3–4", art: "cup",
+      colors: { primary: "#A84A32", accent: "#C08A3E", soft: "#FBF6EF", dark: "#2A1D14" }
     }
   },
   {
