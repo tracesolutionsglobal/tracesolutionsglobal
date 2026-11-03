@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reservations · Saffron &amp; Coal</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Saffron &amp; Coal, a Middle Eastern restaurant website concept by Trace Solutions Global: menu, gallery and table reservations.">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .res-wrap{
+    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:48px; max-width:1180px; margin:0 auto; padding:10px 32px 70px;
+  }
+  @media(max-width:860px){ .res-wrap{ grid-template-columns:minmax(0,1fr); } }
+  .res-form{
+    background:var(--card); border:1px solid var(--line); border-radius:20px; padding:30px;
+  }
+  .res-form label{ display:block; font-size:13px; font-weight:600; margin:16px 0 6px; }
+  .res-form label:first-child{ margin-top:0; }
+  .res-form input, .res-form select, .res-form textarea{
+    width:100%; padding:11px 13px; border-radius:10px; border:1px solid var(--line);
+    font-size:14px; font-family:inherit; background:#fff; color:var(--ink);
+  }
+  .res-form textarea{ resize:vertical; min-height:70px; }
+  .res-row{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:14px; }
+  .res-row > div{ min-width:0; }
+  @media(max-width:860px){ .res-wrap{ padding:10px 20px 60px; } .res-form{ padding:22px; } }
+  .res-submit{
+    margin-top:22px; width:100%; background:#25D366; color:#fff; border:none;
+    padding:14px; border-radius:999px; font-size:15px; font-weight:700; cursor:pointer;
+  }
+  .res-side .info-block{
+    background:var(--menu-bg); border-radius:20px; padding:26px; margin-bottom:18px;
+  }
+  .res-side h3{ margin:0 0 10px; font-size:16px; }
+  .res-side p{ margin:0; color:var(--muted); font-size:14px; line-height:1.6; }
+</style>
+</head>
+<body>
+
+<div class="tag">CONCEPT DEMO · built by Trace Solutions Global</div>
+
+<header>
+  <a class="brand" href="index.html">Saffron <span>&amp; Coal</span></a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="menu.html">Menu</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="reservation.html" class="active">Reservations</a>
+  </nav>
+  <div class="btn-group">
+    <a class="btn btn-wa" href="reservation.html">WhatsApp</a>
+    <a class="btn btn-call" href="reservation.html">Call Now</a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="eyebrow">Reservations</div>
+  <h1>Book your table</h1>
+  <p>Fill in your details below — it builds a ready-to-send WhatsApp message so your reservation reaches us instantly, no waiting on hold.</p>
+</div>
+
+<div class="note-banner">
+  <div class="inner">
+    <strong>Concept demo:</strong> this form sends straight to WhatsApp rather than a live booking system — a simple, working way to take reservations without extra backend cost. A full online booking system can be added later if needed.
+  </div>
+</div>
+
+<div class="res-wrap">
+  <form class="res-form" id="resForm">
+    <label for="name">Full Name</label>
+    <input type="text" id="name" placeholder="Your name" required>
+
+    <div class="res-row">
+      <div>
+        <label for="date">Date</label>
+        <input type="date" id="date" required>
+      </div>
+      <div>
+        <label for="time">Time</label>
+        <input type="time" id="time" required>
+      </div>
+    </div>
+
+    <div class="res-row">
+      <div>
+        <label for="guests">Guests</label>
+        <select id="guests">
+          <option>1–2</option>
+          <option>3–4</option>
+          <option>5–6</option>
+          <option>7+</option>
+        </select>
+      </div>
+      <div>
+        <label for="seating">Seating</label>
+        <select id="seating">
+          <option>No preference</option>
+          <option>Traditional floor seating</option>
+          <option>Regular table</option>
+          <option>Private dining room</option>
+        </select>
+      </div>
+    </div>
+
+    <label for="notes">Notes (optional)</label>
+    <textarea id="notes" placeholder="Any special requests?"></textarea>
+
+    <button type="submit" class="res-submit">💬 Send Reservation via WhatsApp</button>
+    <p id="resDone" role="status" hidden style="white-space:pre-line;margin:16px 0 0;padding:14px 16px;border-radius:12px;background:#f0faf3;border:1px solid #bfe6cb;font-size:13px;line-height:1.55;color:#1d4d2c"></p>
+  </form>
+
+  <div class="res-side">
+    <div class="info-block">
+      <h3>Prefer to call?</h3>
+      <p>We're happy to take your reservation over the phone — reach us anytime before closing.</p>
+      <div style="margin-top:14px;"><a class="btn btn-call" href="reservation.html">📞 Call the restaurant</a></div>
+    </div>
+    <div class="info-block">
+      <h3>Hours</h3>
+      <p>Open daily · Open late<br>Great for late-night dining and groups.</p>
+    </div>
+    <div class="info-block">
+      <h3>Address</h3>
+      <p>City centre, Colombo.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Concept website by <a href="/work.html">Trace Solutions Global</a>. Food and interior images are AI-generated for preview, and menu items and prices are illustrative.
+</footer>
+
+<script>
+  document.getElementById('resForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('name').value || '(no name given)';
+    var date = document.getElementById('date').value || '(no date)';
+    var time = document.getElementById('time').value || '(no time)';
+    var guests = document.getElementById('guests').value;
+    var seating = document.getElementById('seating').value;
+    var notes = document.getElementById('notes').value;
+
+    var msg = "Hi! I'd like to make a reservation at Saffron &amp; Coal.\n" +
+      "Name: " + name + "\n" +
+      "Date: " + date + "\n" +
+      "Time: " + time + "\n" +
+      "Guests: " + guests + "\n" +
+      "Seating: " + seating;
+    if (notes) msg += "\nNotes: " + notes;
+
+    var out = document.getElementById('resDone');
+    out.textContent = "Concept demo: on the live site this opens WhatsApp with your booking ready to send. Here's the message it would send:\n\n" + msg;
+    out.hidden = false;
+  });
+</script>
+
+</body>
+</html>
