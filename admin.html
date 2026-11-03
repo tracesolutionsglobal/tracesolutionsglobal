@@ -306,7 +306,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
       <div><b class="brand-admin">TRACE SOLUTIONS <span>G</span>LOBAL</b><b class="brand-agent">Lead finder</b><small id="whoGuest">Admin</small><small class="who" id="who" hidden></small></div>
     </div>
     <div class="seg" role="group" aria-label="Section" id="tabs" hidden>
-      <button type="button" data-tab="projects" data-admin-only aria-pressed="true">Projects</button>
+      <button type="button" data-tab="projects" aria-pressed="true">Projects</button>
       <button type="button" data-tab="concepts" data-admin-only aria-pressed="false">Concepts</button>
       <button type="button" data-tab="reviews" data-admin-only aria-pressed="false">Reviews</button>
       <button type="button" data-tab="finder" aria-pressed="false">Lead finder</button>
@@ -320,7 +320,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
 
 <form class="login" id="loginView" hidden novalidate>
   <h1>Team sign-in</h1>
-  <p>Admins open the full dashboard. Agents open the lead finder and the shared lead sheet.</p>
+  <p>Admins open the full dashboard. Agents open projects (view only), the lead finder and the shared lead sheet.</p>
   <div class="f"><label for="l-email">Email</label><input id="l-email" type="email" autocomplete="username" required></div>
   <div class="f"><label for="l-pass">Password</label><div class="pass-row"><input id="l-pass" type="password" autocomplete="current-password" required><button type="button" id="showPass" aria-pressed="false" aria-controls="l-pass" aria-label="Show password">Show</button></div></div>
   <div class="err" id="loginErr" hidden></div>
@@ -991,7 +991,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
   /* ---------- sign-in and tabs ---------- */
   let tab = "projects", timer = null, role = "";
   function showTab(t){
-    if (role === "agent" && t !== "finder" && t !== "tracker") t = "finder";
+    if (role === "agent" && t !== "projects" && t !== "finder" && t !== "tracker") t = "projects";
     tab = t;
     document.querySelectorAll("[data-tab]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.tab === t)));
     $("#projectsView").hidden = t !== "projects";
@@ -1003,7 +1003,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
     if (t === "reviews") loadReviews();
     else if (t === "finder" || t === "tracker") { if (window.TSLeadFinder) TSLeadFinder.show(); }
     if (window.TSLeadSheet) { if (t === "tracker") TSLeadSheet.show(); else TSLeadSheet.hide(); }
-    else if (role === "admin") loadProjects();
+    else if (role === "admin" || t === "projects") loadProjects();
   }
   document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
   function adminLabel(email){
@@ -1056,10 +1056,10 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
     applyRoleChrome();
     if (window.TSLeadFinder) TSLeadFinder.setRole(role);
     if (window.TSLeadSheet) TSLeadSheet.setRole(role);
-    showTab(role === "agent" ? "finder" : "projects");
+    showTab("projects");
     clearInterval(timer);
     timer = null;
-    if (role === "admin") {
+    if (role === "admin" || role === "agent") {
       timer = setInterval(() => { if (document.hidden) return; if (tab === "reviews") { if (!draftNew && !document.activeElement.closest("[data-rev]")) loadReviews(); } else if (tab !== "finder" && tab !== "tracker") loadProjects(); }, 30000);
     }
   }
