@@ -24,7 +24,7 @@
   ];
   const OPEN = (s) => s !== "Won" && s !== "Lost";
   const TEAM = [
-    "ocean@tracesolutions.com", "azzy@tracesolutions.com", "mandy@tracesolutions.com",
+    "ocean.tracesolutions@outlook.com", "azzy.tracesolutions@outlook.com", "mandy.tracesolutions@outlook.com",
     "shifar@tracesolutions.com", "ummer@tracesolutions.com"
   ];
   const COLS = [
@@ -64,7 +64,7 @@
   const who = (email) => {
     const e = String(email || "").toLowerCase();
     if (!e || e === "team") return "Team";
-    return e.split("@")[0].replace(/^./, (c) => c.toUpperCase());
+    return e.split("@")[0].split(".")[0].replace(/^./, (c) => c.toUpperCase());
   };
   const today = () => new Date().toISOString().slice(0, 10);
 
