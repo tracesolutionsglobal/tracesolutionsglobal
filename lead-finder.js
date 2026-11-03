@@ -964,6 +964,7 @@
       }
       await TSDB.rest("lead_searches", { method: "POST", prefer: "return=minimal", body: record });
       await loadLibrary();
+      document.dispatchEvent(new CustomEvent("ts:leads-saved"));
       return { ok: true, added: fresh.length, skipped: named.length - fresh.length };
     } catch (e) {
       state.dbOk = false;

@@ -242,6 +242,39 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
 .lf-check input{accent-color:var(--green)}
 .lf-contact{white-space:nowrap}
 #lfTableWrap table,#lfSavedWrap table{min-width:1100px}
+.ls-count{font-variant-numeric:tabular-nums;color:var(--green)}
+.ls-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ls-pipe{display:flex;flex-wrap:wrap;gap:.4rem;margin:.9rem 0}
+.ls-chip{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:.3rem .7rem;font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.ls-chip i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.ls-chip b{font-variant-numeric:tabular-nums;color:var(--ink-3)}
+.ls-chip[aria-pressed="true"]{border-color:var(--c);box-shadow:inset 0 0 0 1px var(--c)}
+.ls-bar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.ls-bar select,.ls-search input{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:.55rem .7rem;font:inherit;color:var(--ink)}
+.ls-search{flex:1 1 220px;display:flex}.ls-search input{width:100%}
+.ls-save{margin-left:auto;font-size:.8rem;color:var(--ink-3);font-weight:600}
+.ls-save.bad{color:var(--danger)}
+.ls-wrap{max-height:70vh;overflow:auto;margin-top:.6rem}
+.ls-table{min-width:0;width:max-content;border-collapse:separate;border-spacing:0}
+.ls-table th{position:sticky;top:0;z-index:2;background:var(--surface-2);padding:.55rem .6rem;border-right:1px solid var(--line-2);white-space:nowrap}
+.ls-table td{padding:0;border-right:1px solid var(--line-2);vertical-align:middle;background:var(--surface)}
+.ls-table tbody tr{cursor:default}
+.ls-table tbody tr:hover td{background:var(--surface-2)}
+.ls-table .ls-stick{position:sticky;left:0;z-index:1;box-shadow:1px 0 0 var(--line)}
+.ls-table th.ls-stick{z-index:3}
+.ls-cell{display:flex;align-items:center}
+.ls-table input,.ls-table select{width:100%;min-width:0;border:0;background:transparent;color:var(--ink);font:inherit;font-size:.86rem;padding:.6rem .6rem;border-radius:0;outline:none}
+.ls-table input:focus,.ls-table select:focus{background:var(--mint-soft);box-shadow:inset 0 0 0 2px var(--green)}
+.ls-table td.ls-stick input{font-weight:700}
+.ls-status select{font-weight:700;color:var(--c);cursor:pointer;padding-left:1.4rem;background:radial-gradient(circle at .7rem 50%,var(--c) 4px,transparent 4.5px)}
+.ls-status option{color:var(--ink);background:var(--surface)}
+.ls-open{flex:none;padding:0 .5rem;color:var(--green);text-decoration:none;font-weight:700}
+.ls-table td.late{background:var(--danger-soft)}.ls-table td.late input{color:var(--danger);font-weight:700}
+.ls-table td.due{background:var(--amber-soft)}.ls-table td.due input{color:var(--amber);font-weight:700}
+.ls-meta{padding:.4rem .6rem!important;white-space:nowrap;color:var(--ink-3)}
+.ls-meta small{font-size:.72rem;line-height:1.3}
+.ls-del{border:0;background:transparent;color:var(--ink-3);cursor:pointer;font-size:.9rem;padding:.3rem .45rem;border-radius:6px}
+.ls-del:hover{background:var(--danger-soft);color:var(--danger)}
 .lf-history li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.55rem .8rem;font-size:.86rem;color:var(--ink-2)}
 body.agent{
   --bg:#d4d4d4; --surface:#f2f2f2; --surface-2:#e7e7e7; --ink:#1a1a1a; --ink-2:#3f3f3f; --ink-3:#5e5e5e;
@@ -268,7 +301,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
       <button type="button" data-tab="concepts" data-admin-only aria-pressed="false">Concepts</button>
       <button type="button" data-tab="reviews" data-admin-only aria-pressed="false">Reviews</button>
       <button type="button" data-tab="finder" aria-pressed="false">Lead finder</button>
-      <button type="button" data-tab="tracker" aria-pressed="false">Lead tracker</button>
+      <button type="button" data-tab="tracker" aria-pressed="false">Lead sheet</button>
     </div>
     <button class="btn btn-primary" id="newBtn" disabled hidden>+ New project</button>
     <button class="btn btn-ghost" id="signOut" hidden>Sign out</button>
@@ -277,7 +310,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
 
 <form class="login" id="loginView" hidden novalidate>
   <h1>Team sign-in</h1>
-  <p>Admins open the full dashboard. Agents open the lead finder and their own lead tracker.</p>
+  <p>Admins open the full dashboard. Agents open the lead finder and the shared lead sheet.</p>
   <div class="f"><label for="l-email">Email</label><input id="l-email" type="email" autocomplete="username" required></div>
   <div class="f"><label for="l-pass">Password</label><div class="pass-row"><input id="l-pass" type="password" autocomplete="current-password" required><button type="button" id="showPass" aria-pressed="false" aria-controls="l-pass" aria-label="Show password">Show</button></div></div>
   <div class="err" id="loginErr" hidden></div>
@@ -402,26 +435,29 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
 
 <main class="wrap" id="trackerView" hidden>
   <div class="lf-head">
-    <h2>Lead tracker</h2>
-    <p id="lfTrackerIntro">Leads saved from the lead finder.</p>
+    <h2>Lead sheet <b class="ls-count" id="lsCount">0</b></h2>
+    <p>Every lead in one sheet, shared by admins and agents. Businesses saved by the Lead finder appear here as <b>New</b>. Click any cell to edit it; changes save on their own. Press Enter to move down a row.</p>
   </div>
-  <section class="lf-saved" aria-labelledby="lfSavedTitle">
-    <div class="lf-saved-bar">
-      <h2 id="lfSavedTitle"><span id="lfSavedLabel">Saved leads</span> <b id="lfLeadCount">0</b></h2>
-      <label class="lf-field" style="min-width:12rem"><span style="position:absolute;width:1px;height:1px;overflow:hidden">Sector</span>
-        <select id="lfSectorFilter" aria-label="Filter saved leads by sector"><option value="">All sectors</option></select>
-      </label>
-      <label class="lf-check"><input type="checkbox" id="lfReachable"> Has phone or email</label>
-      <button type="button" class="btn btn-ghost" id="lfExport">Export CSV</button>
-    </div>
-    <p class="lf-note" id="lfDbNote"></p>
-    <div class="list-wrap" id="lfSavedWrap" hidden>
-      <table>
-        <thead><tr><th>Business</th><th>Sector</th><th>Category</th><th>Address</th><th>Area</th><th>Phone</th><th>Email</th><th>Website</th><th>Saved by</th></tr></thead>
-        <tbody id="lfSavedRows"></tbody>
-      </table>
-    </div>
-    <h3 style="font-size:1rem">Search history</h3>
+  <div class="ls-pipe" id="lsPipe" aria-label="Leads by status"></div>
+  <div class="ls-bar">
+    <label class="ls-search"><span class="ls-sr">Search leads</span><input type="search" id="lsQ" placeholder="Search business, phone, notes…"></label>
+    <label><span class="ls-sr">Status</span><select id="lsStatus" aria-label="Filter by status"></select></label>
+    <label class="lf-check"><input type="checkbox" id="lsOpen"> Still open</label>
+    <label class="lf-check"><input type="checkbox" id="lsMine"> Mine only</label>
+    <span class="ls-save" id="lsSave" role="status" aria-live="polite"></span>
+    <button type="button" class="btn btn-ghost" id="lsExport">Export CSV</button>
+    <button type="button" class="btn btn-primary" id="lsAdd">+ Add lead</button>
+  </div>
+  <p class="lf-note" id="lsNote"></p>
+  <div class="list-wrap ls-wrap" id="lsWrap" hidden>
+    <table class="ls-table">
+      <thead id="lsHead"></thead>
+      <tbody id="lsRows"></tbody>
+    </table>
+  </div>
+  <datalist id="lsPeople"></datalist>
+  <section class="lf-saved" aria-labelledby="lfHistTitle">
+    <h3 id="lfHistTitle" style="font-size:1rem">Lead finder search history</h3>
     <ul class="lf-history" id="lfHistory"></ul>
   </section>
 </main>
@@ -462,6 +498,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
 
 <script src="supabase.js"></script>
 <script src="lead-finder.js"></script>
+<script src="lead-sheet.js"></script>
 <script src="pdf-plan.js"></script>
 <script>
 (function(){
@@ -944,6 +981,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
     $("#newBtn").hidden = role !== "admin" || t !== "projects";
     if (t === "reviews") loadReviews();
     else if (t === "finder" || t === "tracker") { if (window.TSLeadFinder) TSLeadFinder.show(); }
+    if (window.TSLeadSheet) { if (t === "tracker") TSLeadSheet.show(); else TSLeadSheet.hide(); }
     else if (role === "admin") loadProjects();
   }
   document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
@@ -995,6 +1033,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
     $("#signOut").hidden = false;
     applyRoleChrome();
     if (window.TSLeadFinder) TSLeadFinder.setRole(role);
+    if (window.TSLeadSheet) TSLeadSheet.setRole(role);
     showTab(role === "agent" ? "finder" : "projects");
     clearInterval(timer);
     timer = null;
@@ -1007,6 +1046,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
     document.body.classList.remove("agent");
     $("#projectsView").hidden = true; $("#conceptsView").hidden = true; $("#reviewsView").hidden = true; $("#finderView").hidden = true; $("#trackerView").hidden = true;
     if (window.TSLeadFinder) TSLeadFinder.reset();
+    if (window.TSLeadSheet) TSLeadSheet.reset();
     $("#tabs").hidden = true; $("#signOut").hidden = true; $("#newBtn").hidden = true;
     $("#who").hidden = true; $("#whoGuest").hidden = false;
     $("#loginView").hidden = false;
