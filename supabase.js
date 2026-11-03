@@ -81,7 +81,19 @@ window.TSDB = (function () {
     rest,
     session: () => session,
     async signIn(email, password) { keep(await auth("token?grant_type=password", { email, password })); return session; },
-    signOut() { keep(null); }
+    signOut() { keep(null); },
+    /** Change the signed-in user's password. */
+    async changePassword(password) {
+      if (!session) throw new Error("Please sign in again.");
+      const res = await fetchT(`${URL}/auth/v1/user`, {
+        method: "PUT",
+        headers: { apikey: KEY, Authorization: `Bearer ${await token()}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ password })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.msg || data.error_description || data.message || "Couldn't change the password.");
+      return true;
+    }
   };
 })();
 
