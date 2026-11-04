@@ -3,10 +3,25 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Montserrat:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Montserrat:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: a studio control room. Summary strip on top, a stage-by-stage pipeline board (or list) below, and a side drawer that opens each project's brief. */
 :root{
+  /* Dark, punchy (Vercel-style) is the default look now. */
+  --bg:#000000; --surface:#0A0A0A; --surface-2:#050505; --ink:#FFFFFF; --ink-2:#A1A1A1; --ink-3:#71717A;
+  --line:rgba(255,255,255,.1); --line-2:rgba(255,255,255,.07);
+  --green:#3FBE63; --green-deep:#4ADE80; --mint:#123524; --mint-soft:rgba(63,190,99,.12);
+  --coral:#FF6B57; --coral-soft:rgba(255,107,87,.12); --amber:#F5A623; --amber-soft:rgba(245,166,35,.12);
+  --blue:#3291FF; --blue-soft:rgba(50,145,255,.12); --violet:#9F7AEA; --violet-soft:rgba(159,122,234,.14); --grey-soft:#161616;
+  --danger:#FF6257; --danger-soft:rgba(255,98,87,.12);
+  --accent-user:#3291FF; --accent-user-soft:rgba(50,145,255,.14);
+  --shadow:0 18px 50px -20px rgba(0,0,0,.8);
+  --f-ui:"Geist","Plus Jakarta Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  --f-mono:"Geist Mono","JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:14px;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
   --bg:#F6F5EF; --surface:#FFFFFF; --surface-2:#FBFAF6; --ink:#00274E; --ink-2:#4B5F74; --ink-3:#7D8B99;
   --line:#E3E5DE; --line-2:#ECEDE7;
   --green:#0D8B76; --green-deep:#0B574B; --mint:#CBEBDE; --mint-soft:#E7F5EE;
@@ -14,34 +29,29 @@
   --blue:#2563EB; --blue-soft:#E3ECFD; --violet:#7C3AED; --violet-soft:#EEE7FD; --grey-soft:#EEF0F2;
   --danger:#B3261E; --danger-soft:#FBE4E2;
   --shadow:0 18px 50px -20px rgba(0,39,78,.35);
-  --f-ui:"Plus Jakarta Sans","Segoe UI",system-ui,-apple-system,sans-serif;
-  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
-  --r:14px;
+  color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#071628; --surface:#0D2038; --surface-2:#0A1B30; --ink:#EAF1F8; --ink-2:#A9B8C8; --ink-3:#7A8DA2;
-  --line:#1D3350; --line-2:#162B45;
-  --green:#3CC7A7; --green-deep:#8EE3CF; --mint:#164A42; --mint-soft:#10332F;
-  --coral:#FF8A65; --coral-soft:#3A1E17; --amber:#F2B856; --amber-soft:#36290F;
-  --blue:#7FA8FF; --blue-soft:#15284A; --violet:#B59CFF; --violet-soft:#25194A; --grey-soft:#16283F;
-  --danger:#FF8A80; --danger-soft:#3A1717;
-  --shadow:0 18px 50px -20px rgba(0,0,0,.7); color-scheme:dark;
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]){
+  --bg:#F6F5EF; --surface:#FFFFFF; --surface-2:#FBFAF6; --ink:#00274E; --ink-2:#4B5F74; --ink-3:#7D8B99;
+  --line:#E3E5DE; --line-2:#ECEDE7;
+  --green:#0D8B76; --green-deep:#0B574B; --mint:#CBEBDE; --mint-soft:#E7F5EE;
+  --coral:#E4572E; --coral-soft:#FFE6DD; --amber:#B7791F; --amber-soft:#FCF0D9;
+  --blue:#2563EB; --blue-soft:#E3ECFD; --violet:#7C3AED; --violet-soft:#EEE7FD; --grey-soft:#EEF0F2;
+  --danger:#B3261E; --danger-soft:#FBE4E2;
+  --shadow:0 18px 50px -20px rgba(0,39,78,.35);
+  color-scheme:light;
 }}
-:root[data-theme="dark"]{
-  --bg:#071628; --surface:#0D2038; --surface-2:#0A1B30; --ink:#EAF1F8; --ink-2:#A9B8C8; --ink-3:#7A8DA2;
-  --line:#1D3350; --line-2:#162B45;
-  --green:#3CC7A7; --green-deep:#8EE3CF; --mint:#164A42; --mint-soft:#10332F;
-  --coral:#FF8A65; --coral-soft:#3A1E17; --amber:#F2B856; --amber-soft:#36290F;
-  --blue:#7FA8FF; --blue-soft:#15284A; --violet:#B59CFF; --violet-soft:#25194A; --grey-soft:#16283F;
-  --danger:#FF8A80; --danger-soft:#3A1717;
-  --shadow:0 18px 50px -20px rgba(0,0,0,.7); color-scheme:dark;
-}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font:inherit;color:inherit}
 h1,h2,h3{margin:0;line-height:1.15;letter-spacing:-.02em;text-wrap:balance}
 p{margin:0}
-:focus-visible{outline:2px solid var(--coral);outline-offset:2px;border-radius:6px}
+:focus-visible{outline:2px solid var(--accent-user);outline-offset:2px;border-radius:6px}
+[data-density="compact"] .stat{padding:.65rem .9rem}
+[data-density="compact"] .card{padding:.55rem .65rem .5rem}
+[data-density="compact"] .board{gap:.55rem}
+[data-density="compact"] .col{gap:.4rem;padding:.5rem}
+[data-density="compact"] td,[data-density="compact"] th{padding:.5rem .75rem}
 .wrap{max-width:1440px;margin:0 auto;padding-inline:clamp(16px,3vw,32px)}
 .mono{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.06em}
 .num{font-variant-numeric:tabular-nums}
@@ -52,11 +62,11 @@ p{margin:0}
 .brand{display:flex;align-items:center;gap:.55rem;margin-right:auto;min-width:0}
 .brand svg{width:34px;height:26px;flex:none}
 .brand b{font-family:"Montserrat",var(--f-ui);font-weight:600;font-size:.92rem;letter-spacing:.12em;white-space:nowrap}
-.brand b span{color:#1FA75A}
+.brand b span{color:var(--accent-user)}
 .brand small{display:block;font-size:.74rem;color:var(--ink-3);font-weight:600;letter-spacing:0}
 .btn{display:inline-flex;align-items:center;gap:.45rem;border:0;border-radius:999px;padding:.62rem 1.05rem;font-weight:700;font-size:.9rem;cursor:pointer;white-space:nowrap;transition:transform .15s,background .2s}
 .btn:hover{transform:translateY(-1px)}
-.btn-primary{background:var(--coral);color:#fff}
+.btn-primary{background:var(--accent-user);color:#fff}
 .btn-ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
 .btn-ghost:hover{box-shadow:inset 0 0 0 1.5px var(--ink-3)}
 .btn-danger{background:var(--danger-soft);color:var(--danger)}
@@ -104,7 +114,7 @@ p{margin:0}
 .pill.due-soon{background:var(--amber-soft);color:var(--amber)}
 .pill.prio-high{background:var(--coral-soft);color:var(--coral)}
 .progress{height:5px;border-radius:5px;background:var(--line-2);overflow:hidden}
-.progress i{display:block;height:100%;background:var(--green);border-radius:5px}
+.progress i{display:block;height:100%;background:var(--accent-user);border-radius:5px}
 .card .foot{display:flex;justify-content:space-between;font-size:.78rem;color:var(--ink-3)}
 
 /* list */
@@ -137,12 +147,12 @@ tbody tr:last-child td{border-bottom:0}
 .d-foot .spacer{flex:1}
 fieldset{border:0;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
 @media(max-width:520px){fieldset{grid-template-columns:1fr}}
-legend{grid-column:1/-1;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--green);padding:0;margin-bottom:.7rem;float:left;width:100%}
+legend{grid-column:1/-1;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-user);padding:0;margin-bottom:.7rem;float:left;width:100%}
 .f{display:grid;gap:.3rem;min-width:0}
 .f.full{grid-column:1/-1}
 .f label{font-weight:700;font-size:.8rem;color:var(--ink-2)}
 .f input,.f select,.f textarea{width:100%;background:var(--surface-2);border:1.5px solid var(--line);border-radius:10px;padding:.6rem .75rem;min-width:0}
-.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--green)}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--accent-user)}
 .f textarea{min-height:90px;resize:vertical}
 .f .hint{font-size:.75rem;color:var(--ink-3)}
 .color-row{display:flex;gap:.5rem;align-items:center}
@@ -160,7 +170,7 @@ legend{grid-column:1/-1;font-family:var(--f-mono);font-size:.72rem;letter-spacin
 .add-task{display:flex;gap:.5rem;grid-column:1/-1}
 .add-task input{flex:1;min-width:0;background:var(--surface-2);border:1.5px dashed var(--line);border-radius:10px;padding:.55rem .75rem}
 .links{display:grid;gap:.4rem;grid-column:1/-1}
-.linkout{display:inline-flex;gap:.4rem;align-items:center;color:var(--green);font-weight:700;text-decoration:none;font-size:.88rem;overflow-wrap:anywhere}
+.linkout{display:inline-flex;gap:.4rem;align-items:center;color:var(--accent-user);font-weight:700;text-decoration:none;font-size:.88rem;overflow-wrap:anywhere}
 .confirm{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;background:var(--danger-soft);color:var(--danger);border-radius:10px;padding:.6rem .8rem;font-weight:700;font-size:.88rem;width:100%}
 .readonly-note{background:var(--amber-soft);color:var(--amber);border-radius:10px;padding:.6rem .8rem;font-weight:600;font-size:.85rem}
 .toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translate(-50%,160%);visibility:hidden;background:var(--ink);color:var(--bg);padding:.7rem 1.1rem;border-radius:999px;font-weight:700;font-size:.88rem;z-index:60;transition:transform .3s,visibility 0s linear .3s;max-width:calc(100% - 32px)}
@@ -271,7 +281,7 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
 .ls-table th.ls-stick{z-index:3}
 .ls-cell{display:flex;align-items:center}
 .ls-table input,.ls-table select{width:100%;min-width:0;border:0;background:transparent;color:var(--ink);font:inherit;font-size:.86rem;padding:.6rem .6rem;border-radius:0;outline:none}
-.ls-table input:focus,.ls-table select:focus{background:var(--mint-soft);box-shadow:inset 0 0 0 2px var(--green)}
+.ls-table input:focus,.ls-table select:focus{background:var(--mint-soft);box-shadow:inset 0 0 0 2px var(--accent-user)}
 .ls-table td.ls-stick input{font-weight:700}
 .ls-status select{font-weight:700;color:var(--c);cursor:pointer;padding-left:1.4rem;background:radial-gradient(circle at .7rem 50%,var(--c) 4px,transparent 4.5px)}
 .ls-status option{color:var(--ink);background:var(--surface)}
@@ -291,6 +301,28 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
 .pw-msg{min-height:1.2em;font-size:.82rem;margin:.2rem 0;color:var(--ink-2)}
 .pw-msg.bad{color:var(--danger)}
 .pw-actions{display:flex;justify-content:flex-end;gap:.5rem}
+.cz-dlg{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink);padding:1.4rem;width:min(440px,calc(100% - 32px));box-shadow:var(--shadow)}
+.cz-dlg::backdrop{background:rgba(0,0,0,.55)}
+.cz-dlg h2{font-size:1.15rem;margin:0 0 .15rem}
+.cz-dlg>p{color:var(--ink-2);font-size:.84rem;margin-bottom:1rem}
+.cz-field{display:grid;gap:.5rem;margin-bottom:1.1rem}
+.cz-field label{font-weight:700;font-size:.8rem;color:var(--ink-2)}
+.cz-swatches{display:flex;gap:.55rem;flex-wrap:wrap}
+.cz-swatch{width:30px;height:30px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;position:relative}
+.cz-swatch[aria-checked="true"]{border-color:var(--ink)}
+.cz-swatch[aria-checked="true"]::after{content:"";position:absolute;inset:0;margin:auto;width:8px;height:8px;border-radius:50%;background:var(--surface)}
+.cz-foot{display:flex;justify-content:space-between;align-items:center;gap:.6rem;border-top:1px solid var(--line);padding-top:1rem;margin-top:.2rem}
+.cz-foot small{color:var(--ink-3);font-size:.78rem}
+.mix{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1rem 1.2rem;margin-top:1rem;display:grid;gap:.65rem}
+.mix-head{display:flex;align-items:baseline;gap:.6rem}
+.mix-head span{color:var(--ink-3);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.mix-head b{font-size:1.3rem;font-weight:800;letter-spacing:-.02em}
+.mix-bar{height:8px;border-radius:5px;overflow:hidden;display:flex;background:var(--grey-soft)}
+.mix-bar i{display:block;height:100%;background:var(--c)}
+.mix-legend{display:flex;flex-wrap:wrap;gap:1rem;font-size:.8rem}
+.mix-legend span{display:inline-flex;align-items:center;gap:.4rem;color:var(--ink-2)}
+.mix-legend span b{color:var(--ink);font-weight:700}
+.mix-dot{width:7px;height:7px;border-radius:50%;flex:none;background:var(--c)}
 .lf-history li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.55rem .8rem;font-size:.86rem;color:var(--ink-2)}
 body.agent{
   --bg:#d4d4d4; --surface:#f2f2f2; --surface-2:#e7e7e7; --ink:#1a1a1a; --ink-2:#3f3f3f; --ink-3:#5e5e5e;
@@ -309,7 +341,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
 <header class="top">
   <div class="wrap">
     <div class="brand">
-      <svg viewBox="0 0 322 244" aria-hidden="true" style="color:var(--ink)"><g fill="currentColor"><path d="M4 4h314l-36 56H39z"/><path d="M68 93h59l62 123-48 24z"/><path d="M168 93h87l-45 87z" fill="#1FA75A"/></g></svg>
+      <svg viewBox="0 0 322 244" aria-hidden="true" style="color:var(--ink)"><g fill="currentColor"><path d="M4 4h314l-36 56H39z"/><path d="M68 93h59l62 123-48 24z"/><path d="M168 93h87l-45 87z" style="fill:var(--accent-user)"/></g></svg>
       <div><b class="brand-admin">TRACE SOLUTIONS <span>G</span>LOBAL</b><b class="brand-agent">Lead finder</b><small id="whoGuest">Admin</small><small class="who" id="who" hidden></small></div>
     </div>
     <div class="seg" role="group" aria-label="Section" id="tabs" hidden>
@@ -320,6 +352,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
       <button type="button" data-tab="tracker" aria-pressed="false">Lead sheet</button>
     </div>
     <button class="btn btn-primary" id="newBtn" disabled hidden>+ New project</button>
+    <button class="btn btn-ghost" id="czBtn" aria-label="Customize appearance" title="Customize appearance"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
     <button class="btn btn-ghost" id="pwBtn" hidden>Change password</button>
     <button class="btn btn-ghost" id="signOut" hidden>Sign out</button>
   </div>
@@ -522,6 +555,12 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
     <div class="stat"><span class="mono">Saved leads</span><b class="num" id="sLeads">–</b><small id="sLeadsSub">From the lead finder</small></div>
   </section>
 
+  <div class="mix" id="pipelineMix" hidden>
+    <div class="mix-head"><span>Pipeline mix</span><b id="mixTotal">–</b></div>
+    <div class="mix-bar" id="mixBar" role="img"></div>
+    <div class="mix-legend" id="mixLegend"></div>
+  </div>
+
   <div class="toolbar">
     <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/></svg><span class="visually-hidden" style="position:absolute;left:-9999px">Search projects</span><input id="q" type="search" placeholder="Search by project, client, code or type…"></label>
     <select class="select" id="typeFilter" aria-label="Filter by business type"><option value="">All business types</option></select>
@@ -558,6 +597,41 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
     <div class="pw-actions"><button type="button" class="btn btn-ghost" id="pwCancel">Cancel</button><button type="submit" class="btn btn-primary" id="pwSave">Save password</button></div>
   </form>
 </dialog>
+
+<dialog class="cz-dlg" id="czDlg" aria-labelledby="czTitle">
+  <h2 id="czTitle">Customize</h2>
+  <p>Personal, per-browser — doesn't change what teammates see.</p>
+  <div class="cz-field">
+    <label id="czAccentLbl">Accent color</label>
+    <div class="cz-swatches" id="czAccents" role="radiogroup" aria-labelledby="czAccentLbl">
+      <button type="button" class="cz-swatch" data-accent="#3291FF" style="background:#3291FF" role="radio" aria-label="Blue"></button>
+      <button type="button" class="cz-swatch" data-accent="#9F7AEA" style="background:#9F7AEA" role="radio" aria-label="Purple"></button>
+      <button type="button" class="cz-swatch" data-accent="#F5A623" style="background:#F5A623" role="radio" aria-label="Amber"></button>
+      <button type="button" class="cz-swatch" data-accent="#3FBE63" style="background:#3FBE63" role="radio" aria-label="Green"></button>
+      <button type="button" class="cz-swatch" data-accent="#FF6B57" style="background:#FF6B57" role="radio" aria-label="Coral"></button>
+      <button type="button" class="cz-swatch" data-accent="#FF4ECD" style="background:#FF4ECD" role="radio" aria-label="Pink"></button>
+    </div>
+  </div>
+  <div class="cz-field">
+    <label>Appearance</label>
+    <div class="seg" role="group" aria-label="Appearance" id="czTheme">
+      <button type="button" data-theme-opt="dark" aria-pressed="false">Dark</button>
+      <button type="button" data-theme-opt="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme-opt="system" aria-pressed="false">System</button>
+    </div>
+  </div>
+  <div class="cz-field" style="margin-bottom:0">
+    <label>Board density</label>
+    <div class="seg" role="group" aria-label="Board density" id="czDensity">
+      <button type="button" data-density-opt="compact" aria-pressed="false">Compact</button>
+      <button type="button" data-density-opt="comfortable" aria-pressed="false">Comfortable</button>
+    </div>
+  </div>
+  <div class="cz-foot">
+    <small>Accent applies to buttons, progress bars, links and focus states.</small>
+    <button type="button" class="btn btn-ghost" id="czClose">Done</button>
+  </div>
+</dialog>
 <script src="supabase.js"></script>
 <script src="lead-finder.js"></script>
 <script src="lead-sheet.js"></script>
@@ -566,6 +640,53 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
 (function(){
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+  /* ---------- customize: accent color, light/dark/system, board density ----------
+     Personal per-browser preferences, saved to localStorage, applied as CSS custom
+     properties / data-attributes on :root so every component picks them up for free. */
+  (function customize(){
+    const root = document.documentElement;
+    const ACCENTS = ["#3291FF","#9F7AEA","#F5A623","#3FBE63","#FF6B57","#FF4ECD"];
+    const read = (k, fallback) => { try { return localStorage.getItem(k) || fallback; } catch (_) { return fallback; } };
+    const write = (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} };
+
+    function applyAccent(hex){
+      root.style.setProperty("--accent-user", hex);
+      root.style.setProperty("--accent-user-soft", hex + "24");
+      document.querySelectorAll("#czAccents .cz-swatch").forEach(b => b.setAttribute("aria-checked", String(b.dataset.accent.toLowerCase() === hex.toLowerCase())));
+    }
+    function applyTheme(mode){ // "dark" | "light" | "system"
+      if (mode === "system") root.removeAttribute("data-theme");
+      else root.setAttribute("data-theme", mode);
+      document.querySelectorAll("#czTheme [data-theme-opt]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.themeOpt === mode)));
+    }
+    function applyDensity(mode){ // "compact" | "comfortable"
+      if (mode === "compact") root.setAttribute("data-density", "compact");
+      else root.removeAttribute("data-density");
+      document.querySelectorAll("#czDensity [data-density-opt]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.densityOpt === mode)));
+    }
+
+    const accent = read("ts-accent", ACCENTS[0]);
+    const theme = read("ts-theme", "dark");
+    const density = read("ts-density", "comfortable");
+    applyAccent(accent); applyTheme(theme); applyDensity(density);
+
+    document.addEventListener("click", e => {
+      const sw = e.target.closest("#czAccents .cz-swatch");
+      if (sw) { applyAccent(sw.dataset.accent); write("ts-accent", sw.dataset.accent); return; }
+      const th = e.target.closest("#czTheme [data-theme-opt]");
+      if (th) { applyTheme(th.dataset.themeOpt); write("ts-theme", th.dataset.themeOpt); return; }
+      const de = e.target.closest("#czDensity [data-density-opt]");
+      if (de) { applyDensity(de.dataset.densityOpt); write("ts-density", de.dataset.densityOpt); return; }
+    });
+
+    const dlg = $("#czDlg");
+    if (dlg) {
+      $("#czBtn").addEventListener("click", () => dlg.showModal());
+      $("#czClose").addEventListener("click", () => dlg.close());
+      dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+    }
+  })();
 
   /* ---------- customer PDF plans ----------
      Rebuilds the exact PDF the customer got in the Concept Builder from the saved brief.
@@ -651,6 +772,18 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
     $("#sValue").textContent = value ? "Rs. " + short(value) : "Rs. 0";
     $("#sValueSub").textContent = `Rs. ${short(paid)} received so far`;
     if (window.TSLeadFinder) TSLeadFinder.refreshCount();
+    renderMix(open);
+  }
+
+  function renderMix(open){
+    const box = $("#pipelineMix");
+    if (!open.length) { box.hidden = true; return; }
+    box.hidden = false;
+    const counts = OPEN.map(id => ({ s: stageOf(id), n: open.filter(p => p.stage === id).length })).filter(x => x.n > 0);
+    $("#mixTotal").textContent = `${open.length} open`;
+    $("#mixBar").setAttribute("aria-label", counts.map(x => `${x.n} ${x.s.label}`).join(", "));
+    $("#mixBar").innerHTML = counts.map(x => `<i style="width:${(x.n/open.length*100).toFixed(1)}%;--c:${x.s.c}"></i>`).join("");
+    $("#mixLegend").innerHTML = counts.map(x => `<span><i class="mix-dot" style="--c:${x.s.c}"></i>${esc(x.s.label)} <b>${x.n}</b> ${Math.round(x.n/open.length*100)}%</span>`).join("");
   }
 
   /* ---------- board & list ---------- */
