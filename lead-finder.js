@@ -1,8 +1,9 @@
-/* Lead finder for admin.html.
-   Postcodes and places: https://api.postcodes.io (no key, CORS open).
-   Area boundaries and businesses: OpenStreetMap Nominatim and Overpass.
+/* Lead finder for admin.html. Admins and agents share this view.
+   Countries: Australia, UAE, UK, USA, Sri Lanka.
+   UK postcodes: https://api.postcodes.io (no key, CORS open).
+   Other places: OpenStreetMap Nominatim. Businesses: Overpass, plus the Photon place index when that crawl is on.
    Nominatim is only asked after a place is chosen or a search starts, not on every keystroke.
-   Phone and email come only from public OpenStreetMap contact tags on that business.
+   Phone, email, website, WhatsApp, social links and opening hours come from public OpenStreetMap tags.
    Website status uses Cloudflare DNS. No private keys. */
 (function () {
   const root = document.getElementById("finderView");
@@ -41,35 +42,106 @@
   const MILES = { "1": 1, "3": 3, "5": 5, "10": 10, "15": 15, "25": 25, "50": 50 };
   const OVERPASS = [
     "https://overpass-api.de/api/interpreter",
+    "https://overpass.osm.ch/api/interpreter",
     "https://overpass.kumi.systems/api/interpreter",
     "https://overpass.openstreetmap.fr/api/interpreter"
   ];
   const COUNTRIES = {
-    gb: { label: "United Kingdom", code: "gb", postcodes: true },
-    lk: { label: "Sri Lanka", code: "lk", postcodes: false },
-    au: { label: "Australia", code: "au", postcodes: false },
-    us: { label: "United States", code: "us", postcodes: false }
+    au: { label: "Australia", code: "au", postcodes: false, example: "Sydney or Parramatta" },
+    ae: { label: "UAE", code: "ae", postcodes: false, example: "Dubai or Abu Dhabi" },
+    gb: { label: "UK", code: "gb", postcodes: true, example: "N15 4JA, or search London" },
+    us: { label: "USA", code: "us", postcodes: false, example: "Miami or 10001" },
+    lk: { label: "Sri Lanka", code: "lk", postcodes: false, example: "Colombo or Kandy" }
   };
   function country() {
     const el = document.getElementById("lfCountry");
-    return COUNTRIES[(el && el.value) || "gb"] || COUNTRIES.gb;
+    const pressed = el && el.querySelector('[aria-pressed="true"]');
+    const code = (pressed && pressed.getAttribute("data-country")) || "gb";
+    return COUNTRIES[code] || COUNTRIES.gb;
   }
   const SECTORS = {
     cafe: { label: "Cafés and restaurants", tags: [["amenity", "cafe"], ["amenity", "restaurant"], ["amenity", "fast_food"]] },
     pub: { label: "Pubs and bars", tags: [["amenity", "pub"], ["amenity", "bar"]] },
-    beauty: { label: "Hair and beauty", tags: [["shop", "hairdresser"], ["shop", "beauty"]] },
+    bakery: { label: "Bakeries and sweets", tags: [["shop", "bakery"], ["shop", "pastry"], ["shop", "confectionery"]] },
+    beauty: { label: "Hair and beauty", tags: [["shop", "hairdresser"], ["shop", "beauty"], ["shop", "cosmetics"]] },
     retail: { label: "Shops", tags: [["shop", "*"]] },
-    hotel: { label: "Hotels and guest houses", tags: [["tourism", "hotel"], ["tourism", "guest_house"]] },
-    health: { label: "Dentists and clinics", tags: [["amenity", "dentist"], ["amenity", "clinic"], ["amenity", "doctors"]] },
+    hotel: { label: "Hotels and guest houses", tags: [["tourism", "hotel"], ["tourism", "guest_house"], ["tourism", "motel"]] },
+    health: { label: "Dentists and clinics", tags: [["amenity", "dentist"], ["amenity", "clinic"], ["amenity", "doctors"], ["amenity", "hospital"]] },
     pharmacy: { label: "Pharmacies", tags: [["amenity", "pharmacy"]] },
+    optician: { label: "Opticians", tags: [["shop", "optician"], ["healthcare", "optometrist"]] },
+    vet: { label: "Vets", tags: [["amenity", "veterinary"]] },
     gym: { label: "Gyms and fitness", tags: [["leisure", "fitness_centre"], ["leisure", "sports_centre"]] },
     estate: { label: "Estate agents", tags: [["office", "estate_agent"]] },
-    garage: { label: "Garages and car repair", tags: [["shop", "car_repair"]] },
+    garage: { label: "Garages and car repair", tags: [["shop", "car_repair"], ["shop", "tyres"]] },
+    cars: { label: "Car dealers", tags: [["shop", "car"], ["shop", "car_parts"], ["shop", "motorcycle"]] },
     accountant: { label: "Accountants", tags: [["office", "accountant"]] },
     legal: { label: "Solicitors", tags: [["office", "lawyer"]] },
-    supermarket: { label: "Supermarkets and convenience", tags: [["shop", "supermarket"], ["shop", "convenience"]] }
+    supermarket: { label: "Supermarkets and convenience", tags: [["shop", "supermarket"], ["shop", "convenience"]] },
+    electronics: { label: "Electronics and phones", tags: [["shop", "electronics"], ["shop", "computer"], ["shop", "mobile_phone"]] },
+    jewellery: { label: "Jewellery", tags: [["shop", "jewelry"], ["shop", "watches"]] },
+    laundry: { label: "Laundry and dry cleaning", tags: [["shop", "laundry"], ["shop", "dry_cleaning"]] },
+    travel: { label: "Travel agents", tags: [["shop", "travel_agency"], ["office", "travel_agent"]] },
+    education: { label: "Schools and tuition", tags: [["amenity", "school"], ["amenity", "college"], ["amenity", "language_school"], ["amenity", "kindergarten"]] },
+    trades: { label: "Builders and trades", tags: [["craft", "builder"], ["craft", "electrician"], ["craft", "plumber"], ["craft", "carpenter"], ["craft", "painter"], ["office", "construction_company"]] },
+    photo: { label: "Photographers", tags: [["craft", "photographer"], ["shop", "photo"]] },
+    all: {
+      label: "All mapped businesses",
+      wide: true,
+      tags: [["amenity", "*"], ["shop", "*"], ["office", "*"], ["craft", "*"], ["healthcare", "*"], ["tourism", "hotel"], ["tourism", "guest_house"], ["tourism", "motel"], ["tourism", "hostel"], ["tourism", "apartment"]]
+    }
   };
-  const POPULAR = [
+  const DEEP = {
+    cafe: [["amenity", "ice_cream"], ["amenity", "food_court"], ["amenity", "biergarten"], ["shop", "bakery"], ["shop", "deli"], ["amenity", "restaurant"]],
+    pub: [["amenity", "nightclub"], ["amenity", "biergarten"], ["amenity", "bar"]],
+    bakery: [["shop", "chocolate"], ["shop", "ice_cream"], ["amenity", "cafe"]],
+    beauty: [["shop", "massage"], ["leisure", "spa"], ["shop", "tattoo"], ["shop", "perfumery"], ["craft", "dressmaker"]],
+    retail: [["shop", "clothes"], ["shop", "boutique"], ["shop", "gift"], ["shop", "florist"], ["shop", "furniture"], ["shop", "hardware"]],
+    hotel: [["tourism", "hostel"], ["tourism", "apartment"], ["tourism", "chalet"], ["tourism", "camp_site"]],
+    health: [["healthcare", "doctor"], ["healthcare", "clinic"], ["healthcare", "dentist"], ["healthcare", "physiotherapist"], ["healthcare", "alternative"], ["amenity", "pharmacy"]],
+    pharmacy: [["shop", "chemist"], ["healthcare", "pharmacy"]],
+    optician: [["shop", "optician"], ["healthcare", "optometrist"]],
+    vet: [["amenity", "veterinary"], ["healthcare", "veterinary"]],
+    gym: [["leisure", "fitness_centre"], ["sport", "fitness"], ["leisure", "dance"]],
+    estate: [["office", "estate_agent"], ["office", "property_management"]],
+    garage: [["craft", "car_repair"], ["shop", "car_repair"], ["amenity", "vehicle_inspection"]],
+    cars: [["shop", "car"], ["shop", "motorcycle"], ["shop", "tyres"]],
+    accountant: [["office", "tax_advisor"], ["office", "financial"], ["office", "insurance"]],
+    legal: [["office", "notary"], ["office", "lawyer"]],
+    supermarket: [["shop", "greengrocer"], ["shop", "butcher"], ["shop", "general"]],
+    electronics: [["shop", "hifi"], ["shop", "camera"], ["craft", "electronics_repair"]],
+    jewellery: [["shop", "jewelry"], ["craft", "jeweller"], ["shop", "gold"]],
+    laundry: [["shop", "laundry"], ["shop", "dry_cleaning"]],
+    travel: [["shop", "ticket"], ["office", "travel_agent"]],
+    education: [["office", "educational_institution"], ["amenity", "training"], ["amenity", "driving_school"]],
+    trades: [["craft", "hvac"], ["craft", "roofer"], ["craft", "gardener"], ["craft", "tiler"], ["shop", "trade"]],
+    photo: [["shop", "camera"], ["office", "advertising_agency"]]
+  };
+  const POPULAR = {
+    au: [
+      { label: "Sydney", query: "Sydney" },
+      { label: "Melbourne", query: "Melbourne" },
+      { label: "Brisbane", query: "Brisbane" },
+      { label: "Perth", query: "Perth" },
+      { label: "Adelaide", query: "Adelaide" },
+      { label: "Gold Coast", query: "Gold Coast" },
+      { label: "Canberra", query: "Canberra" },
+      { label: "Hobart", query: "Hobart" },
+      { label: "Darwin", query: "Darwin" },
+      { label: "Newcastle", query: "Newcastle" }
+    ],
+    ae: [
+      { label: "Dubai", query: "Dubai" },
+      { label: "Abu Dhabi", query: "Abu Dhabi" },
+      { label: "Sharjah", query: "Sharjah" },
+      { label: "Ajman", query: "Ajman" },
+      { label: "Ras Al Khaimah", query: "Ras Al Khaimah" },
+      { label: "Fujairah", query: "Fujairah" },
+      { label: "Al Ain", query: "Al Ain" },
+      { label: "Dubai Marina", query: "Dubai Marina" },
+      { label: "Deira", query: "Deira" },
+      { label: "Jumeirah", query: "Jumeirah" }
+    ],
+    gb: [
     { label: "London", query: "London", london: true },
     { label: "Tottenham", query: "Tottenham", london: true, preferOutcode: "N15" },
     { label: "Stratford", query: "Stratford", london: true, preferOutcode: "E15" },
@@ -100,7 +172,40 @@
     { label: "NW", query: "NW", area: true },
     { label: "EC", query: "EC", area: true },
     { label: "WC", query: "WC", area: true }
-  ];
+    ],
+    us: [
+      { label: "New York", query: "New York" },
+      { label: "Los Angeles", query: "Los Angeles" },
+      { label: "Chicago", query: "Chicago" },
+      { label: "Houston", query: "Houston" },
+      { label: "Phoenix", query: "Phoenix" },
+      { label: "Philadelphia", query: "Philadelphia" },
+      { label: "San Diego", query: "San Diego" },
+      { label: "Dallas", query: "Dallas" },
+      { label: "Miami", query: "Miami" },
+      { label: "Atlanta", query: "Atlanta" },
+      { label: "Seattle", query: "Seattle" },
+      { label: "Boston", query: "Boston" },
+      { label: "Denver", query: "Denver" },
+      { label: "Washington", query: "Washington" }
+    ],
+    lk: [
+      { label: "Colombo", query: "Colombo" },
+      { label: "Kandy", query: "Kandy" },
+      { label: "Galle", query: "Galle" },
+      { label: "Jaffna", query: "Jaffna" },
+      { label: "Negombo", query: "Negombo" },
+      { label: "Matara", query: "Matara" },
+      { label: "Kurunegala", query: "Kurunegala" },
+      { label: "Batticaloa", query: "Batticaloa" },
+      { label: "Anuradhapura", query: "Anuradhapura" },
+      { label: "Nugegoda", query: "Nugegoda" },
+      { label: "Dehiwala", query: "Dehiwala" },
+      { label: "Mount Lavinia", query: "Mount Lavinia" },
+      { label: "Moratuwa", query: "Moratuwa" },
+      { label: "Gampaha", query: "Gampaha" }
+    ]
+  };
   const PIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.2"/></svg>';
 
   const cache = new Map();
@@ -201,7 +306,7 @@
     return {
       id: row.id, label: row.label, query: row.query, type: row.location_type || row.type,
       outcode: row.outcode || "", verified, latitude: row.latitude, longitude: row.longitude,
-      radius: row.radius || "5", detail: row.detail || "", adminName: "",
+      radius: row.radius || "5", detail: row.detail || "", adminName: "", country: row.country || "",
       warning: verified ? "" : (row.detail || "Saved as typed. This location was not verified.")
     };
   }
@@ -315,18 +420,20 @@
   }
 
   function readRecent() {
-    return readJson(RECENT_KEY).map(fromRow).filter((r) => r.label);
+    const code = country().code;
+    return readJson(RECENT_KEY).map(fromRow).filter((r) => r.label && (r.country ? r.country === code : code === "gb"));
   }
   function remember(loc) {
     if (!loc || !loc.verified) return;
-    const next = [{ ...loc, radius: radiusEl.value }, ...readRecent().filter((r) => !(r.query === loc.query && r.type === loc.type))];
-    try { localStorage.setItem(RECENT_KEY, JSON.stringify(next.slice(0, 6).map(toStore))); } catch (e) {}
+    const next = [{ ...loc, country: loc.country || country().code, radius: radiusEl.value }, ...readJson(RECENT_KEY).map(fromRow).filter((r) => r.label && !(r.query === loc.query && r.type === loc.type && (r.country || "gb") === (loc.country || country().code)))];
+    try { localStorage.setItem(RECENT_KEY, JSON.stringify(next.slice(0, 8).map(toStore))); } catch (e) {}
   }
   function toStore(s) {
     return {
       id: s.id, label: s.label, query: s.query, location_type: s.type, outcode: s.outcode || "",
       latitude: s.latitude, longitude: s.longitude, radius: s.radius || radiusEl.value,
-      verified: !!s.verified, detail: s.type === "manual" ? (s.warning || s.detail || "") : (s.detail || "")
+      verified: !!s.verified, detail: s.type === "manual" ? (s.warning || s.detail || "") : (s.detail || ""),
+      country: s.country || ""
     };
   }
 
@@ -361,20 +468,21 @@
       options.push({ section: "Recently used" });
       recent.forEach((r) => options.push({ label: displayName(r), hint: radiusText(r.radius), run: async () => r }));
     }
-    const popular = country().postcodes ? POPULAR.filter((p) => !query || p.label.toLowerCase().includes(query)) : [];
-    if (country().postcodes && (!query || popular.length)) {
+    const popularList = POPULAR[country().code] || [];
+    const popular = popularList.filter((p) => !query || p.label.toLowerCase().includes(query));
+    if (popularList.length && (!query || popular.length)) {
       options.push({ section: "Popular destinations" });
-      (query ? popular : POPULAR).forEach((p) => options.push({
+      (query ? popular : popularList).forEach((p) => options.push({
         label: p.label,
         hint: p.area ? "London postcode area" : "Popular destination",
         run: () => resolveQuery(p.query, p)
       }));
     }
     if (extra.loading || extra.error || extra.matches) {
-      options.push({ section: "Matching postcodes and locations" });
+      options.push({ section: country().postcodes ? "Matching postcodes and locations" : "Matching places" });
       if (extra.loading) options.push({ message: "Looking up…" });
       else if (extra.error) options.push({ message: extra.error });
-      else if (!extra.matches.length) options.push({ message: "No matching postcodes or places. You can keep what you typed." });
+      else if (!extra.matches.length) options.push({ message: country().postcodes ? "No matching postcodes or places. You can keep what you typed." : "No matching places. You can keep what you typed." });
       else extra.matches.forEach((item) => options.push(item));
     }
     return options;
@@ -439,7 +547,7 @@
       openMenu();
     } catch (e) {
       if (gen !== state.suggestGen || e.name === "AbortError") return;
-      renderOptions(buildOptions(q, { error: "Couldn't reach the postcode directory. You can keep what you typed." }));
+      renderOptions(buildOptions(q, { error: country().postcodes ? "Couldn't reach the postcode directory. You can keep what you typed." : "Couldn't reach place search. You can keep what you typed." }));
       openMenu();
     } finally {
       if (gen === state.suggestGen) setSpin(false);
@@ -447,6 +555,8 @@
   }
 
   function applyLocation(loc, radius) {
+    if (loc && loc.country && COUNTRIES[loc.country] && loc.country !== country().code) setCountry(loc.country, true);
+    if (loc && !loc.country) loc.country = country().code;
     state.location = loc;
     input.value = loc.label || "";
     if (radius && [...radiusEl.options].some((o) => o.value === radius)) radiusEl.value = radius;
@@ -531,6 +641,7 @@
       try {
         const body = { ...record, owner: email() };
         delete body.id;
+        delete body.country;
         const inserted = await TSDB.rest("saved_destinations", {
           method: "POST", prefer: "return=representation", body
         });
@@ -588,24 +699,65 @@
     return { id, name: String(hit.display_name || name).split(",")[0] };
   }
 
-  function buildQuery(sector, filter, areaPrefix, limit) {
-    const lines = [];
-    sector.tags.forEach(([key, value]) => {
-      const sel = value === "*" ? `["${key}"]` : `["${key}"="${value}"]`;
-      lines.push(`node${sel}(${filter});`, `way${sel}(${filter});`);
+  function crawlOptions() {
+    const on = (id) => {
+      const el = document.getElementById(id);
+      return !!(el && el.checked);
+    };
+    const keywords = document.getElementById("lfKeywords");
+    return {
+      deep: on("lfDeep"),
+      index: on("lfIndex"),
+      social: on("lfSocial"),
+      hours: on("lfHours"),
+      named: on("lfNamed"),
+      contact: on("lfContact"),
+      keywords: keywords ? keywords.value.trim() : ""
+    };
+  }
+  function sectorTags(sector, deep) {
+    const tags = sector.tags.slice();
+    if (deep && DEEP[sector.key]) {
+      DEEP[sector.key].forEach((tag) => {
+        if (!tags.some((have) => have[0] === tag[0] && have[1] === tag[1])) tags.push(tag);
+      });
+    }
+    return tags;
+  }
+  function keywordSelector(raw) {
+    const words = String(raw || "").split(",").map((s) => s.trim()).filter(Boolean).slice(0, 5);
+    const safe = [];
+    words.forEach((word) => {
+      if (!/^[\p{L}\p{N}][\p{L}\p{N} .'-]{0,40}$/u.test(word)) return;
+      safe.push(word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
     });
-    return `[out:json][timeout:25];\n${areaPrefix || ""}(\n${lines.join("\n")}\n);\nout center ${limit};`;
+    return safe.length ? '["name"~"' + safe.join("|") + '",i]' : "";
+  }
+  function buildQuery(sector, filter, areaPrefix, limit, crawl) {
+    const kinds = crawl.deep ? ["nwr"] : ["node", "way"];
+    const named = crawl.named ? '["name"]' : "";
+    const lines = [];
+    sectorTags(sector, crawl.deep).forEach(([key, value]) => {
+      const sel = (value === "*" ? `["${key}"]` : `["${key}"="${value}"]`) + named;
+      kinds.forEach((kind) => lines.push(`${kind}${sel}(${filter});`));
+    });
+    const kw = keywordSelector(crawl.keywords);
+    if (kw) kinds.forEach((kind) => lines.push(`${kind}${kw}(${filter});`));
+    const timeout = crawl.deep || sector.wide || kw ? 40 : 25;
+    return `[out:json][timeout:${timeout}];\n${areaPrefix || ""}(\n${lines.join("\n")}\n);\nout center ${limit};`;
   }
 
-  async function overpass(ql) {
+  async function overpass(ql, timeoutMs) {
     let lastErr = "The map search didn't answer.";
-    for (const endpoint of OVERPASS) {
+    for (let i = 0; i < OVERPASS.length; i++) {
+      const endpoint = OVERPASS[i];
+      const budget = i === 0 ? Math.min(timeoutMs || 28000, 20000) : (timeoutMs || 28000);
       try {
         const res = await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8", Accept: "application/json" },
           body: "data=" + encodeURIComponent(ql),
-          signal: AbortSignal.timeout ? AbortSignal.timeout(28000) : undefined
+          signal: AbortSignal.timeout ? AbortSignal.timeout(budget) : undefined
         });
         const text = await res.text();
         if (res.status === 429 || res.status === 502 || res.status === 504) {
@@ -619,6 +771,7 @@
         return data.elements || [];
       } catch (e) {
         if (e.name === "TimeoutError" || e.name === "AbortError") lastErr = "The map search timed out. Try a smaller radius.";
+        else if (e.message === "Failed to fetch") lastErr = "The map search could not be reached. Try again in a moment.";
         else lastErr = e.message || lastErr;
       }
     }
@@ -629,9 +782,39 @@
     const raw = tags.phone || tags["contact:phone"] || tags.mobile || tags["contact:mobile"] || "";
     const first = String(raw).split(/[;,]/)[0].replace(/^tel:/i, "").trim().replace(/\s+/g, " ");
     const digits = first.replace(/\D/g, "");
-    if (digits.length < 10 || digits.length > 15) return "";
+    if (digits.length < 8 || digits.length > 15) return "";
     if (/[a-z]/i.test(first)) return "";
     return first.slice(0, 40);
+  }
+  function cleanWhatsapp(tags) {
+    return cleanPhone({ phone: tags["contact:whatsapp"] || tags.whatsapp || "" });
+  }
+  function internationalDial(value, code) {
+    let dial = String(value || "").replace(/[^\d+]/g, "");
+    if (dial.startsWith("+")) {
+      if (code === "gb" && dial.startsWith("+440")) dial = "+44" + dial.slice(4);
+      return dial;
+    }
+    if (dial.startsWith("00")) return "+" + dial.slice(2);
+    const prefix = { gb: "44", au: "61", ae: "971", us: "1", lk: "94" }[code];
+    if (dial.startsWith("0") && prefix) return "+" + prefix + dial.slice(1);
+    if (code === "us" && dial.length === 10) return "+1" + dial;
+    if (code === "lk" && dial.length === 9 && prefix) return "+" + prefix + dial;
+    if ((code === "ae" || code === "au") && dial.length === 9 && prefix) return "+" + prefix + dial;
+    return dial;
+  }
+  function cleanSocial(raw, host) {
+    let s = String(raw || "").trim().split(/[\s;]/)[0];
+    if (!s || /^yes$/i.test(s)) return "";
+    if (s.startsWith("@")) s = "https://" + host + "/" + s.slice(1);
+    else if (!/^https?:\/\//i.test(s)) {
+      s = s.includes(".") ? "https://" + s.replace(/^\/\//, "") : "https://" + host + "/" + s.replace(/^\/+/, "");
+    }
+    try {
+      const url = new URL(s);
+      if (url.protocol !== "http:" && url.protocol !== "https:") return "";
+      return url.href.slice(0, 300);
+    } catch (e) { return ""; }
   }
   function cleanEmail(tags) {
     let raw = String(tags.email || tags["contact:email"] || "").split(/[;,]/)[0].trim();
@@ -642,14 +825,23 @@
     if (raw.endsWith("@example.com") || raw.startsWith("noreply@") || raw.startsWith("no-reply@")) return "";
     return raw.slice(0, 160);
   }
-  function contactLink(kind, value) {
+  function contactLink(kind, value, cc) {
     if (!value) return "Not listed";
-    if (kind === "phone") {
-      let dial = value.replace(/[^\d+]/g, "");
-      if (dial.startsWith("+440")) dial = "+44" + dial.slice(4);
+    if (kind === "phone" || kind === "whatsapp") {
+      const dial = internationalDial(value, cc || country().code);
+      if (kind === "whatsapp") {
+        const digits = dial.replace(/\D/g, "");
+        return digits ? `<a href="https://wa.me/${esc(digits)}" target="_blank" rel="noopener noreferrer">${esc(value)}</a>` : esc(value);
+      }
       return `<a href="tel:${esc(dial)}">${esc(value)}</a>`;
     }
     return `<a href="mailto:${esc(value)}">${esc(value)}</a>`;
+  }
+  function socialCell(row) {
+    const links = [];
+    if (row.facebook) links.push(`<a href="${esc(row.facebook)}" target="_blank" rel="noopener noreferrer">Facebook</a>`);
+    if (row.instagram) links.push(`<a href="${esc(row.instagram)}" target="_blank" rel="noopener noreferrer">Instagram</a>`);
+    return links.length ? links.join(" · ") : "Not listed";
   }
   function missingColumn(err) {
     return /column/i.test(err && err.message || "") && /phone|email/i.test(err.message || "");
@@ -671,30 +863,101 @@
     if (lat == null || lon == null) return null;
     const website = cleanWeb(tags.website || tags["contact:website"] || tags.url || "");
     const type = el.type || "node";
+    const cuisine = String(tags.cuisine || "").replace(/_/g, " ").split(";")[0].trim().slice(0, 40);
+    const kind = tags.amenity || tags.shop || tags.tourism || tags.healthcare || tags.craft || tags.leisure || tags.office || "place";
     return {
-      name: tags.name || tags.brand || "Unnamed place",
-      kind: tags.amenity || tags.shop || tags.tourism || tags.leisure || tags.office || "place",
-      address: [tags["addr:housenumber"], tags["addr:street"], tags["addr:postcode"], tags["addr:city"]].filter(Boolean).join(" "),
+      name: tags.name || tags.brand || tags.operator || "Unnamed place",
+      kind: cuisine ? kind + " · " + cuisine : kind,
+      address: [tags["addr:housenumber"], tags["addr:street"], tags["addr:suburb"], tags["addr:city"], tags["addr:state"], tags["addr:postcode"]].filter(Boolean).join(" "),
       phone: cleanPhone(tags),
       email: cleanEmail(tags),
-      website, miles: milesBetween(centre.lat, centre.lon, lat, lon), lat, lon,
+      website,
+      whatsapp: cleanWhatsapp(tags),
+      facebook: cleanSocial(tags["contact:facebook"] || tags.facebook || "", "facebook.com"),
+      instagram: cleanSocial(tags["contact:instagram"] || tags.instagram || "", "instagram.com"),
+      hours: String(tags.opening_hours || "").replace(/\s+/g, " ").trim().slice(0, 160),
+      cuisine,
+      miles: milesBetween(centre.lat, centre.lon, lat, lon), lat, lon,
+      cc: country().code,
       dedupe: `${type}/${el.id}`,
       osm: `https://www.openstreetmap.org/${type}/${el.id}`
     };
   }
+  function osmTypeName(t) {
+    if (t === "W" || t === "way") return "way";
+    if (t === "R" || t === "relation") return "relation";
+    return "node";
+  }
+  async function photonLeads(sector, lat, lon, miles, crawl) {
+    if (!crawl.index || sector.wide) return { leads: [], missed: false };
+    const tags = sectorTags(sector, crawl.deep).filter((pair) => pair[1] !== "*").slice(0, 6);
+    if (!tags.length) return { leads: [], missed: false };
+    const want = country().code.toUpperCase();
+    const jobs = tags.map(async ([key, value]) => {
+      const url = "https://photon.komoot.io/api/?q=" + encodeURIComponent(String(value).replace(/_/g, " "))
+        + "&lat=" + encodeURIComponent(lat) + "&lon=" + encodeURIComponent(lon)
+        + "&limit=25&lang=en&osm_tag=" + encodeURIComponent(key + ":" + value);
+      const res = await fetch(url, { headers: { Accept: "application/json" } });
+      if (!res.ok) throw new Error(String(res.status));
+      const data = await res.json();
+      return Array.isArray(data.features) ? data.features : [];
+    });
+    const settled = await Promise.allSettled(jobs);
+    const leads = [];
+    let failed = 0;
+    settled.forEach((result) => {
+      if (result.status !== "fulfilled") { failed++; return; }
+      result.value.forEach((feature) => {
+        const props = feature.properties || {};
+        const coords = feature.geometry && feature.geometry.coordinates;
+        if (!coords || String(props.countrycode || "").toUpperCase() !== want) return;
+        const name = props.name || props.street || "";
+        if (!name || !props.osm_id) return;
+        const plat = Number(coords[1]);
+        const plon = Number(coords[0]);
+        if (!Number.isFinite(plat) || !Number.isFinite(plon)) return;
+        const type = osmTypeName(props.osm_type);
+        const lead = {
+          name, kind: props.osm_value || props.osm_key || "place",
+          address: [props.housenumber, props.street, props.district, props.city || props.town, props.postcode].filter(Boolean).join(" "),
+          phone: "", email: "", website: "", whatsapp: "", facebook: "", instagram: "", hours: "", cuisine: "",
+          miles: milesBetween(lat, lon, plat, plon), lat: plat, lon: plon, cc: country().code,
+          dedupe: `${type}/${props.osm_id}`,
+          osm: `https://www.openstreetmap.org/${type}/${props.osm_id}`,
+          source: "index"
+        };
+        if (miles && lead.miles > miles + 0.05) return;
+        leads.push(lead);
+      });
+    });
+    return { leads, missed: failed === tags.length };
+  }
 
   function renderRows(rows) {
+    const head = document.getElementById("lfHead");
+    const crawl = crawlOptions();
+    if (head) {
+      head.innerHTML = "<th>Business</th><th>Type</th><th>Address</th><th>Distance</th><th>Phone</th><th>Email</th><th>Website</th>"
+        + (crawl.social ? "<th>WhatsApp</th><th>Social</th>" : "")
+        + (crawl.hours ? "<th>Hours</th>" : "");
+    }
     if (!rows.length) { tableWrap.hidden = true; rowsEl.innerHTML = ""; return; }
     tableWrap.hidden = false;
-    rowsEl.innerHTML = rows.map((row) => `<tr>
+    rowsEl.innerHTML = rows.map((row) => {
+      let host = "";
+      if (row.website) { try { host = new URL(row.website).hostname; } catch (e) { host = ""; } }
+      return `<tr>
       <td><a href="${esc(row.osm)}" target="_blank" rel="noopener noreferrer">${esc(row.name)}</a></td>
       <td>${esc(row.kind)}</td>
       <td>${esc(row.address || "—")}</td>
       <td class="num">${esc(formatMiles(row.miles))}</td>
-      <td class="lf-contact">${contactLink("phone", row.phone)}</td>
+      <td class="lf-contact">${contactLink("phone", row.phone, row.cc)}</td>
       <td class="lf-contact">${contactLink("email", row.email)}</td>
-      <td>${row.website ? `<a href="${esc(row.website)}" target="_blank" rel="noopener noreferrer">${esc(new URL(row.website).hostname)}</a> <span class="pill web-wait" data-host="${esc(new URL(row.website).hostname)}" data-key="${esc(row.dedupe)}">Checking domain…</span>` : '<span class="pill web-none">No website listed</span>'}</td>
-    </tr>`).join("");
+      <td>${host ? `<a href="${esc(row.website)}" target="_blank" rel="noopener noreferrer">${esc(host)}</a> <span class="pill web-wait" data-host="${esc(host)}" data-key="${esc(row.dedupe)}">Checking domain…</span>` : '<span class="pill web-none">No website listed</span>'}</td>
+      ${crawl.social ? `<td class="lf-contact">${contactLink("whatsapp", row.whatsapp, row.cc)}</td><td>${socialCell(row)}</td>` : ""}
+      ${crawl.hours ? `<td class="lf-hours">${esc(row.hours || "Not listed")}</td>` : ""}
+    </tr>`;
+    }).join("");
   }
 
   async function websiteStatus(url) {
@@ -863,7 +1126,7 @@
     const named = leads.filter((lead) => lead.name !== "Unnamed place" && lead.dedupe);
     const record = {
       sector: clip(sector.label, 80),
-      area: clip(loc.label, 120),
+      area: clip(country().label + " · " + loc.label, 120),
       radius: clip(radiusText(radius), 40),
       result_count: leads.length,
       new_count: 0,
@@ -891,7 +1154,7 @@
         sector: clip(sector.label, 80),
         category: clip(lead.kind, 80),
         address: clip(lead.address, 240),
-        area: clip(loc.label, 120),
+        area: clip(country().label + " · " + loc.label, 120),
         radius: clip(radiusText(radius), 40),
         miles: lead.miles == null ? null : Math.round(lead.miles * 100) / 100,
         website: clip(lead.website, 500),
@@ -902,25 +1165,54 @@
         found_by: email()
       };
       if (withContact) {
-        row.phone = clip(lead.phone, 40);
+        row.phone = clip(lead.phone || lead.whatsapp, 40);
         row.email = clip(lead.email, 160);
       }
+      const notes = leadNotes(lead);
+      if (notes) row.notes = notes;
       return row;
     }
+    function leadNotes(lead) {
+      const bits = [];
+      if (lead.whatsapp) bits.push("WhatsApp: " + lead.whatsapp);
+      if (lead.facebook) bits.push("Facebook: " + lead.facebook);
+      if (lead.instagram) bits.push("Instagram: " + lead.instagram);
+      if (lead.hours) bits.push("Hours: " + lead.hours);
+      if (lead.source === "index") bits.push("Also listed in the place index.");
+      return bits.join("\n").slice(0, 4000);
+    }
+    function withoutNotes(body) {
+      return body.map((row) => {
+        const copy = { ...row };
+        delete copy.notes;
+        return copy;
+      });
+    }
     async function insertLeads(body) {
+      const post = (rows, conflict) => TSDB.rest("saved_leads?on_conflict=" + conflict, {
+        method: "POST",
+        prefer: "return=minimal,resolution=ignore-duplicates",
+        body: rows
+      });
+      let rows = body;
       try {
-        await TSDB.rest("saved_leads?on_conflict=dedupe_key,found_by", {
-          method: "POST",
-          prefer: "return=minimal,resolution=ignore-duplicates",
-          body
-        });
+        try {
+          await post(rows, "dedupe_key,found_by");
+        } catch (e) {
+          if (/column/i.test(e.message || "") && /notes/i.test(e.message || "")) {
+            rows = withoutNotes(rows);
+            await post(rows, "dedupe_key,found_by");
+            return;
+          }
+          if (!/unique|conflict|constraint/i.test(e.message || "")) throw e;
+          await post(rows, "dedupe_key");
+        }
       } catch (e) {
-        if (!/unique|conflict|constraint/i.test(e.message || "")) throw e;
-        await TSDB.rest("saved_leads?on_conflict=dedupe_key", {
-          method: "POST",
-          prefer: "return=minimal,resolution=ignore-duplicates",
-          body
-        });
+        if (/column/i.test(e.message || "") && /notes/i.test(e.message || "")) {
+          await post(withoutNotes(rows), "dedupe_key");
+          return;
+        }
+        throw e;
       }
     }
     async function fillContacts(rows) {
@@ -974,12 +1266,18 @@
   }
 
   async function runSearch() {
-    const sector = SECTORS[sectorEl.value];
+    const sectorKey = sectorEl.value;
+    const sector = SECTORS[sectorKey] ? { key: sectorKey, ...SECTORS[sectorKey] } : null;
     if (!sector) { setStatus("Choose a business sector.", true); return; }
     const typed = input.value.trim();
     if (!typed) { setStatus("Enter a postcode, town or city.", true); return; }
     const radius = radiusEl.value;
     const max = Number(maxEl.value) || 25;
+    const crawl = crawlOptions();
+    if (sector.wide && (radius === "area" || Number(radius) > 15)) {
+      setStatus("All mapped businesses is a wide crawl. Choose a radius of 15 miles or less.", true);
+      return;
+    }
     const gen = ++state.searchGen;
     goBtn.disabled = true;
     setSpin(true);
@@ -1022,26 +1320,37 @@
         const from = loc.type === "full" ? "this postcode" : loc.type === "partial" ? `the centre of district ${loc.label}` : `the mapped centre of ${loc.label}`;
         where = `${radiusText(radius)} from ${from}`;
       }
-      const limit = Math.min(200, Math.max(max, 40));
-      const ql = buildQuery(sector, filter, areaPrefix, limit);
-      lastSearch = { params: { sector: sector.label, radius, max, location: { label: loc.label, type: loc.type, latitude: lat, longitude: lon, verified: loc.verified } }, query: ql };
-      criteriaEl.textContent = `${sector.label} · ${where}`;
-      setStatus("Searching mapped businesses…");
-      const elements = await overpass(ql);
+      const slow = crawl.deep || sector.wide || !!keywordSelector(crawl.keywords);
+      const limit = Math.min(slow ? 300 : 200, Math.max(max, slow ? 80 : 40));
+      const ql = buildQuery(sector, filter, areaPrefix, limit, crawl);
+      const milesCap = radius === "area" ? null : MILES[radius];
+      lastSearch = { params: { country: country().label, sector: sector.label, radius, max, crawl, location: { label: loc.label, type: loc.type, latitude: lat, longitude: lon, verified: loc.verified } }, query: ql };
+      const criteria = [country().label, sector.label, where];
+      if (crawl.deep) criteria.push("deep crawl");
+      if (crawl.index && !sector.wide) criteria.push("place index");
+      if (keywordSelector(crawl.keywords)) criteria.push("name match");
+      criteriaEl.textContent = criteria.join(" · ");
+      setStatus(crawl.deep ? "Deep crawl of mapped businesses…" : "Searching mapped businesses…");
+      let mapError = "";
+      const [elements, indexed] = await Promise.all([
+        overpass(ql, slow ? 42000 : 28000).catch((err) => { mapError = err.message || "The map search didn't answer."; return []; }),
+        photonLeads(sector, lat, lon, milesCap, crawl)
+      ]);
       if (gen !== state.searchGen) return;
-      const seen = new Set();
-      let leads = [];
-      elements.forEach((el) => {
-        const key = `${el.type || "node"}/${el.id}`;
-        if (seen.has(key)) return;
-        seen.add(key);
-        const lead = toLead(el, { lat, lon });
-        if (lead) leads.push(lead);
-      });
-      if (radius !== "area") {
-        const miles = MILES[radius];
-        leads = leads.filter((lead) => lead.miles <= miles + 0.05);
+      const byKey = new Map();
+      function addLead(lead) {
+        if (!lead || !lead.dedupe) return;
+        const prev = byKey.get(lead.dedupe);
+        if (!prev) { byKey.set(lead.dedupe, lead); return; }
+        const score = (item) => (item.phone ? 4 : 0) + (item.email ? 4 : 0) + (item.website ? 2 : 0) + (item.whatsapp ? 2 : 0) + (item.hours ? 1 : 0);
+        if (score(lead) > score(prev)) byKey.set(lead.dedupe, lead);
       }
+      elements.forEach((el) => addLead(toLead(el, { lat, lon })));
+      indexed.leads.forEach(addLead);
+      let leads = [...byKey.values()];
+      if (radius !== "area") leads = leads.filter((lead) => lead.miles <= milesCap + 0.05);
+      if (crawl.named) leads = leads.filter((lead) => lead.name && lead.name !== "Unnamed place");
+      if (crawl.contact) leads = leads.filter((lead) => lead.phone || lead.email || lead.website || lead.whatsapp);
       leads.sort((a, b) => a.miles - b.miles || a.name.localeCompare(b.name));
       const limited = elements.length >= limit;
       const extra = leads.length > max;
@@ -1052,13 +1361,21 @@
       const storeNote = !stored.ok
         ? " These results were not stored."
         : ` Saved ${stored.added} new${stored.skipped ? `, ${stored.skipped} already stored` : ""}.`;
-      const reachable = leads.filter((lead) => lead.phone || lead.email).length;
+      const reachable = leads.filter((lead) => lead.phone || lead.email || lead.whatsapp).length;
       const contactNote = !leads.length ? ""
         : reachable
-          ? ` ${reachable} list a public phone or email.`
-          : " None of these list a public phone or email on the map.";
-      if (!leads.length) setStatus(`No ${sector.label.toLowerCase()} were mapped ${where}. OpenStreetMap does not list every business.${storeNote}`, false);
-      else setStatus(`${leads.length} mapped ${leads.length === 1 ? "business" : "businesses"} ${where}.${contactNote}${extra || limited ? " Narrow the radius if you need a tighter set." : ""}${storeNote}`, false);
+          ? ` ${reachable} list a public phone, email or WhatsApp.`
+          : " None of these list a public phone, email or WhatsApp on the map.";
+      const indexCount = leads.filter((lead) => lead.source === "index").length;
+      const indexNote = !crawl.index || sector.wide ? ""
+        : indexed.missed ? " The place index did not respond."
+        : indexCount ? ` ${indexCount} ${indexCount === 1 ? "was" : "were"} added from the place index.` : "";
+      const keywordNote = crawl.keywords && !keywordSelector(crawl.keywords) ? " Keywords need letters or numbers, so that part was skipped." : "";
+      const mapNote = mapError ? " The main map search did not answer, so this set is from the place index." : "";
+      const place = `${country().label}, ${where}`;
+      if (!leads.length && mapError && !indexCount) { setStatus(mapError, true); return; }
+      if (!leads.length) setStatus(`No ${sector.label.toLowerCase()} were mapped in ${place}.${crawl.contact ? " The contact filter is on." : ""} OpenStreetMap does not list every business.${indexNote}${keywordNote}${mapNote}${storeNote}`, false);
+      else setStatus(`${leads.length} mapped ${leads.length === 1 ? "business" : "businesses"} in ${place}.${contactNote}${indexNote}${keywordNote}${mapNote}${extra || limited ? " Narrow the radius if you need a tighter set." : ""}${storeNote}`, false);
       checkSites(gen);
     } catch (e) {
       if (gen !== state.searchGen) return;
@@ -1068,17 +1385,36 @@
     }
   }
 
-  input.addEventListener("focus", () => { if (list.hidden) scheduleSuggest(); });
-  const countryEl = document.getElementById("lfCountry");
-  if (countryEl) countryEl.addEventListener("change", () => {
+  function syncCountryUi() {
+    const c = country();
     const label = document.getElementById("lfQLabel");
-    if (label) label.textContent = country().postcodes ? "UK Postcode, Town or City" : "Town or city";
-    input.placeholder = country().postcodes ? "Enter a postcode, e.g. N15 4JA, or search London" : "Search a town or city";
+    if (label) label.textContent = c.postcodes ? "UK postcode, town or city" : "Town or city";
+    input.placeholder = c.postcodes
+      ? "Enter a postcode, e.g. N15 4JA, or search London"
+      : "Search a town or city, e.g. " + c.example;
+  }
+  function setCountry(code, keep) {
+    const root = document.getElementById("lfCountry");
+    if (!root || !COUNTRIES[code]) return;
+    root.querySelectorAll("[data-country]").forEach((btn) => {
+      btn.setAttribute("aria-pressed", btn.getAttribute("data-country") === code ? "true" : "false");
+    });
+    syncCountryUi();
+    if (keep) return;
     state.location = null;
     input.value = "";
     closeMenu();
     renderNote();
+    renderChrome();
+  }
+  input.addEventListener("focus", () => { if (list.hidden) scheduleSuggest(); });
+  const countryEl = document.getElementById("lfCountry");
+  if (countryEl) countryEl.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-country]");
+    if (!btn || btn.getAttribute("aria-pressed") === "true") return;
+    setCountry(btn.getAttribute("data-country"));
   });
+  syncCountryUi();
   input.addEventListener("click", () => { if (list.hidden) scheduleSuggest(); });
   input.addEventListener("input", () => {
     if (state.location && input.value.trim() !== state.location.label) state.location = null;
@@ -1162,6 +1498,15 @@
       state.contactCols = null;
       state.role = "admin";
       state.searchGen++;
+      setCountry("gb", true);
+      ["lfDeep", "lfIndex", "lfSocial", "lfHours", "lfNamed"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.checked = true;
+      });
+      const contactPick = document.getElementById("lfContact");
+      if (contactPick) contactPick.checked = false;
+      const keywordPick = document.getElementById("lfKeywords");
+      if (keywordPick) keywordPick.value = "";
       input.value = "";
       closeMenu();
       renderNote();

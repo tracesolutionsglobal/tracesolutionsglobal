@@ -195,13 +195,20 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
 
 /* Lead finder */
 .lf-head{margin-top:1.4rem;display:grid;gap:.35rem}
-.lf-head p{color:var(--ink-2);max-width:68ch}
+.lf-head p{color:var(--ink-2);max-width:78ch}
 .lf-panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1rem 1.1rem 1.15rem;margin-top:1rem;display:grid;gap:.85rem}
+.lf-countries{display:grid;gap:.35rem}
+.lf-seg{display:flex;flex-wrap:wrap;width:fit-content;max-width:100%}
+.lf-crawl{display:flex;flex-wrap:wrap;gap:.45rem .9rem;align-items:center}
+.lf-crawl > span{font-weight:700;font-size:.8rem;color:var(--ink-2)}
+.lf-keyword{flex:1 1 240px;min-width:180px}
+.lf-keyword input{width:100%;background:var(--surface-2);border:1.5px solid var(--line);border-radius:12px;padding:.55rem .75rem;font:inherit;color:var(--ink)}
+.lf-hours{white-space:normal;max-width:16rem}
 .lf-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(168px,.55fr) minmax(150px,.45fr);gap:.75rem .8rem;align-items:start}
 #lfSave[aria-pressed="true"] svg{fill:currentColor}
 @media(max-width:860px){.lf-grid{grid-template-columns:1fr}}
 .lf-loc{position:relative;min-width:0}
-.lf-loc label,.lf-field label{font-weight:700;font-size:.8rem;color:var(--ink-2);display:block;margin-bottom:.3rem}
+.lf-countries > span,.lf-loc label,.lf-field label{font-weight:700;font-size:.8rem;color:var(--ink-2);display:block;margin-bottom:.3rem}
 .lf-box{display:flex;align-items:center;gap:.35rem;background:var(--surface-2);border:1.5px solid var(--line);border-radius:12px;padding:.35rem .45rem .35rem .7rem;min-width:0}
 .lf-box:focus-within{border-color:var(--green)}
 .lf-box input{flex:1;min-width:0;border:0;background:transparent;outline:none;padding:.35rem 0}
@@ -348,19 +355,20 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
 <main class="wrap" id="finderView" hidden>
   <div class="lf-head">
     <h2>Lead finder</h2>
-    <p>Search mapped businesses in the UK, Sri Lanka, Australia or the United States. Results come from OpenStreetMap.</p>
+    <p>Admins and agents use the same finder. Choose Australia, the UAE, the UK, the USA or Sri Lanka, then crawl mapped businesses in that country. Deep crawl and the place index bring back more listings, plus public phone numbers, emails, websites, WhatsApp, social profiles and opening hours.</p>
   </div>
   <div class="lf-panel">
-    <div class="lf-grid">
-      <div class="lf-field">
-        <label for="lfCountry">Country</label>
-        <select id="lfCountry">
-          <option value="gb" selected>United Kingdom</option>
-          <option value="lk">Sri Lanka</option>
-          <option value="au">Australia</option>
-          <option value="us">United States</option>
-        </select>
+    <div class="lf-countries">
+      <span id="lfCountryLabel">Country</span>
+      <div class="seg lf-seg" id="lfCountry" role="group" aria-labelledby="lfCountryLabel">
+        <button type="button" data-country="au" aria-pressed="false">Australia</button>
+        <button type="button" data-country="ae" aria-pressed="false">UAE</button>
+        <button type="button" data-country="gb" aria-pressed="true">UK</button>
+        <button type="button" data-country="us" aria-pressed="false">USA</button>
+        <button type="button" data-country="lk" aria-pressed="false">Sri Lanka</button>
       </div>
+    </div>
+    <div class="lf-grid">
       <div class="lf-loc" id="lfLoc">
         <label for="lfQ" id="lfQLabel">UK Postcode, Town or City</label>
         <div class="lf-box">
@@ -395,25 +403,48 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
           <option value="25" selected>25</option>
           <option value="50">50</option>
           <option value="100">100</option>
+          <option value="200">200</option>
         </select>
       </div>
       <div class="lf-field">
         <label for="lfSector">Business sector</label>
         <select id="lfSector">
           <option value="">Choose a sector</option>
-          <option value="cafe">Cafés and restaurants</option>
-          <option value="pub">Pubs and bars</option>
-          <option value="beauty">Hair and beauty</option>
-          <option value="retail">Shops</option>
-          <option value="hotel">Hotels and guest houses</option>
-          <option value="health">Dentists and clinics</option>
-          <option value="pharmacy">Pharmacies</option>
-          <option value="gym">Gyms and fitness</option>
-          <option value="estate">Estate agents</option>
-          <option value="garage">Garages and car repair</option>
-          <option value="accountant">Accountants</option>
-          <option value="legal">Solicitors</option>
-          <option value="supermarket">Supermarkets and convenience</option>
+          <optgroup label="Food and stay">
+            <option value="cafe">Cafés and restaurants</option>
+            <option value="pub">Pubs and bars</option>
+            <option value="bakery">Bakeries and sweets</option>
+            <option value="hotel">Hotels and guest houses</option>
+          </optgroup>
+          <optgroup label="Health and beauty">
+            <option value="health">Dentists and clinics</option>
+            <option value="pharmacy">Pharmacies</option>
+            <option value="optician">Opticians</option>
+            <option value="vet">Vets</option>
+            <option value="beauty">Hair and beauty</option>
+            <option value="gym">Gyms and fitness</option>
+          </optgroup>
+          <optgroup label="Shops">
+            <option value="retail">Shops</option>
+            <option value="supermarket">Supermarkets and convenience</option>
+            <option value="electronics">Electronics and phones</option>
+            <option value="jewellery">Jewellery</option>
+            <option value="laundry">Laundry and dry cleaning</option>
+          </optgroup>
+          <optgroup label="Services">
+            <option value="estate">Estate agents</option>
+            <option value="garage">Garages and car repair</option>
+            <option value="cars">Car dealers</option>
+            <option value="accountant">Accountants</option>
+            <option value="legal">Solicitors</option>
+            <option value="travel">Travel agents</option>
+            <option value="education">Schools and tuition</option>
+            <option value="trades">Builders and trades</option>
+            <option value="photo">Photographers</option>
+          </optgroup>
+          <optgroup label="Wider crawl">
+            <option value="all">All mapped businesses (15 miles or less)</option>
+          </optgroup>
         </select>
       </div>
       <div class="lf-field">
@@ -425,6 +456,16 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
         <button type="button" class="btn btn-ghost" id="lfRemove" disabled>Remove saved</button>
       </div>
     </div>
+    <div class="lf-crawl" role="group" aria-label="Crawl options">
+      <span>Crawl</span>
+      <label class="lf-check"><input type="checkbox" id="lfDeep" checked> Deep crawl</label>
+      <label class="lf-check"><input type="checkbox" id="lfIndex" checked> Place index</label>
+      <label class="lf-check"><input type="checkbox" id="lfSocial" checked> WhatsApp and social</label>
+      <label class="lf-check"><input type="checkbox" id="lfHours" checked> Opening hours</label>
+      <label class="lf-check"><input type="checkbox" id="lfNamed" checked> Named businesses only</label>
+      <label class="lf-check"><input type="checkbox" id="lfContact"> Only with phone, email or website</label>
+      <label class="lf-keyword"><span class="ls-sr">Also include names containing</span><input id="lfKeywords" type="text" placeholder="Also include names containing, e.g. pizza, dental" maxlength="80" autocomplete="off"></label>
+    </div>
     <div class="lf-actions">
       <button type="button" class="btn btn-primary" id="lfGo">Find businesses</button>
       <p id="lfCriteria"></p>
@@ -433,12 +474,12 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
   <p class="lf-status" id="lfStatus" aria-live="polite"></p>
   <div class="list-wrap" id="lfTableWrap" hidden>
     <table>
-      <thead><tr><th>Business</th><th>Type</th><th>Address</th><th>Distance</th><th>Phone</th><th>Email</th><th>Website</th></tr></thead>
+      <thead><tr id="lfHead"><th>Business</th><th>Type</th><th>Address</th><th>Distance</th><th>Phone</th><th>Email</th><th>Website</th></tr></thead>
       <tbody id="lfRows"></tbody>
     </table>
   </div>
   <footer class="lf-foot">
-    <span>Place names and postcodes from <a href="https://postcodes.io" rel="noopener noreferrer">postcodes.io</a> (Ordnance Survey Open Names). Businesses, public phone numbers, public emails, and area boundaries from <a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer">OpenStreetMap</a> via the public Overpass API. A business with no published contact shows “Not listed”. A mile radius is sent with the search. Entire city / area uses the OpenStreetMap boundary, which is too large for some cities on the free service.</span>
+    <span>Place names and UK postcodes from <a href="https://postcodes.io" rel="noopener noreferrer">postcodes.io</a> (Ordnance Survey Open Names). Other countries use OpenStreetMap place search. Businesses, public phone numbers, emails, websites, WhatsApp, social links and opening hours come from <a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer">OpenStreetMap</a>. Deep crawl also checks ways and area relations, and the place index adds nearby named places. A business with nothing published shows “Not listed”. Entire city / area uses the OpenStreetMap boundary, which is too large for some cities on the free service. All mapped businesses needs a radius of 15 miles or less.</span>
     <span id="lfSaveNote"></span>
   </footer>
 </main>
