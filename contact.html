@@ -14,19 +14,24 @@
 <meta name="robots" content="index,follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Montserrat:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#012228;--ink:#102033;--ink-soft:#4B5F74;--paper:#F6F5EF;--white:#fff;--line:#E3E5DE;--green:#0D8B76;--green-bright:#1FA75A}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 "Plus Jakarta Sans",system-ui,sans-serif}
+:root{--navy:#012228;--ink:#012228;--ink-soft:#4A5D60;--paper:#FCFBF6;--white:#fff;--line:#E4E7E1;--green:#158A49;--green-bright:#2DBE6C;--f-display:"Plus Jakarta Sans","Segoe UI",system-ui,-apple-system,sans-serif;--f-logo:Montserrat,"Plus Jakarta Sans","Segoe UI",sans-serif;--f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--navy);font-family:var(--f-display);font-size:1.05rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font-family:inherit;font-size:inherit;line-height:inherit;color:inherit}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:800;line-height:1.08;letter-spacing:-.025em;margin:0}
 a{color:var(--green)}
-.container{max-width:1100px;margin:0 auto;padding-inline:clamp(16px,4vw,32px)}
+.container{max-width:1200px;margin:0 auto;padding-inline:clamp(16px,4vw,48px)}
 .site-header{background:var(--white);border-bottom:1px solid var(--line)}
 .site-header .container{display:flex;align-items:center;gap:1rem;padding-block:.85rem}
-.logo{display:flex;align-items:center;gap:.55rem;text-decoration:none;color:var(--navy);font-family:Montserrat,sans-serif;font-weight:600;letter-spacing:.08em;font-size:.85rem}
-.logo svg{width:34px;height:26px}
-.nav-links{display:flex;gap:1.1rem;list-style:none;margin:0 0 0 auto;padding:0}
-.nav-links a{color:var(--navy);text-decoration:none;font-weight:700;font-size:.92rem}
-.home-link{display:none;margin-left:auto;color:var(--navy);font-weight:700;font-size:.92rem;text-decoration:none}
+.logo{display:flex;align-items:center;gap:.65rem;text-decoration:none;color:var(--navy);min-width:0}
+.logo svg{width:34px;height:26px;flex:none}
+.logo .word{font-family:var(--f-logo);font-weight:600;font-size:.98rem;letter-spacing:.12em;line-height:1;white-space:nowrap;color:var(--navy)}
+.logo .g{color:#1FA75A}
+.nav-links{display:flex;gap:1.7rem;list-style:none;margin:0 0 0 auto;padding:0}
+.nav-links a{color:var(--navy);text-decoration:none;font-weight:600;font-size:.97rem}
+.home-link{display:none;margin-left:auto;color:var(--navy);font-weight:600;font-size:.97rem;text-decoration:none}
 @media(max-width:800px){.nav-links{display:none}.home-link{display:inline}}
 .notice{padding-block:clamp(2rem,6vw,4rem) 4rem;max-width:74ch}
 .notice h1{font-size:clamp(2rem,4vw,2.8rem);line-height:1.1;letter-spacing:-.03em;margin:.4rem 0 1rem}
@@ -38,12 +43,13 @@ a{color:var(--green)}
 .footer-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;font-size:.85rem}
 .legal-line{margin:.8rem 0 0;font-size:.82rem;color:rgba(255,255,255,.62)}
 .contact{padding-block:clamp(2rem,6vw,4rem) 4rem}
-.contact .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
-.contact h1{font-size:clamp(2.1rem,5vw,3.2rem);line-height:1.05;letter-spacing:-.03em;margin:.5rem 0 1rem;color:var(--navy)}
-.contact .lede{font-size:1.1rem;color:var(--ink-soft);max-width:60ch;margin:0}
+.contact .eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--f-mono);font-size:.78rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.contact .eyebrow::before{content:"";width:18px;height:2px;background:#FB7250;border-radius:2px}
+.contact h1{font-size:clamp(2.1rem,4.4vw,3.2rem);margin:.5rem 0 1rem;color:var(--navy)}
+.contact .lede{font-size:1.25rem;line-height:1.55;color:var(--ink-soft);max-width:60ch;margin:0}
 .where{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.4rem 0 0;padding:0;list-style:none}
-.where li{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .9rem;border-radius:999px;background:var(--white);border:1px solid var(--line);font-weight:700;font-size:.92rem;color:var(--navy)}
-.where li span{font-size:1.1rem;line-height:1}
+.where li{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem .95rem;border-radius:999px;background:var(--white);border:1.5px solid var(--line);font-weight:600;font-size:.92rem;line-height:1;color:var(--navy)}
+.where li span{font-size:1.05rem;line-height:1;display:inline-flex;align-items:center}
 .c-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:1.2rem;margin-top:2.4rem;align-items:start}
 @media(max-width:860px){.c-grid{grid-template-columns:minmax(0,1fr)}}
 .c-card{background:var(--white);border:1px solid var(--line);border-radius:22px;padding:1.5rem;min-width:0}
@@ -54,28 +60,28 @@ a{color:var(--green)}
 .c-stack{display:grid;gap:1.2rem;min-width:0}
 .nums{list-style:none;margin:0;padding:0;display:grid}
 .nums li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem 1rem;padding:.85rem 0;border-top:1px solid rgba(255,255,255,.12)}
-.nums .num{font-size:1.2rem;font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums;white-space:nowrap}
-.acts{display:flex;flex-wrap:wrap;gap:.35rem}
-.act{display:inline-flex;align-items:center;gap:.35rem;min-height:38px;padding:0 .85rem;border-radius:999px;font-size:.85rem;font-weight:700;text-decoration:none;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);cursor:pointer;font-family:inherit}
+.nums .num{font-family:var(--f-display);font-size:1.15rem;font-weight:800;letter-spacing:-.01em;line-height:1.1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.acts{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem}
+.act{display:inline-flex;align-items:center;justify-content:center;gap:.35rem;min-height:38px;padding:0 .85rem;border-radius:999px;font-family:var(--f-display);font-size:.85rem;font-weight:700;line-height:1;text-decoration:none;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);cursor:pointer}
 .act svg{width:16px;height:16px}
 .act--wa{background:#25D366;border-color:#25D366;color:#06331A}
 @media(max-width:440px){.acts [data-copy]{display:none}.act{padding:0 .75rem}}
 .c-note{margin:1rem 0 0;font-size:.88rem;color:rgba(255,255,255,.7)}
 .c-list{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
 .c-list li{display:grid;gap:.1rem}
-.c-list small{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+.c-list small{font-family:var(--f-mono);font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
 .c-list a,.c-list b{color:var(--navy);font-weight:700;font-size:1.02rem;text-decoration:none;overflow-wrap:anywhere}
 .c-list a:hover{color:var(--green)}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
 @media(max-width:560px){.form{grid-template-columns:1fr}}
 .form .full{grid-column:1/-1}
-.form label{display:block;font-size:.85rem;font-weight:700;color:var(--navy);margin-bottom:.3rem}
-.form input,.form textarea,.form select{width:100%;min-width:0;padding:.75rem .9rem;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);font:inherit;color:var(--ink)}
+.form label{display:block;font-family:var(--f-display);font-size:.88rem;font-weight:700;line-height:1.3;color:var(--navy);margin-bottom:.3rem}
+.form input,.form textarea,.form select{width:100%;min-width:0;min-height:52px;padding:.85rem 1rem;border-radius:10px;border:1.5px solid var(--line);background:var(--white);font-family:var(--f-display);font-size:1.05rem;font-weight:400;line-height:1.4;color:var(--ink)}
 .form textarea{min-height:120px;resize:vertical}
 .form input:focus,.form textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 4px rgba(13,139,118,.12)}
 .form .is-bad{border-color:#D3542A}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.send{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;min-height:48px;padding:0 1.4rem;border:0;border-radius:999px;background:#E4572E;color:#fff;font:700 1rem "Plus Jakarta Sans",sans-serif;cursor:pointer}
+.send{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;min-height:48px;padding:0 1.4rem;border:0;border-radius:999px;background:#E4572E;color:#fff;font-family:var(--f-display);font-weight:700;font-size:1.02rem;line-height:1.1;cursor:pointer}
 .send:disabled{opacity:.6;cursor:progress}
 .f-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem}
 .f-foot small{color:var(--ink-soft)}
@@ -93,7 +99,7 @@ a{color:var(--green)}
   <div class="container">
     <a class="logo" href="index.html" aria-label="Trace Solutions Global, home">
       <svg width="34" height="26" aria-hidden="true"><use href="#ts-mark"/></svg>
-      <span>TRACE SOLUTIONS <span style="color:#1FA75A">G</span>LOBAL</span>
+      <span class="word">TRACE SOLUTIONS <span class="g">G</span>LOBAL</span>
     </a>
     <nav aria-label="Main">
       <ul class="nav-links">
