@@ -235,6 +235,177 @@
     setTimeout(() => URL.revokeObjectURL(link.href), 1000);
   }
 
+  /* ---------- Import a CSV (Harvey's exports, or any sheet with a business column) ---------- */
+  const importBtn = $("lsImport");
+  const fileEl = $("lsFile");
+
+  function parseCsv(text) {
+    text = String(text).replace(/^﻿/, "");
+    const rows = [];
+    let row = [], val = "", q = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (q) {
+        if (ch === '"') { if (text[i + 1] === '"') { val += '"'; i++; } else q = false; }
+        else val += ch;
+      } else if (ch === '"') q = true;
+      else if (ch === ",") { row.push(val); val = ""; }
+      else if (ch === "\n" || ch === "\r") {
+        if (ch === "\r" && text[i + 1] === "\n") i++;
+        row.push(val); val = "";
+        if (row.some((v) => v.trim())) rows.push(row);
+        row = [];
+      } else val += ch;
+    }
+    row.push(val);
+    if (row.some((v) => v.trim())) rows.push(row);
+    return rows;
+  }
+  // Harvey (like our own export) puts ' before cells starting = + - @ so
+  // spreadsheets don't run them as formulas; take it off again.
+  const unguard = (v) => String(v ?? "").trim().replace(/^'(?=[=+\-@])/, "");
+  const keyOf = (h) => String(h).toLowerCase().replace(/[^a-z0-9]/g, "");
+  const FIELDS = {
+    name: ["company", "companyname", "business", "businessname", "name", "organisation", "organization"],
+    first: ["firstname"], last: ["lastname"],
+    contact: ["contactperson", "contact", "contactname", "owner", "fullname"],
+    title: ["title", "jobtitle", "role"],
+    email: ["email", "emailaddress"],
+    emailStatus: ["emailstatus"],
+    phone: ["phone", "phonenumber", "telephone", "mobile", "tel"],
+    website: ["website", "url", "domain", "site"],
+    sector: ["industry", "sector", "category"],
+    area: ["area", "location", "city"],
+    address: ["address", "streetaddress"],
+    status: ["status"],
+    why: ["whyselected", "fit"],
+    whyNot: ["whynotcontacted"],
+    personal: ["personalization", "personalisation"],
+    hiring: ["hiring"],
+    score: ["score"],
+    notes: ["notes", "note"]
+  };
+  const domainOf = (w) => String(w || "").toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").split(/[/?#]/)[0];
+  const digits = (p) => String(p || "").replace(/\D/g, "");
+  const slug = (s) => String(s || "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+  // Harvey's prospect and company statuses → where the lead sits in our pipeline.
+  function sheetStatus(s) {
+    const v = String(s || "").toLowerCase().replace(/[\s-]+/g, "_");
+    if (v === "meeting" || v === "meeting_booked") return "Meeting booked";
+    if (v === "replied" || v === "interested") return "Interested";
+    if (v === "closed" || v === "won") return "Won";
+    if (v === "opted_out" || v === "lost") return "Lost";
+    return "New";
+  }
+
+  function readLeads(text) {
+    const grid = parseCsv(text);
+    if (grid.length < 2) throw new Error("The file has no rows under its header.");
+    const head = grid[0].map(keyOf);
+    const col = {};
+    Object.entries(FIELDS).forEach(([f, names]) => {
+      const i = head.findIndex((h) => names.includes(h));
+      if (i >= 0) col[f] = i;
+    });
+    if (col.name === undefined) throw new Error("No business column found. The first row needs a heading like “company” or “business”.");
+    const harvey = ["emailStatus", "whyNot", "personal", "score", "why"].some((f) => col[f] !== undefined);
+    const get = (r, f) => (col[f] === undefined ? "" : unguard(r[col[f]]));
+    const byKey = new Map();
+    let excluded = 0;
+    grid.slice(1, 3001).forEach((r) => {
+      const name = get(r, "name").slice(0, 160);
+      if (!name) return;
+      const st = get(r, "status");
+      if (/^excluded$/i.test(st)) { excluded++; return; } // on Harvey's do-not-contact list
+      const website = get(r, "website");
+      const domain = domainOf(website);
+      const key = ((harvey ? "harvey-" : "import-") + (domain || slug(name))).slice(0, 80);
+      let lead = byKey.get(key);
+      if (!lead) {
+        lead = { key, name, website: website ? website.slice(0, 500) : "", domain, phone: "", email: "", contact: "",
+          sector: get(r, "sector").slice(0, 80), area: get(r, "area").slice(0, 120), address: get(r, "address").slice(0, 240),
+          status: sheetStatus(st), notes: [], people: [] };
+        byKey.set(key, lead);
+        const why = [get(r, "why"), get(r, "personal"), get(r, "hiring") && "Hiring: " + get(r, "hiring"), get(r, "notes")].filter(Boolean);
+        if (why.length) lead.notes.push(why.join(" · "));
+        if (get(r, "whyNot")) lead.notes.push("Harvey: " + get(r, "whyNot"));
+        if (st && harvey && !/^(new|ready|not processed yet|not contacted)$/i.test(st)) lead.notes.push("Harvey status: " + st);
+      } else if (lead.status === "New") lead.status = sheetStatus(st);
+      const person = (get(r, "contact") || [get(r, "first"), get(r, "last")].filter(Boolean).join(" ")).trim();
+      const title = get(r, "title");
+      const email = get(r, "email");
+      const es = get(r, "emailStatus").toLowerCase();
+      const okEmail = email && /@/.test(email) && es !== "invalid";
+      if (!lead.phone && get(r, "phone")) lead.phone = get(r, "phone").slice(0, 40);
+      if (!lead.email && okEmail && (!es || es === "verified" || es === "risky")) lead.email = email.slice(0, 160);
+      if (!lead.contact && person) lead.contact = (person + (title ? " (" + title + ")" : "")).slice(0, 120);
+      if (person || okEmail) lead.people.push([person, title, okEmail ? email + (es && es !== "verified" ? " [" + es + "]" : "") : ""].filter(Boolean).join(", "));
+    });
+    return { leads: [...byKey.values()], harvey, excluded };
+  }
+
+  function alreadyIn(lead) {
+    const n = lead.name.toLowerCase(), d = lead.domain, p = digits(lead.phone);
+    return state.rows.some((r) =>
+      r.dedupe_key === lead.key ||
+      String(r.name || "").toLowerCase() === n ||
+      (d && domainOf(r.website) === d) ||
+      (p.length >= 7 && digits(r.phone).slice(-9) === p.slice(-9)));
+  }
+
+  async function importFile(file) {
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { setSave("That file is over 5 MB. Export fewer rows.", true); return; }
+    let parsed;
+    try { parsed = readLeads(await file.text()); }
+    catch (e) { setSave("Couldn't read the file. " + e.message, true); return; }
+    await load(true);
+    const fresh = parsed.leads.filter((l) => !alreadyIn(l));
+    const dupes = parsed.leads.length - fresh.length;
+    if (!fresh.length) { setSave(`Nothing new: all ${parsed.leads.length} businesses are already in the sheet.`); return; }
+    const withPhone = fresh.filter((l) => l.phone).length;
+    const msg = `${file.name}\n\nAdd ${fresh.length} new lead${fresh.length === 1 ? "" : "s"} to the sheet as New?` +
+      `\n• ${withPhone} with a phone number, ${fresh.filter((l) => l.email).length} with an email` +
+      (dupes ? `\n• ${dupes} skipped: already in the sheet` : "") +
+      (parsed.excluded ? `\n• ${parsed.excluded} skipped: on Harvey's do-not-contact list` : "");
+    if (!confirm(msg)) return;
+    const source = parsed.harvey ? "harvey" : "import";
+    const label = parsed.harvey ? "Imported from Harvey" : "Imported from " + file.name;
+    const body = fresh.map((l) => {
+      const notes = [label + " on " + today() + "."].concat(l.notes, l.people.length > 1 ? ["Contacts: " + l.people.join("; ")] : []).join("\n");
+      return {
+        dedupe_key: l.key, name: l.name, source, status: l.status, found_by: me(),
+        phone: l.phone || null, email: l.email || null, contact_person: l.contact || null,
+        website: l.website || null, sector: l.sector, area: l.area, address: l.address,
+        notes: notes.slice(0, 4000)
+      };
+    });
+    importBtn.disabled = true;
+    let added = 0;
+    try {
+      for (let i = 0; i < body.length; i += 200) {
+        setSave(`Importing ${Math.min(i + 200, body.length)} of ${body.length}…`);
+        const out = await TSDB.rest("saved_leads?on_conflict=dedupe_key,found_by&select=" + SELECT, {
+          method: "POST", prefer: "return=representation,resolution=ignore-duplicates", body: body.slice(i, i + 200)
+        });
+        added += (out || []).length;
+      }
+      setSave(`Imported ${added} lead${added === 1 ? "" : "s"}` + (withPhone ? `, ${withPhone} ready to call.` : "."));
+      qEl.value = ""; statusEl.value = ""; openEl.checked = false; mineEl.checked = false;
+    } catch (e) {
+      setSave((added ? `Imported ${added}, then stopped. ` : "Couldn't import. ") + e.message, true);
+    } finally {
+      importBtn.disabled = false;
+      await load(true);
+    }
+  }
+
+  if (importBtn && fileEl) {
+    importBtn.addEventListener("click", () => { fileEl.value = ""; fileEl.click(); });
+    fileEl.addEventListener("change", () => importFile(fileEl.files && fileEl.files[0]));
+  }
+
   rowsEl.addEventListener("change", (e) => { if (e.target.matches("[data-k]")) save(e.target); });
   rowsEl.addEventListener("keydown", (e) => {
     const t = e.target;

@@ -266,6 +266,7 @@ footer{color:var(--ink-3);font-size:.8rem;padding-block:1.4rem 2rem}
 .ls-chip i{width:8px;height:8px;border-radius:50%;background:var(--c)}
 .ls-chip b{font-variant-numeric:tabular-nums;color:var(--ink-3)}
 .ls-chip[aria-pressed="true"]{border-color:var(--c);box-shadow:inset 0 0 0 1px var(--c)}
+.ls-help{margin:.8rem 0 0;font-size:.9rem;color:var(--ink-2)}.ls-help summary{cursor:pointer;font-weight:600;color:var(--ink)}.ls-help p{margin:.5rem 0}.ls-help pre{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.6rem .7rem;overflow-x:auto;max-width:100%;font-size:.78rem;white-space:pre-wrap;word-break:break-all}
 .ls-bar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
 .ls-bar select,.ls-search input{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:.55rem .7rem;font:inherit;color:var(--ink)}
 .ls-search{flex:1 1 220px;display:flex}.ls-search input{width:100%}
@@ -529,9 +530,17 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
     <label class="lf-check"><input type="checkbox" id="lsOpen"> Still open</label>
     <label class="lf-check"><input type="checkbox" id="lsMine"> Mine only</label>
     <span class="ls-save" id="lsSave" role="status" aria-live="polite"></span>
+    <button type="button" class="btn btn-ghost" id="lsImport">Import CSV</button>
+    <input type="file" id="lsFile" accept=".csv,text/csv" hidden>
     <button type="button" class="btn btn-ghost" id="lsExport">Export CSV</button>
     <button type="button" class="btn btn-primary" id="lsAdd">+ Add lead</button>
   </div>
+  <details class="ls-help">
+    <summary>Importing leads from Harvey</summary>
+    <p>On the computer running Harvey, open Terminal in the <code>harvey</code> folder and run this. It saves every business Harvey found, with phone numbers and contacts, to your Desktop:</p>
+    <pre><code>sqlite3 -header -csv data/harvey.db "select c.name as company, c.website, c.industry, c.location, c.phone, p.first_name, p.last_name, p.title, p.email, p.email_status, p.status, p.personalization_notes as personalization from companies c left join prospects p on p.company_id = c.id" &gt; ~/Desktop/harvey-leads.csv</code></pre>
+    <p>Then press <b>Import CSV</b> and choose <code>harvey-leads.csv</code>. The files from <code>harvey companies</code> and <code>harvey export --all</code> work too, but have no phone numbers. Businesses already in the sheet are skipped, so importing the same file again is safe. Any spreadsheet saved as CSV works as long as it has a business or company column.</p>
+  </details>
   <p class="lf-note" id="lsNote"></p>
   <div class="list-wrap ls-wrap" id="lsWrap" hidden>
     <table class="ls-table">
