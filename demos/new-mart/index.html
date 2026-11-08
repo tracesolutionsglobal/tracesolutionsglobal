@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>New Mart — Everything new, every day</title>
+<meta name="description" content="New Mart supermarket: fresh produce, everyday essentials and weekly deals, with delivery in the time slot you choose. A website concept by Trace Solutions.">
+<link rel="canonical" href="https://tracesolutionsglobal.com/demos/new-mart/">
+<meta name="theme-color" content="#0F8A4B">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230F8A4B'/%3E%3Cpath d='M18 44V20l14 16V20m0 24 14-24v24' fill='none' stroke='%23fff' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="nm.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="ribbon">Website concept for <b>New Mart</b> · designed by Trace Solutions · sample prices</div>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="store-pick" role="group" aria-label="Choose your store">
+      <span>Prices &amp; delivery for</span>
+      <button type="button" class="sp on" data-store="Colombo 05">Colombo 05</button>
+      <button type="button" class="sp" data-store="Kandy">Kandy</button>
+      <button type="button" class="sp" data-store="Galle">Galle</button>
+    </div>
+    <p class="next-slot" id="nextSlot">Next delivery slot: today</p>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="New Mart, home">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M18 44V20l14 16V20m0 24 14-24v24" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="word">New<b>Mart</b></span>
+    </a>
+    <form class="search" id="search" role="search">
+      <label class="sr-only" for="q">Search groceries</label>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="q" type="search" placeholder="Search rice, eggs, prawns…" autocomplete="off">
+    </form>
+    <nav class="links" aria-label="Main">
+      <a href="#deals">Deals</a><a href="#aisles">Aisles</a><a href="#smart">Smart Basket</a><a href="#rewards">Rewards</a><a href="#stores">Stores</a>
+    </nav>
+    <button class="cart-btn" id="cartBtn" type="button" aria-label="Open your basket">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1.4" fill="currentColor"/><circle cx="18" cy="20" r="1.4" fill="currentColor"/></svg>
+      <span class="cart-n" id="cartN">0</span>
+      <span class="cart-t" id="cartT">Rs 0</span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg" aria-hidden="true"><picture><source type="image/webp" srcset="img/hero-900.webp 900w, img/hero.webp 1536w" sizes="100vw"><img src="img/hero.webp" alt="" width="1536" height="864" fetchpriority="high"></picture></div>
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      <p class="kicker">Your neighbourhood supermarket</p>
+      <h1 class="split">Everything <em>new,</em> every day.</h1>
+      <p class="lede">Fresh fruit and vegetables, meat and seafood, pantry staples and household essentials, delivered in the time slot you choose.</p>
+      <div class="ctas">
+        <a class="btn btn-green magnet" href="#aisles">Start shopping</a>
+        <a class="btn btn-ghost magnet" href="#deals">This week's deals</a>
+      </div>
+      <ul class="perks">
+        <li><b>Fresh daily</b>Produce on the shelves every morning</li>
+        <li><b>Your slot</b>Delivery when it suits you</li>
+        <li><b>Rewards</b>Points on every shop</li>
+      </ul>
+    </div>
+    <div class="hero-basket" aria-hidden="true">
+      <div class="hb-ring"></div>
+      <img src="img/basket.webp" alt="" width="720" height="720">
+      <span class="chip c1">−11% Red rice</span>
+      <span class="chip c2">Fresh prawns today</span>
+      <span class="chip c3">+38 points</span>
+    </div>
+  </div>
+</section>
+
+<!-- OFFER MARQUEE -->
+<div class="marquee" aria-hidden="true"><div class="mq"><span>Weekly deals up to 15% off</span><span>✦</span><span>Same-day delivery slots</span><span>✦</span><span>1 point for every Rs 100</span><span>✦</span><span>Fresh produce every morning</span><span>✦</span><span>Weekly deals up to 15% off</span><span>✦</span><span>Same-day delivery slots</span><span>✦</span><span>1 point for every Rs 100</span><span>✦</span><span>Fresh produce every morning</span><span>✦</span></div></div>
+
+<!-- DEALS -->
+<section class="deals" id="deals">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="kicker">This week only</p><h2 class="split">Fresh <em>deals</em></h2></div>
+      <div class="countdown" aria-live="off"><span>Deals end in</span><b id="cd">—</b></div>
+    </div>
+    <div class="deal-track" id="dealTrack" tabindex="0" aria-label="This week's deals"></div>
+  </div>
+</section>
+
+<!-- AISLES -->
+<section class="aisles" id="aisles">
+  <div class="wrap">
+    <div class="sec-head"><div><p class="kicker">Shop by aisle</p><h2 class="split">Walk the <em>aisles</em></h2></div>
+      <p class="muted">Tap an aisle, or search above.</p></div>
+    <div class="cat-grid" id="catGrid"></div>
+    <div class="cat-bar">
+      <p class="count" id="count" aria-live="polite"></p>
+      <button class="link-btn" type="button" id="clearFilter" hidden>Show everything</button>
+    </div>
+    <div class="p-grid" id="pGrid"></div>
+  </div>
+</section>
+
+<!-- SMART BASKET -->
+<section class="smart" id="smart">
+  <div class="wrap smart-grid">
+    <div class="smart-copy">
+      <p class="kicker">Smart Basket</p>
+      <h2 class="split">Pick a recipe, <em>get the basket.</em></h2>
+      <p class="lede">Choose what you're cooking and how many people you're feeding. We'll fill the basket with everything you need from the shelves.</p>
+      <div class="recipes" role="tablist" aria-label="Recipes" id="recipes"></div>
+      <div class="serves"><span>Cooking for</span>
+        <button type="button" id="servesDown" aria-label="Fewer people">−</button><b id="serves">4</b><button type="button" id="servesUp" aria-label="More people">+</button><span>people</span></div>
+    </div>
+    <div class="smart-card" id="smartCard">
+      <div class="sc-img"><img src="img/smart-basket.webp" alt="Ingredients for a Sri Lankan chicken curry on a wooden table" width="1200" height="675" loading="lazy"></div>
+      <ul class="sc-list" id="scList"></ul>
+      <div class="sc-foot"><div><small>Basket total</small><b id="scTotal">Rs 0</b></div><button class="btn btn-green magnet" type="button" id="scAdd">Add all to basket</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERY + REWARDS -->
+<section class="dr" id="rewards">
+  <div class="wrap dr-grid">
+    <div class="slots-card">
+      <p class="kicker">Delivery slots</p>
+      <h2 class="split">When should we <em>come?</em></h2>
+      <div class="days" id="days" role="tablist" aria-label="Delivery day"></div>
+      <div class="slots" id="slots"></div>
+      <p class="muted small" id="slotNote">Delivery Rs 300 · free on baskets over Rs 5,000</p>
+    </div>
+    <div class="rewards-card">
+      <p class="kicker">New Mart Rewards</p>
+      <h2 class="split">Points on <em>every</em> shop.</h2>
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="r-bg"/><circle cx="60" cy="60" r="52" class="r-fg" id="rFg" pathLength="100"/></svg>
+        <div class="ring-txt"><b id="pts">0</b><small>points in this basket</small></div>
+      </div>
+      <p class="rw-line" id="rwLine">Add Rs 50,000 of shopping to unlock a Rs 500 voucher.</p>
+      <p class="muted small">1 point for every Rs 100 · 500 points = Rs 500 off your next shop (sample terms)</p>
+    </div>
+  </div>
+</section>
+
+<!-- STORES -->
+<section class="stores" id="stores">
+  <div class="wrap">
+    <div class="sec-head"><div><p class="kicker">Come and see us</p><h2 class="split">Our <em>stores</em></h2></div>
+      <p class="muted">Same prices in store as online. Open every day.</p></div>
+    <div class="store-grid" id="storeGrid"></div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="f-top">
+      <div><a class="logo light" href="#top"><span class="mark" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M18 44V20l14 16V20m0 24 14-24v24" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="word">New<b>Mart</b></span></a>
+        <p>Fresh produce, everyday essentials and weekly deals, delivered when it suits you.</p></div>
+      <div><h3>Shop</h3><a href="#deals">Deals</a><a href="#aisles">Aisles</a><a href="#smart">Smart Basket</a></div>
+      <div><h3>Help</h3><a href="#stores">Stores &amp; hours</a><a href="#rewards">Rewards</a><a href="#rewards">Delivery slots</a></div>
+    </div>
+    <p class="credit">© 2026 New Mart (website concept). Store names, addresses, prices and offers are sample content; product and store photos are AI-generated. Website designed &amp; built by <b>Trace Solutions</b>.</p>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="drawer" id="drawer" hidden data-lenis-prevent>
+  <div class="dr-scrim" data-close></div>
+  <aside class="dr-panel" role="dialog" aria-modal="true" aria-labelledby="drawerH">
+    <div class="dr-head"><h2 id="drawerH">Your basket</h2><button type="button" class="x" data-close aria-label="Close basket">×</button></div>
+    <ul class="dr-items" id="drItems"></ul>
+    <div class="dr-sum">
+      <div><span>Subtotal</span><b id="dSub">Rs 0</b></div>
+      <div><span>Delivery</span><b id="dDel">Rs 300</b></div>
+      <div><span>Slot</span><b id="dSlot">Not chosen</b></div>
+      <div><span>Points you'll earn</span><b id="dPts">0</b></div>
+      <div class="tot"><span>Total</span><b id="dTot">Rs 0</b></div>
+      <button class="btn btn-green" type="button" id="checkout">Checkout</button>
+      <p class="muted small">This is a website concept: checkout would connect to card payments or cash on delivery.</p>
+    </div>
+  </aside>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="vendor/lenis.min.js" defer></script>
+<script src="vendor/gsap.min.js" defer></script>
+<script src="vendor/ScrollTrigger.min.js" defer></script>
+<script src="nm.js" defer></script>
+</body>
+</html>
