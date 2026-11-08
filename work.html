@@ -1420,6 +1420,24 @@ TS.portfolio = [
     }
   },
   {
+    id: "catseye-gym", tint: "#F6E1DF", status: "live", url: "https://catseye-gym.vercel.app/",
+    shots: { hero: "assets/work/catseye-gym-hero.jpg", full: "assets/work/catseye-gym-full.jpg", mobile: "assets/work/catseye-gym-mobile.jpg" },
+    type: "Gym & Nutrition (3 branches)", category: "Health & fitness", build: "other",
+    title: "Catseye Gym & Nutrition",
+    summary: "A seven-page site for a gym with branches in Negombo, Ja-Ela and Kochchikade: a cinematic video hero, branch-by-branch prices with an after-A/L student offer, the Abs Killers coaching teams, real member results and a live open-now status.",
+    signature: "A price board that switches between branches and the student offer, then books the chosen plan on WhatsApp in one tap.",
+    features: ["Branch price switcher", "Live open-now status", "Abs Killers team picker", "WhatsApp plan booking"],
+    style: "bold",
+    preview: {
+      name: "CATSEYE", domain: "catseye-gym.vercel.app", kicker: "Negombo · Ja-Ela · Kochchikade",
+      headline: "Stronger. Leaner. Better.", sub: "Air-conditioned training floors, coaching and meal plans.",
+      cta: "Call to join", links: ["Training", "Prices", "Locations"],
+      cards: [["card", "Branch prices"], ["timer", "Open now"], ["chat", "WhatsApp us"]],
+      proof: "4.5★ on Google", art: "bolt",
+      colors: { primary: "#E5141B", accent: "#FF5A61", soft: "#F4F1EC", dark: "#0B0B0C" }
+    }
+  },
+  {
     id: "mandi-house", tint: "#F6E6D6", status: "live", url: "demos/mandi-house/",
     shots: { hero: "assets/work/mandi-house-hero.jpg", full: "assets/work/mandi-house-full.jpg", mobile: "assets/work/mandi-house-mobile.jpg" },
     type: "Middle Eastern Restaurant", category: "Food & drink", build: "restaurant",
@@ -1452,6 +1470,24 @@ TS.portfolio = [
       cards: [["cup", "Shop the collection"], ["cart", "Checkout flow"], ["mail", "Weekly bean drops"]],
       proof: "Scroll-driven 3D product storytelling", art: "cup",
       colors: { primary: "#B25F2C", accent: "#D9A441", soft: "#F4E9D6", dark: "#241709" }
+    }
+  },
+  {
+    id: "cocoon-arch", tint: "#EFE8DD", status: "live", url: "https://cocoon-arch.vercel.app/",
+    shots: { hero: "assets/work/cocoon-arch-hero.jpg", full: "assets/work/cocoon-arch-full.jpg", mobile: "assets/work/cocoon-arch-mobile.jpg" },
+    type: "Architecture & Interiors Studio", category: "Architecture & design", build: "other",
+    title: "Cocoon Arch",
+    summary: "A calm, editorial portfolio for an architecture and interiors studio: a filterable projects page, a page per project with gallery and zone-by-zone story, construction progress and a start-a-project form.",
+    signature: "Project pages with a drag slider from elevation drawing to render, and a stage-by-stage construction timeline.",
+    features: ["Filterable portfolio", "Drawing-to-render slider", "Construction timeline", "WhatsApp project enquiry"],
+    style: "elegant",
+    preview: {
+      name: "Cocoon Arch", domain: "cocoon-arch.vercel.app", kicker: "Architecture · Interiors",
+      headline: "Spaces that hold you.", sub: "Homes, workplaces and retreats that feel calm and warm.",
+      cta: "Start a project", links: ["Projects", "Process", "Studio"],
+      cards: [["pin", "Projects"], ["calendar", "Now building"], ["chat", "Start a project"]],
+      proof: "Drawings, renders and real work", art: "sparkle",
+      colors: { primary: "#B5603A", accent: "#6F7A63", soft: "#F3EEE5", dark: "#2A2622" }
     }
   },
   {
@@ -1673,7 +1709,9 @@ TS.portfolio = [
     const src = p.landscape ? p.shots.hero : (opts.size === "mobile" ? p.shots.mobile : opts.size === "full" ? p.shots.full : p.shots.hero);
     const img = `<img class="w-shot" src="${src}" alt="${esc(p.title)} home page, as it looks live" loading="lazy" decoding="async">`;
     body.innerHTML = (p.landscape || opts.size) ? img : `<picture><source media="(max-width: 640px)" srcset="${p.shots.mobile}">${img}</picture>`;
-    if (urlEl) urlEl.innerHTML = `<span class="lock">https://</span>tracesolutionsglobal.com/${esc(String(p.url).replace(/^\//, ""))}`;
+    if (urlEl) urlEl.innerHTML = /^https?:\/\//.test(p.url)
+      ? `<span class="lock">https://</span>${esc(String(p.url).replace(/^https?:\/\//, "").replace(/\/$/, ""))}`
+      : `<span class="lock">https://</span>tracesolutionsglobal.com/${esc(String(p.url).replace(/^\//, ""))}`;
   }
 
   /* Featured project */
