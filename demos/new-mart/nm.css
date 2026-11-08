@@ -256,3 +256,16 @@ html.lenis, html.lenis body { height: auto; }
   .p-grid .add { justify-content: center; }
   .price b { font-size: 17px; }
 }
+/* phones: keep the whole header inside the screen and the photo up top */
+@media (max-width: 600px) {
+  .ribbon { font-size: 11px; padding: 5px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .topbar .wrap { padding-block: 5px; }
+  .store-pick span { display: none; }
+  .sp { padding: 2px 10px; font-size: 12px; }
+  .nav .wrap { flex-wrap: wrap; row-gap: 8px; padding-block: 8px; }
+  .search { order: 3; flex: 1 1 100%; max-width: none; min-height: 42px; }
+  .cart-btn { margin-left: auto; min-height: 42px; }
+  .hero-in { padding-block: 22px 44px; gap: 18px; }
+  .hero-basket { width: min(270px, 72%); }
+  .hero::after { background: linear-gradient(180deg, rgba(251,253,251,.25) 0%, rgba(251,253,251,.55) 30%, rgba(251,253,251,.96) 52%); }
+}
