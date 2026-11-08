@@ -1044,7 +1044,11 @@ TS.site = {
   website: "tracesolutionsglobal.com",
   /* Total websites you have completed, including ones not shown on this page.
      Shown as "Projects delivered". Set to 0 to count only the projects listed here. */
-  projectsDelivered: 25,
+  projectsDelivered: 35,
+  /* Industries and visual styles you have worked across in total (the page shows the
+     larger of these and what the projects listed here add up to). */
+  industriesServed: 10,
+  visualStyles: 6,
 
   /* Offices and direct numbers shown in "Talk to a real person".
      Each number gets Call, WhatsApp and Text buttons. */
@@ -1495,13 +1499,13 @@ TS.portfolio = [
     shots: { hero: "assets/work/cocoon-arch-hero.jpg", full: "assets/work/cocoon-arch-full.jpg", mobile: "assets/work/cocoon-arch-mobile.jpg" },
     type: "Architecture & Interiors Studio", category: "Architecture & design", build: "other",
     title: "Cocoon Arch",
-    summary: "A calm, editorial portfolio for an architecture and interiors studio: a filterable projects page, a page per project with gallery and zone-by-zone story, construction progress and a start-a-project form.",
-    signature: "Project pages with a drag slider from elevation drawing to render, and a stage-by-stage construction timeline.",
-    features: ["Filterable portfolio", "Drawing-to-render slider", "Construction timeline", "WhatsApp project enquiry"],
+    summary: "An immersive 3D site for an architecture and interiors studio: a scroll-driven story that turns a blueprint into a finished home, a real project told from plan to 3D model to render, a 3D project carousel and a start-a-project form.",
+    signature: "Scroll the home page and a blueprint becomes a house: the drawing's lines glow over the empty site, then each construction stage rises into the next.",
+    features: ["Scroll-driven build story", "3D project carousel", "3D tilt and page transitions", "WhatsApp project enquiry"],
     style: "elegant",
     preview: {
       name: "Cocoon Arch", domain: "cocoon-arch.vercel.app", kicker: "Architecture · Interiors",
-      headline: "Spaces that hold you.", sub: "Homes, workplaces and retreats that feel calm and warm.",
+      headline: "Built from the blueprint up.", sub: "Architecture and interiors that feel calm, warm and made for you.",
       cta: "Start a project", links: ["Projects", "Process", "Studio"],
       cards: [["pin", "Projects"], ["calendar", "Now building"], ["chat", "Start a project"]],
       proof: "Drawings, renders and real work", art: "sparkle",
@@ -1715,7 +1719,9 @@ TS.portfolio = [
     const cats = [...new Set(P.map(p => p.category))];
     const styles = new Set(P.map(p => p.style));
     const delivered = Math.max(+TS.site.projectsDelivered || 0, P.length);
-    $("#wStats").innerHTML = [[delivered, delivered > P.length ? "Projects delivered" : "Projects"], [cats.length, "Industries"], [styles.size, "Visual styles"]]
+    const industries = Math.max(+TS.site.industriesServed || 0, cats.length);
+    const looks = Math.max(+TS.site.visualStyles || 0, styles.size);
+    $("#wStats").innerHTML = [[delivered, delivered > P.length ? "Projects delivered" : "Projects"], [industries, "Industries"], [looks, "Visual styles"]]
       .map(([n, l]) => `<div><dt>${l}</dt><dd>${String(n).padStart(2, "0")}</dd></div>`).join("");
     $("#wFilters").innerHTML = [["all", "All work", P.length], ...cats.map(c => [c, c, P.filter(p => p.category === c).length])]
       .map(([v, l, n]) => `<button type="button" class="chip" data-filter="${esc(v)}" aria-pressed="${v === "all"}">${esc(l)} <small>${n}</small></button>`).join("");
