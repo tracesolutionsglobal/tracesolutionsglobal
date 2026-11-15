@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Grove · Team Workspace</title>
+<meta name="description" content="Grove: a concept team-workspace dashboard with glass cards, smooth transitions and live-feeling stats.">
+<meta name="theme-color" content="#0f2a24">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f2a24; --ink2:#173b33; --ink-soft:#2c4d45;
+  --mint:#3fc69a; --mint2:#8fe3c4; --mint-bg:#e6f6ef;
+  --orange:#ff7a3d; --text:#14231f; --muted:#6c7c77; --line:rgba(15,42,36,.08);
+  --glass:rgba(255,255,255,.62); --glass-b:rgba(255,255,255,.85);
+  --sh:0 1px 2px rgba(15,42,36,.04),0 10px 30px -12px rgba(15,42,36,.18);
+  --sh-h:0 2px 4px rgba(15,42,36,.05),0 22px 40px -14px rgba(15,42,36,.28);
+  --r:22px; --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{font:14px/1.45 "Inter Tight",system-ui,sans-serif;color:var(--text);background:#eef4f1;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.7;animation:drift 22s ease-in-out infinite alternate}
+.bg i:nth-child(1){width:520px;height:520px;left:-120px;top:-140px;background:#bfeedd}
+.bg i:nth-child(2){width:460px;height:460px;right:-100px;top:20%;background:#ffe3d3;animation-delay:-6s}
+.bg i:nth-child(3){width:560px;height:560px;left:30%;bottom:-260px;background:#cfe9ff;opacity:.55;animation-delay:-12s}
+@keyframes drift{to{transform:translate(60px,40px) scale(1.08)}}
+
+.splash{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(60% 60% at 50% 50%,#1d4a3f,#0b1f1a 70%);transition:opacity .7s var(--ease),visibility .7s}
+.splash.done{opacity:0;visibility:hidden}
+.splash div{text-align:center;color:#cfe;animation:pop .9s var(--ease) both}
+.splash b{display:block;font-size:44px;font-weight:700;letter-spacing:-4px;font-style:italic;color:#fff}
+.splash span{font-family:"Instrument Serif";font-style:italic;font-size:17px;opacity:.75}
+@keyframes pop{from{opacity:0;transform:scale(.85);filter:blur(6px)}}
+
+.app{position:relative;z-index:2;display:flex;gap:18px;max-width:1480px;margin:0 auto;padding:22px;min-height:100vh}
+.side{position:sticky;top:22px;height:calc(100vh - 44px);width:68px;flex:none;background:linear-gradient(180deg,var(--ink2),var(--ink));border-radius:34px;display:flex;flex-direction:column;align-items:center;padding:18px 0;gap:6px;box-shadow:0 20px 40px -18px rgba(15,42,36,.6)}
+.logo{font-weight:700;font-style:italic;font-size:22px;letter-spacing:-3px;color:#fff;margin-bottom:14px}
+.nav{display:flex;flex-direction:column;gap:6px;align-items:center;flex:1}
+.nb{position:relative;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#9fbab2;transition:color .3s,background .3s,transform .3s var(--ease)}
+.nb:hover{color:#fff;background:rgba(255,255,255,.08);transform:scale(1.06)}
+.nb.on{color:var(--ink);background:var(--mint2);box-shadow:0 0 0 4px rgba(143,227,196,.18),0 0 24px rgba(63,198,154,.5)}
+.nb.on::after{content:"";position:absolute;right:-14px;width:5px;height:18px;border-radius:3px;background:var(--ink)}
+.nb .tip{position:absolute;left:58px;white-space:nowrap;background:var(--ink);color:#fff;font-size:12px;padding:5px 10px;border-radius:8px;opacity:0;pointer-events:none;transform:translateX(-6px);transition:.25s var(--ease)}
+.nb:hover .tip{opacity:1;transform:none}
+.nav .gap{flex:1}
+
+.main{flex:1;min-width:0;background:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.7);border-radius:32px;padding:20px;backdrop-filter:blur(24px) saturate(1.3);-webkit-backdrop-filter:blur(24px) saturate(1.3);box-shadow:var(--sh)}
+.view{animation:viewIn .6s var(--ease) both}
+.view.leaving{animation:viewOut .25s ease both}
+@keyframes viewIn{from{opacity:0;transform:translateY(14px);filter:blur(6px)}}
+@keyframes viewOut{to{opacity:0;transform:translateY(-8px);filter:blur(4px)}}
+
+.card{position:relative;background:var(--glass);border:1px solid var(--glass-b);border-radius:var(--r);padding:16px;box-shadow:var(--sh);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:transform .45s var(--ease),box-shadow .45s var(--ease);animation:rise .7s var(--ease) both;animation-delay:calc(var(--d,0) * 70ms + 80ms)}
+.card:hover{transform:translateY(-5px);box-shadow:var(--sh-h)}
+.card.dark{background:linear-gradient(135deg,#1b4339,var(--ink) 70%);border-color:rgba(255,255,255,.06);color:#fff}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+.ch{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.ch h3{font-size:14px;font-weight:600}
+.pill{font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;background:var(--mint-bg);color:#16805d}
+.ib{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:var(--muted);border:1px solid var(--line);background:rgba(255,255,255,.6);transition:.3s var(--ease)}
+.ib:hover{color:var(--ink);background:#fff;transform:rotate(-12deg) scale(1.08)}
+.muted{color:var(--muted);font-size:12px}
+.big{font-size:36px;font-weight:600;letter-spacing:-1.5px;line-height:1}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:99px;font-weight:600;font-size:13px;transition:transform .3s var(--ease),box-shadow .3s,background .3s}
+.btn:hover{transform:translateY(-2px)}
+.btn.or{background:var(--orange);color:#fff;box-shadow:0 8px 20px -8px rgba(255,122,61,.8)}
+.btn.mint{background:var(--mint2);color:var(--ink)}
+.btn.mint:hover{box-shadow:0 0 24px rgba(63,198,154,.55)}
+.btn.ghost{border:1px solid var(--line);background:rgba(255,255,255,.7)}
+
+.av{--c:#cfe;width:var(--s,42px);height:var(--s,42px);border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:calc(var(--s,42px) * .36);color:var(--ink);background:var(--c);border:2px solid #fff;flex:none}
+.stack{display:flex}.stack .av{margin-left:-10px;--s:34px}.stack .av:first-child{margin-left:0}
+
+.home{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px}
+.colL{display:grid;gap:16px;align-content:start}
+.row3{display:grid;grid-template-columns:1.25fr 1fr .62fr;gap:16px}
+.row2{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
+.colR{display:grid;gap:16px;align-content:start}
+.hero{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:22px;overflow:hidden}
+.hero h1{font-size:28px;font-weight:600;letter-spacing:-.8px;line-height:1.1}
+.hero h1 em{font-family:"Instrument Serif";font-weight:400;font-size:1.12em;color:var(--mint2)}
+.hero p{color:#a8c4bc;font-size:12.5px;max-width:380px;margin:8px 0 14px}
+.hero .meta{display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-size:11.5px;color:#a8c4bc}
+.hero::after{content:"";position:absolute;right:-60px;bottom:-90px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(63,198,154,.4),transparent 65%)}
+.mem{display:flex;justify-content:space-between;gap:6px;text-align:center}
+.mem div{display:grid;justify-items:center;gap:6px;font-size:11.5px;font-weight:500;flex:1}
+.mem small{display:block;color:var(--muted);font-weight:400;font-size:10.5px}
+.prog{display:flex;gap:4px;margin:14px 0 8px}
+.prog i{height:8px;border-radius:5px;background:var(--mint);transform-origin:left;animation:grow 1.1s var(--ease) both .5s}
+.prog i:nth-child(2){background:var(--orange)}.prog i:nth-child(3){background:#dce5e2}
+@keyframes grow{from{transform:scaleX(0)}}
+.legend{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+.legend b{color:var(--text);font-weight:600}
+.vbar{height:120px;width:40px;margin:6px auto 0;border-radius:22px;background:#e3ece9;position:relative;overflow:hidden}
+.vbar i{position:absolute;inset:auto 0 0;height:72%;border-radius:22px;background:linear-gradient(var(--mint2),var(--mint) 60%,#1e9d74);animation:up 1.2s var(--ease) both .6s}
+.vbar span{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:600;background:var(--ink);color:#fff;padding:2px 6px;border-radius:6px}
+@keyframes up{from{height:0}}
+.seg{display:flex;background:#eaf0ee;border-radius:99px;padding:3px;font-size:11px}
+.seg button{padding:4px 10px;border-radius:99px;color:var(--muted);transition:.3s var(--ease)}
+.seg button.on{background:var(--ink);color:#fff}
+.ticks{display:flex;gap:2.5px;height:16px;margin:12px 0 14px}
+.ticks i{flex:1;border-radius:2px;background:#dfe7e4;transition:background .3s}
+.ticks i.f{background:var(--mint)}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center;transition:.35s var(--ease)}
+.tile:hover{background:#fff;transform:scale(1.03)}
+.tile svg.i{width:26px;height:26px;color:var(--ink-soft);margin-bottom:6px}
+.tile b{display:block;font-size:20px;font-weight:600}
+.focus{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:18px}
+.focus .dot{width:9px;height:9px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 0 rgba(63,198,154,.6);animation:ping 1.8s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 10px rgba(63,198,154,0)}100%{box-shadow:0 0 0 0 rgba(63,198,154,0)}}
+.focus .t{flex:1;font-size:12.5px}.focus .t small{display:block;color:#9fbab2;font-size:11px}
+.timer{font-variant-numeric:tabular-nums;font-weight:600;font-size:13px;color:var(--mint2)}
+.pro{display:grid;grid-template-columns:auto 1fr;gap:14px;margin-top:16px;align-items:start}
+.pro .badge{width:58px;border-radius:14px;background:var(--mint-bg);padding:10px 8px;text-align:center;font-weight:600;font-size:12px}
+.pro .badge i{display:grid;place-items:center;width:28px;height:28px;margin:0 auto 6px;border-radius:9px;background:var(--ink);color:#fff;font-style:normal}
+.pro h4{font-size:17px;font-weight:600;line-height:1.15;letter-spacing:-.3px}
+.pro ul{list-style:none;margin:8px 0 12px;font-size:11.5px;color:var(--muted);display:grid;gap:3px}
+.pro li::before{content:"✓ ";color:var(--mint)}
+
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal button{padding:7px 0;border-radius:14px;font-size:11px;color:var(--muted);transition:.3s var(--ease)}
+.cal button b{display:block;font-size:14px;color:var(--text);font-weight:600}
+.cal button:hover{background:rgba(255,255,255,.8)}
+.cal button.on{background:var(--ink);color:#9fbab2}.cal button.on b{color:#fff}
+.cal button.dot b::after{content:"";display:block;width:4px;height:4px;border-radius:50%;background:var(--orange);margin:3px auto 0}
+.vids{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.vid{border-radius:16px;overflow:hidden;background:rgba(255,255,255,.75);border:1px solid var(--line);transition:.4s var(--ease)}
+.vid:hover{transform:translateY(-4px);box-shadow:var(--sh-h)}
+.thumb{position:relative;aspect-ratio:1.15;display:grid;place-items:center;background:linear-gradient(160deg,#f3f7f6,#e3ece9)}
+.blob{width:58%;aspect-ratio:1;border-radius:46% 54% 42% 58%/55% 40% 60% 45%;background:radial-gradient(circle at 35% 30%,#7fd8b8,#1f7d63 60%,#0f3b31);box-shadow:inset -6px -8px 14px rgba(0,0,0,.25);transition:transform .8s var(--ease)}
+.vid:hover .blob,.sc:hover .blob{transform:rotate(25deg) scale(1.08)}
+.blob.b2{background:radial-gradient(circle at 35% 30%,#8ec6ff,#2f6fb8 60%,#183a66)}
+.blob.b3{background:radial-gradient(circle at 35% 30%,#ffc2a3,#d0643a 60%,#6b2a12)}
+.thumb .dur{position:absolute;right:6px;bottom:6px;font-size:9.5px;background:var(--ink);color:#fff;padding:1px 6px;border-radius:6px}
+.vid p{font-size:10.5px;font-weight:500;padding:7px 8px 8px;line-height:1.3}
+.tabs{display:flex;gap:14px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);margin-bottom:8px}
+.tabs button{padding:0 0 8px;position:relative;color:inherit;transition:color .3s}
+.tabs button.on{color:var(--text);font-weight:600}
+.tabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--mint);border-radius:2px}
+.notes{display:grid;gap:4px}
+.note{display:flex;gap:10px;align-items:center;padding:8px;border-radius:14px;font-size:12px;transition:.3s var(--ease)}
+.note:hover{background:rgba(255,255,255,.85)}
+.note .av{--s:32px}
+.note p{flex:1;line-height:1.35}.note p small{display:block;color:var(--muted);font-size:10.5px}
+.note .btn{padding:5px 10px;font-size:11px;background:var(--ink);color:#fff}
+.note.seen{opacity:.5}
+
+.banner{height:120px;border-radius:var(--r);background:linear-gradient(120deg,var(--ink),#1f5446 55%,#2f8a6c);position:relative;overflow:hidden;animation:rise .7s var(--ease) both}
+.banner::after{content:"";position:absolute;inset:0;background:radial-gradient(40% 120% at 85% 0%,rgba(143,227,196,.45),transparent)}
+.phead{display:flex;align-items:flex-end;gap:16px;margin:-34px 20px 18px;position:relative;flex-wrap:wrap}
+.phead .av{--s:92px;--c:#ffd9c7;border-width:4px;font-size:30px;box-shadow:var(--sh)}
+.phead h2{font-size:22px;letter-spacing:-.4px}
+.phead .grow{flex:1;min-width:180px;padding-bottom:6px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
+.stat .big{font-size:30px;margin:10px 0 6px}
+.up{color:#16805d;font-size:12px;font-weight:600;display:inline-flex;gap:3px;align-items:center}
+.up svg.i{width:14px;height:14px}
+.gridP{display:grid;grid-template-columns:1fr 1.4fr;gap:16px}
+.bars{display:flex;align-items:flex-end;gap:12px;height:170px;padding-top:10px}
+.bars div{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;font-size:10.5px;color:var(--muted)}
+.bars i{width:100%;max-width:34px;border-radius:12px;background:#e3ece9;height:var(--h);transform-origin:bottom;animation:barUp 1s var(--ease) both;animation-delay:calc(var(--d) * 80ms + 200ms);transition:background .3s}
+.bars div:hover i,.bars div.hi i{background:linear-gradient(var(--mint2),var(--mint))}
+@keyframes barUp{from{transform:scaleY(0)}}
+.skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.skills span{font-size:11.5px;padding:5px 10px;border-radius:99px;background:rgba(255,255,255,.8);border:1px solid var(--line)}
+
+.shead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.shead h2{font-size:26px;letter-spacing:-.6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{padding:6px 12px;border-radius:99px;font-size:12px;background:rgba(255,255,255,.7);border:1px solid var(--line);transition:.3s var(--ease)}
+.chips button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.saved{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:16px}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;align-content:start}
+.sc{padding:10px}
+.sc .thumb{border-radius:14px;aspect-ratio:1.3}
+.sc .thumb.doc{background:linear-gradient(160deg,#dff5ec,#bfe9d8)}.sc .thumb.web{background:linear-gradient(160deg,#ffe6da,#ffd0bb)}.sc .thumb.img{background:linear-gradient(160deg,#e2efff,#c8defa)}
+.sc .thumb svg.i{width:30px;height:30px;color:var(--ink-soft)}
+.sc .tag{position:absolute;left:8px;top:8px;font-size:9.5px;font-weight:600;background:var(--ink);color:#fff;padding:2px 7px;border-radius:6px}
+.sc h4{font-size:12.5px;font-weight:600;margin:9px 2px 3px;line-height:1.3}
+.sc .foot{display:flex;justify-content:space-between;align-items:center;margin:0 2px}
+.heart{color:var(--muted);transition:.3s var(--ease)}
+.heart.on{color:var(--orange);transform:scale(1.15)}
+.heart.on svg{fill:currentColor}
+.coll{display:grid;gap:10px}
+.coll div{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:center;font-size:12px}
+.coll .sw{width:28px;height:28px;border-radius:9px;grid-row:span 2}
+.coll .bar{height:5px;border-radius:3px;background:#e3ece9;overflow:hidden}
+.coll .bar i{display:block;height:100%;width:var(--w);background:var(--c);border-radius:3px;animation:grow 1s var(--ease) both .4s;transform-origin:left}
+.sc.out{display:none}
+.sc.settled{animation:none}
+
+.toast{position:fixed;left:50%;bottom:24px;z-index:60;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:99px;font-size:13px;transition:.4s var(--ease);pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.note-foot{max-width:1480px;margin:0 auto;padding:0 22px 22px;position:relative;z-index:1;font-size:11.5px;color:var(--muted);text-align:center}
+
+@media (max-width:1200px){.home{grid-template-columns:1fr}.colR{grid-template-columns:1fr 1fr}.colR .cal-card{grid-column:1/-1}}
+@media (max-width:900px){.row3{grid-template-columns:1fr 1fr}.row3 .impact{display:none}.row2,.gridP,.saved{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}.colR{grid-template-columns:1fr}}
+@media (max-width:700px){
+  .app{padding:12px 12px 96px;gap:0}
+  .side{position:fixed;z-index:20;top:auto;bottom:12px;left:12px;right:12px;width:auto;height:64px;flex-direction:row;padding:0 14px;border-radius:32px}
+  .logo{margin:0 6px 0 0}
+  .nav{flex-direction:row;justify-content:space-between}
+  .nav .gap,.nb.x{display:none}
+  .nb.on::after{display:none}.nb .tip{display:none}
+  .main{padding:12px;border-radius:24px}
+  .row3{grid-template-columns:1fr}
+  .hero{flex-direction:column}.hero .meta{align-items:flex-start}
+  .hero h1{font-size:24px}
+  .vids{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .phead{margin:-34px 10px 14px}
+  .note-foot{padding-bottom:96px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="home" viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20H4z"/><path d="M10 20v-5h4v5"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></symbol>
+  <symbol id="book" viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4z"/></symbol>
+  <symbol id="video" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="m16 10 5-3v10l-5-3"/></symbol>
+  <symbol id="cloud" viewBox="0 0 24 24"><path d="M7 18a5 5 0 1 1 1-9.9A6 6 0 0 1 19.5 10 4 4 0 0 1 18 18z"/></symbol>
+  <symbol id="cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></symbol>
+  <symbol id="out" viewBox="0 0 24 24"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/></symbol>
+  <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></symbol>
+  <symbol id="left" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+  <symbol id="right" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+  <symbol id="pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+  <symbol id="doc" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></symbol>
+  <symbol id="globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></symbol>
+  <symbol id="image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></symbol>
+  <symbol id="heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></symbol>
+  <symbol id="bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></symbol>
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+</svg>
+
+<div class="bg" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<div class="splash" id="splash" aria-hidden="true"><div><b>//</b><span>Team Workspace</span></div></div>
+
+<div class="app">
+  <nav class="side" aria-label="Main">
+    <div class="logo" aria-hidden="true">//</div>
+    <div class="nav">
+      <button class="nb on" data-view="home" aria-label="Home"><svg class="i"><use href="#home"/></svg><span class="tip">Home</span></button>
+      <button class="nb" data-view="profile" aria-label="Profile"><svg class="i"><use href="#user"/></svg><span class="tip">Profile</span></button>
+      <button class="nb" data-view="saved" aria-label="Saved"><svg class="i"><use href="#book"/></svg><span class="tip">Saved</span></button>
+      <button class="nb x" data-soon aria-label="Videos"><svg class="i"><use href="#video"/></svg><span class="tip">Videos</span></button>
+      <button class="nb x" data-soon aria-label="Files"><svg class="i"><use href="#cloud"/></svg><span class="tip">Files</span></button>
+      <span class="gap"></span>
+      <button class="nb" data-soon aria-label="Search"><svg class="i"><use href="#search"/></svg><span class="tip">Search</span></button>
+      <button class="nb x" data-soon aria-label="Settings"><svg class="i"><use href="#cog"/></svg><span class="tip">Settings</span></button>
+      <button class="nb x" data-soon aria-label="Log out"><svg class="i"><use href="#out"/></svg><span class="tip">Log out</span></button>
+    </div>
+  </nav>
+
+  <main class="main" id="main" aria-live="polite"></main>
+</div>
+<p class="note-foot">Concept dashboard by <a href="https://tracesolutionsglobal.com/work.html" style="color:inherit;font-weight:600">Trace Solutions Global</a>. All people, numbers and content are sample data.</p>
+<div class="toast" id="toast" role="status"></div>
+
+<template id="v-home">
+<div class="view home">
+  <div class="colL">
+    <section class="card dark hero" style="--d:0">
+      <div>
+        <h1>Work's always <em>better</em> together</h1>
+        <p>Add teammates and you'll all see what everyone's working on, so nobody gets a nasty surprise on deadline day.</p>
+        <button class="btn or" id="addMember"><svg class="i"><use href="#plus"/></svg>Add member</button>
+      </div>
+      <div class="meta">
+        <div class="stack" id="heroStack"></div>
+        <span id="onlineCt">4 online now</span>
+      </div>
+    </section>
+
+    <div class="row3">
+      <section class="card" style="--d:1">
+        <div class="ch"><h3>Members <span class="pill" id="memCt">+3</span></h3><button class="ib" data-soon aria-label="Members options"><svg class="i"><use href="#arrow"/></svg></button></div>
+        <div class="mem">
+          <div><span class="av" style="--c:#cdeedd">SR</span>Sophie Reyes<small>Design lead</small></div>
+          <div><span class="av" style="--c:#ffe0cf">AJ</span>Alex Jansen<small>Engineer</small></div>
+          <div><span class="av" style="--c:#d8e7ff">DT</span>Daniel Tan<small>Producer</small></div>
+        </div>
+      </section>
+      <section class="card" style="--d:2">
+        <div class="ch"><h3>Focus time</h3><button class="ib" data-soon aria-label="Open focus time"><svg class="i"><use href="#arrow"/></svg></button></div>
+        <div class="big"><span data-count="10.4" data-dec="1">0</span>h</div>
+        <div class="prog"><i style="flex:5.6"></i><i style="flex:2.2"></i><i style="flex:2.2"></i></div>
+        <div class="legend"><span><b>56%</b> deep work</span><span><b>22%</b> meetings</span></div>
+      </section>
+      <section class="card impact" style="--d:3">
+        <div class="ch"><h3>Goal</h3></div>
+        <div class="vbar"><i></i><span>72%</span></div>
+      </section>
+    </div>
+
+    <div class="row2">
+      <section class="card" style="--d:4">
+        <div class="ch"><h3>Statistics</h3><div class="seg" id="statSeg"><button class="on" data-k="w">Weekly</button><button data-k="m">Monthly</button></div></div>
+        <div style="display:flex;gap:22px;align-items:flex-end">
+          <div><div class="big" id="sA">0</div><span class="muted">tasks done</span></div>
+          <div><div class="big" id="sB">0</div><span class="muted">tasks logged</span></div>
+        </div>
+        <div class="ticks" id="ticks"></div>
+        <div class="tiles">
+          <div class="tile"><svg class="i"><use href="#layers"/></svg><b id="sC">0</b><span class="muted">Projects complete</span></div>
+          <div class="tile"><svg class="i"><use href="#clock"/></svg><b id="sD">0</b><span class="muted">In progress</span></div>
+        </div>
+      </section>
+      <div style="display:flex;flex-direction:column">
+        <section class="card dark focus" style="--d:5">
+          <span class="dot"></span>
+          <div class="t">Breakthrough brainstorm<small>Session running</small></div>
+          <span class="timer" id="timer">24:00</span>
+          <button class="ib" id="timerBtn" style="color:#fff;border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.06)" aria-label="Pause session"><svg class="i"><use href="#pause"/></svg></button>
+        </section>
+        <section class="card pro" style="--d:6;flex:1">
+          <div class="badge"><i>★</i>Pro</div>
+          <div>
+            <h4>Unleash your potential</h4>
+            <p class="muted">Upgrade to Pro for the full workspace.</p>
+            <ul><li>Unlimited boards</li><li>Video notes with transcripts</li><li>Shared AI summaries</li></ul>
+            <button class="btn mint" data-soon>Upgrade plan <svg class="i"><use href="#arrow"/></svg></button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="colR">
+    <section class="card cal-card" style="--d:2">
+      <div class="ch"><h3 style="font-size:19px;letter-spacing:-.4px" id="calH">November, 2026</h3>
+        <div style="display:flex;gap:6px"><button class="ib" id="calPrev" aria-label="Previous week"><svg class="i"><use href="#left"/></svg></button><button class="ib" id="calNext" aria-label="Next week"><svg class="i"><use href="#right"/></svg></button></div></div>
+      <div class="cal" id="cal"></div>
+    </section>
+    <section class="card" style="--d:3">
+      <div class="ch"><h3>Last videos</h3><button class="ib" data-soon aria-label="All videos"><svg class="i"><use href="#arrow"/></svg></button></div>
+      <div class="vids">
+        <div class="vid"><div class="thumb"><span class="blob"></span><span class="dur">8 min</span></div><p>Sprint review: shipping the mobile beta</p></div>
+        <div class="vid"><div class="thumb"><span class="blob b2"></span><span class="dur">12 min</span></div><p>Design crit: onboarding flow v3</p></div>
+        <div class="vid"><div class="thumb"><span class="blob b3"></span><span class="dur">5 min</span></div><p>Quick tour of the new analytics</p></div>
+      </div>
+    </section>
+    <section class="card" style="--d:4">
+      <div class="ch"><h3>Notifications <span class="pill" id="nCt">4</span></h3><button class="ib" id="markAll" aria-label="Mark all as read"><svg class="i"><use href="#bell"/></svg></button></div>
+      <div class="tabs" id="nTabs"><button class="on" data-t="all">Overview</button><button data-t="share">Shared</button><button data-t="comment">Comments</button></div>
+      <div class="notes" id="notes"></div>
+    </section>
+  </div>
+</div>
+</template>
+
+<template id="v-profile">
+<div class="view">
+  <div class="banner"></div>
+  <div class="phead">
+    <span class="av">HB</span>
+    <div class="grow"><h2>Hannah Brooks</h2><p class="muted">Lead product designer · Colombo · Joined March 2024</p></div>
+    <button class="btn ghost" data-soon>Message</button>
+    <button class="btn mint" data-soon>Edit profile</button>
+  </div>
+  <div class="grid4">
+    <section class="card stat" style="--d:1"><span class="muted">Projects shipped</span><div class="big" data-count="42">0</div><span class="up"><svg class="i"><use href="#arrow"/></svg>12% this quarter</span></section>
+    <section class="card stat" style="--d:2"><span class="muted">Hours logged</span><div class="big" data-count="1284">0</div><span class="up"><svg class="i"><use href="#arrow"/></svg>8% vs last</span></section>
+    <section class="card stat" style="--d:3"><span class="muted">Reviews given</span><div class="big" data-count="317">0</div><span class="up"><svg class="i"><use href="#arrow"/></svg>21% this quarter</span></section>
+    <section class="card stat" style="--d:4"><span class="muted">Team rating</span><div class="big"><span data-count="4.9" data-dec="1">0</span><small style="font-size:16px;color:var(--muted)">/5</small></div><span class="up"><svg class="i"><use href="#arrow"/></svg>steady</span></section>
+  </div>
+  <div class="gridP">
+    <section class="card" style="--d:5">
+      <div class="ch"><h3>About</h3></div>
+      <p style="color:var(--muted);font-size:13px">Hannah leads the design of the team's core product, from first sketches to the shipped screen. She runs weekly design crits and mentors two junior designers.</p>
+      <div class="skills"><span>Product design</span><span>Design systems</span><span>Prototyping</span><span>User research</span><span>Motion</span></div>
+    </section>
+    <section class="card" style="--d:6">
+      <div class="ch"><h3>Focus hours by day</h3><span class="muted">This week · <b style="color:var(--text)">36h</b></span></div>
+      <div class="bars" id="bars"></div>
+    </section>
+  </div>
+</div>
+</template>
+
+<template id="v-saved">
+<div class="view">
+  <div class="shead">
+    <div><h2>Saved for later</h2><p class="muted">Everything you've bookmarked across the workspace.</p></div>
+    <div class="chips" id="chips"><button class="on" data-f="all">All</button><button data-f="video">Videos</button><button data-f="doc">Docs</button><button data-f="web">Links</button><button data-f="img">Images</button></div>
+  </div>
+  <div class="saved">
+    <div class="sgrid" id="sgrid"></div>
+    <section class="card" style="--d:2;align-self:start">
+      <div class="ch"><h3>Collections</h3><button class="ib" data-soon aria-label="New collection"><svg class="i"><use href="#plus"/></svg></button></div>
+      <div class="coll">
+        <div><span class="sw" style="background:#cdeedd"></span><b>Inspiration</b><span class="bar"><i style="--w:78%;--c:var(--mint)"></i></span></div>
+        <div><span class="sw" style="background:#ffe0cf"></span><b>Design references</b><span class="bar"><i style="--w:52%;--c:var(--orange)"></i></span></div>
+        <div><span class="sw" style="background:#d8e7ff"></span><b>Research</b><span class="bar"><i style="--w:34%;--c:#5b9cf0"></i></span></div>
+        <div><span class="sw" style="background:#efe3ff"></span><b>Read later</b><span class="bar"><i style="--w:61%;--c:#a77ff0"></i></span></div>
+      </div>
+    </section>
+  </div>
+</div>
+</template>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const main = $('#main'), toastEl = $('#toast');
+  let tt; const toast = m => { toastEl.textContent = m; toastEl.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toastEl.classList.remove('on'), 1800); };
+  const fmt = (v, dec) => dec ? v.toFixed(dec).replace('.', ',') : Math.round(v).toLocaleString('en-US');
+
+  // count a number from its current value to `to` with an ease-out
+  function count(el, to, dec = 0, dur = 1200) {
+    if (reduce) { el.textContent = fmt(to, dec); el.dataset.v = to; return; }
+    const from = parseFloat(el.dataset.v || '0'), t0 = performance.now();
+    const step = t => { const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(from + (to - from) * e, dec); if (p < 1) requestAnimationFrame(step); else el.dataset.v = to; };
+    requestAnimationFrame(step);
+  }
+
+  // ---------- view switching ----------
+  let current = null, timerId = null;
+  function show(name) {
+    if (name === current) return;
+    $$('.nb[data-view]').forEach(b => b.classList.toggle('on', b.dataset.view === name));
+    const render = () => {
+      clearInterval(timerId);
+      main.innerHTML = ''; main.appendChild($('#v-' + name).content.cloneNode(true));
+      current = name; ({ home: initHome, profile: initProfile, saved: initSaved })[name]();
+      $$('[data-count]', main).forEach(el => setTimeout(() => count(el, +el.dataset.count, +(el.dataset.dec || 0)), 300));
+    };
+    const old = $('.view', main);
+    if (old && !reduce) { old.classList.add('leaving'); setTimeout(render, 230); } else render();
+  }
+  $$('.nb[data-view]').forEach(b => b.addEventListener('click', () => show(b.dataset.view)));
+  document.addEventListener('click', e => { if (e.target.closest('[data-soon]')) toast('Coming soon in the full build'); });
+
+  // ---------- home ----------
+  const people = [['SR', '#cdeedd'], ['AJ', '#ffe0cf'], ['DT', '#d8e7ff'], ['MK', '#efe3ff'], ['LP', '#fff1c2'], ['NF', '#d6f3f6']];
+  const stats = { w: [49, 83, 23, 12, 26], m: [196, 312, 61, 18, 32] };
+  const notes = [
+    { t: 'comment', a: ['JC', '#ffe0cf'], h: '<b>Jenna Cole</b> commented on “Q4 roadmap”', s: '2 min ago' },
+    { t: 'share', a: ['ST', '#d8e7ff'], h: '<b>Sam Torres</b> shared “Onboarding flow v3”', s: '18 min ago' },
+    { t: 'comment', a: ['DT', '#cdeedd'], h: '<b>Daniel Tan</b> replied to your video note', s: '1 hr ago' },
+    { t: 'share', a: ['MK', '#efe3ff'], h: '<b>Mia Kumar</b> shared “Brand refresh moodboard”', s: 'Yesterday' },
+  ];
+  function initHome() {
+    let shown = 4;
+    const stack = () => { $('#heroStack').innerHTML = people.slice(0, shown).map(([n, c]) => `<span class="av" style="--c:${c}">${n}</span>`).join('');
+      $('#onlineCt').textContent = `${shown} online now`; $('#memCt').textContent = `+${shown - 1}`; };
+    stack();
+    $('#addMember').onclick = () => { if (shown < people.length) { shown++; stack(); toast('Invite sent to a new teammate'); } else toast('Your whole team is here'); };
+
+    const ticks = $('#ticks'); ticks.innerHTML = '<i></i>'.repeat(40);
+    const setStats = k => { const [a, b, c, d, f] = stats[k];
+      count($('#sA'), a); count($('#sB'), b); count($('#sC'), c); count($('#sD'), d);
+      $$('i', ticks).forEach((t, i) => setTimeout(() => t.classList.toggle('f', i < f), reduce ? 0 : i * 18)); };
+    setTimeout(() => setStats('w'), 350);
+    $$('#statSeg button').forEach(b => b.onclick = () => { $$('#statSeg button').forEach(x => x.classList.toggle('on', x === b)); setStats(b.dataset.k); });
+
+    let left = 24 * 60, run = true; const tEl = $('#timer'), tb = $('#timerBtn');
+    const draw = () => tEl.textContent = `${String(left / 60 | 0).padStart(2, '0')}:${String(left % 60).padStart(2, '0')}`;
+    timerId = setInterval(() => { if (run && left > 0) { left--; draw(); } }, 1000);
+    tb.onclick = () => { run = !run; $('use', tb).setAttribute('href', run ? '#pause' : '#play'); tb.setAttribute('aria-label', run ? 'Pause session' : 'Resume session'); toast(run ? 'Session resumed' : 'Session paused'); };
+
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const today = new Date(); const anchor = new Date(today); anchor.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+    let picked = today.toDateString();
+    const busy = new Set([3, 10, 17, 19, 24, 26]);
+    const drawCal = () => {
+      $('#calH').textContent = anchor.toLocaleDateString('en-GB', { month: 'long' }) + ', ' + anchor.getFullYear();
+      $('#cal').innerHTML = days.map((d, i) => { const x = new Date(anchor); x.setDate(anchor.getDate() + i);
+        return `<button data-d="${x.toDateString()}" class="${x.toDateString() === picked ? 'on' : ''} ${busy.has(x.getDate()) ? 'dot' : ''}">${d}<b>${x.getDate()}</b></button>`; }).join('');
+      $$('#cal button').forEach(b => b.onclick = () => { picked = b.dataset.d; drawCal(); });
+    };
+    drawCal();
+    $('#calPrev').onclick = () => { anchor.setDate(anchor.getDate() - 7); drawCal(); };
+    $('#calNext').onclick = () => { anchor.setDate(anchor.getDate() + 7); drawCal(); };
+
+    let tab = 'all'; const seen = new Set();
+    const drawN = () => {
+      const list = notes.map((n, i) => ({ ...n, i })).filter(n => tab === 'all' || n.t === tab);
+      $('#notes').innerHTML = list.map(n => `<div class="note ${seen.has(n.i) ? 'seen' : ''}"><span class="av" style="--c:${n.a[1]}">${n.a[0]}</span><p>${n.h}<small>${n.s}</small></p><button class="btn" data-i="${n.i}">${seen.has(n.i) ? 'Read' : 'View'}</button></div>`).join('');
+      $$('#notes .btn').forEach(b => b.onclick = () => { seen.add(+b.dataset.i); drawN(); });
+      const unread = notes.length - seen.size; $('#nCt').textContent = unread; $('#nCt').hidden = !unread;
+    };
+    drawN();
+    $$('#nTabs button').forEach(b => b.onclick = () => { tab = b.dataset.t; $$('#nTabs button').forEach(x => x.classList.toggle('on', x === b)); drawN(); });
+    $('#markAll').onclick = () => { notes.forEach((_, i) => seen.add(i)); drawN(); toast('All caught up'); };
+  }
+
+  // ---------- profile ----------
+  function initProfile() {
+    const d = [['Mon', 6.5], ['Tue', 7.8], ['Wed', 4.2], ['Thu', 8.6], ['Fri', 5.4], ['Sat', 2.1], ['Sun', 1.4]];
+    $('#bars').innerHTML = d.map(([n, h], i) => `<div class="${i === 3 ? 'hi' : ''}" title="${h}h"><i style="--h:${h / 9 * 100}%;--d:${i}"></i>${n}</div>`).join('');
+  }
+
+  // ---------- saved ----------
+  const items = [
+    ['video', 'Sprint review: shipping the mobile beta', 'blob', 'Video'], ['doc', 'Q4 roadmap and team goals', 'doc', 'Doc'],
+    ['web', 'Colour systems that scale', 'globe', 'Link'], ['video', 'Design crit: onboarding v3', 'blob b2', 'Video'],
+    ['img', 'Brand refresh moodboard', 'image', 'Image'], ['doc', 'Interview notes: 12 customers', 'doc', 'Doc'],
+    ['web', 'Writing release notes people read', 'globe', 'Link'], ['video', 'Quick tour of the new analytics', 'blob b3', 'Video'],
+  ];
+  function initSaved() {
+    const liked = new Set([0, 4]);
+    $('#sgrid').innerHTML = items.map(([t, h, ic, tag], i) => `<article class="card sc" data-t="${t}" style="--d:${i}">
+      <div class="thumb ${t === 'video' ? '' : t}">${t === 'video' ? `<span class="${ic}" style="width:52%"></span>` : `<svg class="i"><use href="#${ic}"/></svg>`}<span class="tag">${tag}</span></div>
+      <h4>${h}</h4><div class="foot"><span class="muted">Saved ${i + 1}d ago</span><button class="heart ${liked.has(i) ? 'on' : ''}" aria-label="Favourite" aria-pressed="${liked.has(i)}"><svg class="i"><use href="#heart"/></svg></button></div></article>`).join('');
+    setTimeout(() => $$('#sgrid .sc').forEach(c => c.classList.add('settled')), 1400);
+    $$('#sgrid .heart').forEach(b => b.onclick = () => { const on = b.classList.toggle('on'); b.setAttribute('aria-pressed', on); });
+    $$('#chips button').forEach(b => b.onclick = () => {
+      $$('#chips button').forEach(x => x.classList.toggle('on', x === b));
+      $$('#sgrid .sc').forEach(c => c.classList.toggle('out', b.dataset.f !== 'all' && c.dataset.t !== b.dataset.f));
+    });
+  }
+
+  show('home');
+  setTimeout(() => $('#splash').classList.add('done'), reduce ? 0 : 1300);
+})();
+</script>
+</body>
+</html>
