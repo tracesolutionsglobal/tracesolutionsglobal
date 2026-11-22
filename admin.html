@@ -349,6 +349,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
       <button type="button" data-tab="projects" aria-pressed="true">Projects</button>
       <button type="button" data-tab="concepts" data-admin-only aria-pressed="false">Concepts</button>
       <button type="button" data-tab="reviews" data-admin-only aria-pressed="false">Reviews</button>
+      <button type="button" data-tab="calendar" data-admin-only aria-pressed="false">Content calendar</button>
       <button type="button" data-tab="finder" aria-pressed="false">Lead finder</button>
       <button type="button" data-tab="tracker" aria-pressed="false">Lead sheet</button>
     </div>
@@ -385,6 +386,20 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
   </div>
   <div class="rev-list" id="revList"></div>
   <footer>Reviews show on the homepage as soon as customers post them. Hidden reviews stay here but don't appear on the site.</footer>
+</main>
+
+<main class="wrap" id="calendarView" hidden>
+  <div class="admin-head" style="margin-top:1.4rem">
+    <h2>Content calendar</h2>
+    <p style="color:var(--ink-2);max-width:60ch">The 29-day Facebook &amp; Instagram posting schedule — every caption and image, in date order, so you can see what's going out next. Only you can see this page.</p>
+  </div>
+  <iframe
+    id="calendarFrame"
+    src="https://3152ea61-170b-4fdf-99f8-ab4bcdbc8457.frame.claudeusercontent.com/_f/1795374149-de10/index.html"
+    title="Content calendar preview"
+    style="width:100%;min-height:80vh;border:1px solid var(--line);border-radius:12px;background:#fff"
+    loading="lazy">
+  </iframe>
 </main>
 
 <main class="wrap" id="finderView" hidden>
@@ -1181,6 +1196,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
     $("#projectsView").hidden = t !== "projects";
     $("#conceptsView").hidden = t !== "concepts";
     $("#reviewsView").hidden = t !== "reviews";
+    $("#calendarView").hidden = t !== "calendar";
     $("#finderView").hidden = t !== "finder";
     $("#trackerView").hidden = t !== "tracker";
     $("#newBtn").hidden = role !== "admin" || t !== "projects";
@@ -1250,7 +1266,7 @@ body.agent .btn-primary{background:#2a2a2a;color:#f4f4f4}
   function signOut(){
     TSDB.signOut(); clearInterval(timer); timer = null; canWrite = false; loaded = false; projects = []; reviews = []; role = "";
     document.body.classList.remove("agent");
-    $("#projectsView").hidden = true; $("#conceptsView").hidden = true; $("#reviewsView").hidden = true; $("#finderView").hidden = true; $("#trackerView").hidden = true;
+    $("#projectsView").hidden = true; $("#conceptsView").hidden = true; $("#reviewsView").hidden = true; $("#calendarView").hidden = true; $("#finderView").hidden = true; $("#trackerView").hidden = true;
     if (window.TSLeadFinder) TSLeadFinder.reset();
     if (window.TSLeadSheet) TSLeadSheet.reset();
     $("#tabs").hidden = true; $("#signOut").hidden = true; $("#pwBtn").hidden = true; $("#newBtn").hidden = true;
