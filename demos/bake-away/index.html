@@ -1,7 +1,7 @@
 <!doctype html><html><head><meta charset=utf8><link rel="canonical" href="https://tracesolutionsglobal.com/demos/bake-away/"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <meta charset="utf-8">
 <title>Bake Away</title>
-<meta name="description" content="Bake Away: cupcakes, cakes and donuts baked fresh every day in Nugegoda. Open daily 8 am to 10 pm.">
+<meta name="description" content="Bake Away: cupcakes, cakes, donuts and short eats baked fresh every day in Nugegoda. Open daily 8 am to 10 pm.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Pacifico&display=swap">
@@ -391,10 +391,40 @@ dialog.menu-dlg .close{position:sticky;top:10px;float:right;margin:10px 10px -54
   *,*::before,*::after{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
 }
+
+/* Short eats */
+.shorteats{background:var(--paper);padding-block:3.5rem 4.5rem}
+.se-card .g-photo{aspect-ratio:4/5}
+.se-card .g-body p{font-size:.93rem;color:var(--ganache-soft)}
+.se-price{font-family:var(--f-display);font-weight:600;font-size:1.05rem;color:var(--ganache)}
+.se-price small{font-family:var(--f-body);font-weight:600;font-size:.8rem;color:var(--ganache-soft)}
+.se-ctas{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-top:1.8rem}
+.se-note{font-size:.88rem;color:var(--ganache-soft)}
+@media (max-width:520px){.g-grid.photos.se-grid{grid-template-columns:repeat(2,1fr);gap:.8rem}.se-card .g-body{padding:.7rem .8rem .9rem}.se-card .g-body h3{font-size:1rem}.se-card .g-body p{font-size:.8rem;line-height:1.4}.se-card .add{width:34px;height:34px;font-size:1.1rem}.se-price{font-size:.95rem}}
+/* Loading screen: the logo with a spinning ring, then the page */
+.ba-loader{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:var(--vanilla);transition:opacity .6s ease,visibility .6s;animation:ba-loader-out .6s ease 6s forwards}
+.ba-loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.ba-loader-in{position:relative;width:min(64vw,260px);aspect-ratio:1;display:grid;place-items:center}
+.ba-loader-ring{position:absolute;inset:0;border-radius:50%;border:5px solid var(--vanilla-deep);border-top-color:var(--strawberry-deep);border-right-color:var(--caramel);animation:ba-spin 1s linear infinite}
+.ba-loader-in img{width:68%;height:auto;animation:ba-bob 1.6s ease-in-out infinite}
+.ba-loader p{position:absolute;bottom:-2.4rem;left:0;right:0;text-align:center;font-family:var(--f-hand);font-size:1.4rem;color:var(--ganache-soft);margin:0}
+@keyframes ba-spin{to{transform:rotate(360deg)}}
+@keyframes ba-bob{50%{transform:translateY(-6px) scale(1.03)}}
+@keyframes ba-loader-out{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){.ba-loader-ring{animation-duration:3s}.ba-loader-in img{animation:none}}
+/* Floating WhatsApp button */
+.wa-fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:60;width:56px;height:56px;border-radius:50%;background:var(--whatsapp);display:grid;place-items:center;box-shadow:0 10px 26px rgba(31,168,85,.45);transition:transform .2s}
+.wa-fab:hover{transform:scale(1.08)}
+.wa-fab svg{width:30px;height:30px;fill:#fff}
 </style>
 
 <div class="demo-ribbon">Website concept for <b>Bake Away</b> · designed by Trace Solutions</div>
 
+<div class="ba-loader" id="baLoader" role="status" aria-label="Loading Bake Away">
+  <div class="ba-loader-in"><span class="ba-loader-ring" aria-hidden="true"></span><img src="img/logo-chocolate.png" alt="Bake Away" width="600" height="409"><p>Fresh out of the oven…</p></div>
+</div>
+<script>(function(){var l=document.getElementById("baLoader"),t0=Date.now();function hide(){setTimeout(function(){l.classList.add("done");setTimeout(function(){l.remove()},700)},Math.max(0,1400-(Date.now()-t0)))}if(document.readyState==="complete")hide();else{window.addEventListener("load",hide);setTimeout(hide,4500)}})();</script>
+<a class="wa-fab" href="https://wa.me/94776480144?text=Hi%20Bake%20Away!" target="_blank" rel="noopener" aria-label="Chat with Bake Away on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.85 9.85 0 0 0 12.04 2zm0 18.15a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.23 8.23 0 1 1 6.98 3.86zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06a6.7 6.7 0 0 1-3.37-2.94c-.25-.44.25-.41.72-1.36.08-.17.04-.31-.02-.43-.06-.13-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.42h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.24 3.74 1.58.68 2.2.74 2.99.62.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg></a>
 <header class="nav">
   <div class="wrap">
     <a class="logo" href="#top"><img data-img="logo-chocolate.png" alt="Bake Away" width="600" height="409"></a>
@@ -404,6 +434,7 @@ dialog.menu-dlg .close{position:sticky;top:10px;float:right;margin:10px 10px -54
         <li><a href="#cakes">Cakes</a></li>
         <li><a href="#gateaux">Gâteaux</a></li>
         <li><a href="#donuts">Donuts</a></li>
+        <li><a href="#shorteats">Short eats</a></li>
         <li><a href="#gallery">Celebrations</a></li>
         <li><a href="#order">Visit &amp; Order</a></li>
       </ul>
@@ -598,7 +629,32 @@ dialog.menu-dlg .close{position:sticky;top:10px;float:right;margin:10px 10px -54
   <div class="strip" aria-hidden="true"><div class="strip-track"><img data-img="donuts-row.jpg" alt=""><img data-img="donuts-row.jpg" alt=""><img data-img="donuts-row.jpg" alt=""><img data-img="donuts-row.jpg" alt=""></div></div>
 </section>
 
-<div class="drip-wrap"><svg class="drip" data-top="var(--ganache)" data-bottom="var(--strawberry)" preserveAspectRatio="none" viewBox="0 0 1200 56" aria-hidden="true"></svg></div>
+<div class="drip-wrap"><svg class="drip" data-top="var(--ganache)" data-bottom="var(--paper)" preserveAspectRatio="none" viewBox="0 0 1200 56" aria-hidden="true"></svg></div>
+
+<!-- SHORT EATS -->
+<section class="shorteats" id="shorteats" aria-labelledby="se-h">
+  <div class="wrap">
+    <div class="eyebrow">From the bakery counter</div>
+    <h2 class="h2" id="se-h">Short eats &amp; <em>pastries</em></h2>
+    <p class="lede">Rolls, cutlets, buns and flaky pastries, fried and baked fresh every morning. Grab a few for tea, or order a tray for the office or a party.</p>
+    <div class="g-grid photos se-grid">
+      <article class="g-card se-card"><div class="g-photo"><img src="img/ai-se-chinese-rolls.webp" alt="Chinese rolls (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="g-body"><h3>Chinese rolls</h3><p>Crumbed rolls filled with spiced chicken and vegetables</p><div class="meta"><span class="se-price">Rs 150 <small>each</small></span><button class="add confetti-btn" type="button" data-add="Chinese rolls (short eats)" aria-label="Add Chinese rolls to order">+</button></div></div></article>
+      <article class="g-card se-card"><div class="g-photo"><img src="img/ai-se-fish-cutlets.webp" alt="Fish cutlets (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="g-body"><h3>Fish cutlets</h3><p>Golden, crumbed fish and potato cutlets with chilli sauce</p><div class="meta"><span class="se-price">Rs 90 <small>each</small></span><button class="add confetti-btn" type="button" data-add="Fish cutlets (short eats)" aria-label="Add Fish cutlets to order">+</button></div></div></article>
+      <article class="g-card se-card"><div class="g-photo"><img src="img/ai-se-chicken-puffs.webp" alt="Chicken puffs (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="g-body"><h3>Chicken puffs</h3><p>Flaky puff pastry with a curried chicken filling</p><div class="meta"><span class="se-price">Rs 220 <small>each</small></span><button class="add confetti-btn" type="button" data-add="Chicken puffs (short eats)" aria-label="Add Chicken puffs to order">+</button></div></div></article>
+      <article class="g-card se-card"><div class="g-photo"><img src="img/ai-se-fish-buns.webp" alt="Fish buns (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="g-body"><h3>Fish buns</h3><p>Soft, glossy buns with spicy fish and potato inside</p><div class="meta"><span class="se-price">Rs 120 <small>each</small></span><button class="add confetti-btn" type="button" data-add="Fish buns (short eats)" aria-label="Add Fish buns to order">+</button></div></div></article>
+      <article class="g-card se-card"><div class="g-photo"><img src="img/ai-se-sausage-rolls.webp" alt="Sausage rolls (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="g-body"><h3>Sausage rolls</h3><p>Chicken sausage wrapped in buttery puff pastry</p><div class="meta"><span class="se-price">Rs 180 <small>each</small></span><button class="add confetti-btn" type="button" data-add="Sausage rolls (short eats)" aria-label="Add Sausage rolls to order">+</button></div></div></article>
+      <article class="g-card se-card"><div class="g-photo"><img src="img/ai-se-vegetable-roti.webp" alt="Vegetable roti (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="g-body"><h3>Vegetable roti</h3><p>Folded roti stuffed with spiced potato and vegetables</p><div class="meta"><span class="se-price">Rs 120 <small>each</small></span><button class="add confetti-btn" type="button" data-add="Vegetable roti (short eats)" aria-label="Add Vegetable roti to order">+</button></div></div></article>
+      <article class="g-card se-card"><div class="g-photo"><img src="img/ai-se-patties.webp" alt="Patties (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="g-body"><h3>Patties</h3><p>Crimped pastry pockets with a vegetable or chicken filling</p><div class="meta"><span class="se-price">Rs 100 <small>each</small></span><button class="add confetti-btn" type="button" data-add="Patties (short eats)" aria-label="Add Patties to order">+</button></div></div></article>
+      <article class="g-card se-card"><div class="g-photo"><img src="img/ai-se-croissants.webp" alt="Croissants & Danish (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="g-body"><h3>Croissants & Danish</h3><p>Butter croissants and fruit Danish, baked every morning</p><div class="meta"><span class="se-price">Rs 250 <small>each</small></span><button class="add confetti-btn" type="button" data-add="Croissants & Danish (short eats)" aria-label="Add Croissants & Danish to order">+</button></div></div></article>
+    </div>
+    <div class="ctas se-ctas">
+      <a class="btn pink confetti-btn" href="https://wa.me/94776480144?text=Hi%20Bake%20Away!%20I'd%20like%20to%20order%20a%20tray%20of%20short%20eats." target="_blank" rel="noopener">Order a party tray on WhatsApp</a>
+      <span class="se-note">Photos are AI-generated to show the style. Prices are per piece; trays of 25 or more on request.</span>
+    </div>
+  </div>
+</section>
+
+<div class="drip-wrap"><svg class="drip" data-top="var(--paper)" data-bottom="var(--strawberry)" preserveAspectRatio="none" viewBox="0 0 1200 56" aria-hidden="true"></svg></div>
 
 <!-- GALLERY -->
 <section class="gallery" id="gallery">
@@ -621,15 +677,15 @@ dialog.menu-dlg .close{position:sticky;top:10px;float:right;margin:10px 10px -54
     </div>
     <div>
       <div class="eyebrow">From Our Oven</div>
-      <h2 class="h2">Two sisters, one secret sponge recipe</h2>
+      <h2 class="h2">One baker, one secret sponge recipe</h2>
       <p class="lede">Bake Away started on a kitchen table, with a hand-me-down mixer and our grandmother's butter cake written on the back of an envelope. We still fold every batter by hand, cream real butter with jaggery-brown sugar, and let each sponge rest overnight before it meets its frosting.</p>
       <p class="lede">No premixes and no shortcuts. Just the slow, happy kind of baking that makes a kitchen smell like a birthday.</p>
       <div class="story-points">
         <div><b>2014</b><span>First cake sold from our front porch</span></div>
-        <div><b>38,000+</b><span>Cakes baked for birthdays, weddings and Tuesdays</span></div>
+        <div><b>8,500+</b><span>Cakes baked for birthdays, weddings and Tuesdays</span></div>
         <div><b>0</b><span>Premixes, ever. Everything starts from flour and eggs</span></div>
       </div>
-      <p class="sign">— Nadia &amp; Tharushi, head bakers</p>
+      <p class="sign">— Azraa, founder &amp; head baker</p>
     </div>
   </div>
 </section>
@@ -682,6 +738,7 @@ dialog.menu-dlg .close{position:sticky;top:10px;float:right;margin:10px 10px -54
             <option>Custom cake (from builder)</option>
             <option>Cupcakes</option>
             <option>Donuts</option>
+            <option>Short eats &amp; pastries</option>
             <option>Celebration order</option>
             <option>Something else</option>
           </select>
@@ -732,13 +789,13 @@ dialog.menu-dlg .close{position:sticky;top:10px;float:right;margin:10px 10px -54
         <p>Cupcakes, cakes and donuts, baked fresh every day in Nugegoda.</p>
       </div>
       <div class="cols">
-        <div><h4>Explore</h4><ul><li><a href="#bakes">Cupcakes</a></li><li><a href="#cakes">Cake menu</a></li><li><a href="#donuts">Donuts</a></li><li><a href="#builder">Build a cake</a></li></ul></div>
+        <div><h4>Explore</h4><ul><li><a href="#bakes">Cupcakes</a></li><li><a href="#cakes">Cake menu</a></li><li><a href="#donuts">Donuts</a></li><li><a href="#shorteats">Short eats</a></li><li><a href="#builder">Build a cake</a></li></ul></div>
         <div><h4>Visit</h4><ul><li>Nugegoda, Sri Lanka</li><li>Daily 8 am – 10 pm</li><li>+94 77 648 0144</li></ul></div>
         <div><h4>Follow</h4><ul><li>Instagram · @bakeaway</li><li>Facebook · Bake Away</li></ul></div>
       </div>
     </div>
     <div class="credit">
-      <span>© 2026 Bake Away. Photos and menu by Bake Away, except the gâteau and how-it's-made photos, which are AI-generated to show the style. Reviews, story and phone number are sample content.</span>
+      <span>© 2026 Bake Away. Photos and menu by Bake Away, except and how-it's-made photos, the gâteau, how-it's-made and short eats photos, which are AI-generated to show the style. Reviews are sample content.</span>
       <span>Website designed &amp; built by <b>Trace Solutions</b></span>
     </div>
   </div>
