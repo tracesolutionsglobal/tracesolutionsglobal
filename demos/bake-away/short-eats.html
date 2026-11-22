@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Short Eats &amp; Pastries · Bake Away</title>
+<meta name="description" content="Bake Away short eats and pastries in Nugegoda: Chinese rolls, fish cutlets, puffs, fish buns and more, with tea-time boxes, office platters and party trays.">
+<link rel="canonical" href="https://tracesolutionsglobal.com/demos/bake-away/short-eats.html">
+<link rel="icon" href="img/logo-chocolate.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="hub.css">
+<style>
+.se-nav{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center}
+.se-nav a{text-decoration:none;font-weight:700;font-size:.92rem;padding:.45rem .85rem;border-radius:999px;background:var(--paper);box-shadow:0 4px 14px rgba(74,44,42,.08)}
+.se-nav a:hover{background:#fff}
+.se-hero{text-align:center;padding:1.6rem var(--gutter) 1rem;max-width:760px;margin:0 auto}
+.se-hero .eyebrow,.pack .eyebrow{font-family:var(--f-hand);font-size:1.5rem;color:var(--strawberry-deep)}
+.se-hero h1{font-size:clamp(2rem,5vw,3.2rem)}
+.se-hero h1 em{font-style:normal;color:var(--strawberry-deep)}
+.se-hero p{margin-top:.7rem;color:var(--ganache-soft)}
+.se-jump{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-top:1.2rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.75rem 1.3rem;border-radius:999px;background:var(--ganache);color:var(--vanilla);font-weight:800;text-decoration:none;transition:transform .2s,box-shadow .3s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(74,44,42,.25)}
+.btn.light{background:var(--paper);color:var(--ganache);box-shadow:inset 0 0 0 2px var(--ganache)}
+.btn.pink{background:var(--strawberry);color:var(--ganache)}
+.se-menu{max-width:1160px;margin:0 auto;padding:2rem var(--gutter) 3rem;scroll-margin-top:1rem}
+.se-menu h2{font-size:clamp(1.6rem,3.4vw,2.3rem);text-align:center}
+.se-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:1.6rem}
+.se-card{background:var(--paper);border-radius:22px;overflow:hidden;box-shadow:0 10px 30px rgba(74,44,42,.08);transition:transform .25s,box-shadow .3s}
+.se-card:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(74,44,42,.16)}
+.se-photo{aspect-ratio:4/5;overflow:hidden}
+.se-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.se-body{padding:.9rem 1.1rem 1.1rem}
+.se-body h3{font-size:1.15rem}
+.se-body p{font-size:.9rem;color:var(--ganache-soft);margin-top:.2rem}
+.se-meta{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:.6rem}
+.se-price{font-family:var(--f-display);font-weight:600}
+.se-price small{font-family:var(--f-body);font-size:.78rem;color:var(--ganache-soft)}
+.se-order{font-weight:800;font-size:.85rem;text-decoration:none;padding:.4rem .8rem;border-radius:999px;background:var(--whatsapp);color:#fff}
+.se-note{text-align:center;font-size:.85rem;color:var(--ganache-soft);margin-top:1.2rem}
+.pack{padding:3rem var(--gutter);scroll-margin-top:0}
+.pack.alt{background:var(--paper)}
+.pack-in{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem);align-items:center}
+.pack.alt .pack-photo{order:2}
+.pack-photo{border-radius:28px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 20px 50px rgba(74,44,42,.2)}
+.pack-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.pack-copy h2{font-size:clamp(1.7rem,3.6vw,2.5rem)}
+.pack-copy p{margin-top:.6rem;color:var(--ganache-soft)}
+.pack-copy ul{margin:1rem 0 0;padding:0;list-style:none;display:grid;gap:.4rem}
+.pack-copy li::before{content:"✓";color:var(--strawberry-deep);font-weight:800;margin-right:.5rem}
+.pack-price{margin-top:1rem;font-family:var(--f-display);font-weight:600;font-size:1.4rem}
+.pack-ctas{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.1rem}
+@media (max-width:900px){.se-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:720px){.pack-in{grid-template-columns:1fr}.pack.alt .pack-photo{order:0}.pack-photo{aspect-ratio:4/3}}
+@media (max-width:520px){.se-grid{gap:.8rem}.se-body{padding:.7rem .8rem .9rem}.se-body h3{font-size:1rem}.se-body p{font-size:.8rem;line-height:1.4}.se-meta{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="demo-ribbon">Website concept for <b>Bake Away</b> · designed by Trace Solutions</div>
+<header class="hub-top"><a class="logo" href="index.html" aria-label="Bake Away home"><img src="img/logo-chocolate.png" alt="Bake Away" width="600" height="409"></a>
+<nav class="se-nav" aria-label="Short eats"><a href="pastries.html">← Occasions</a><a href="desserts.html">Desserts</a></nav></header>
+<div class="se-hero">
+  <div class="eyebrow">From the bakery counter</div>
+  <h1>Short eats &amp; <em>pastries</em></h1>
+  <p>Rolls, cutlets, buns and flaky pastries, fried and baked fresh every morning in Nugegoda. Order a few for tea, or trays for the office or a function.</p>
+  <div class="se-jump"><a class="btn" href="#menu">See the menu</a><a class="btn light" href="#tea">Tea time</a><a class="btn light" href="#office">Office &amp; meetings</a><a class="btn light" href="#party">Parties &amp; functions</a></div>
+</div>
+<main>
+<section class="se-menu" id="menu" aria-labelledby="menu-h">
+  <h2 id="menu-h">On the counter today</h2>
+  <div class="se-grid">
+    <article class="se-card"><div class="se-photo"><img src="img/ai-se-chinese-rolls.webp" alt="Chinese rolls (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="se-body"><h3>Chinese rolls</h3><p>Crumbed rolls filled with spiced chicken and vegetables</p><div class="se-meta"><span class="se-price">Rs 150 <small>each</small></span><a class="se-order" href="https://wa.me/94776480144?text=Hi%20Bake%20Away%21%20I%27d%20like%20to%20order%20Chinese%20rolls." target="_blank" rel="noopener" aria-label="Order Chinese rolls on WhatsApp">Order</a></div></div></article>
+    <article class="se-card"><div class="se-photo"><img src="img/ai-se-fish-cutlets.webp" alt="Fish cutlets (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="se-body"><h3>Fish cutlets</h3><p>Golden, crumbed fish and potato cutlets with chilli sauce</p><div class="se-meta"><span class="se-price">Rs 90 <small>each</small></span><a class="se-order" href="https://wa.me/94776480144?text=Hi%20Bake%20Away%21%20I%27d%20like%20to%20order%20Fish%20cutlets." target="_blank" rel="noopener" aria-label="Order Fish cutlets on WhatsApp">Order</a></div></div></article>
+    <article class="se-card"><div class="se-photo"><img src="img/ai-se-chicken-puffs.webp" alt="Chicken puffs (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="se-body"><h3>Chicken puffs</h3><p>Flaky puff pastry with a curried chicken filling</p><div class="se-meta"><span class="se-price">Rs 220 <small>each</small></span><a class="se-order" href="https://wa.me/94776480144?text=Hi%20Bake%20Away%21%20I%27d%20like%20to%20order%20Chicken%20puffs." target="_blank" rel="noopener" aria-label="Order Chicken puffs on WhatsApp">Order</a></div></div></article>
+    <article class="se-card"><div class="se-photo"><img src="img/ai-se-fish-buns.webp" alt="Fish buns (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="se-body"><h3>Fish buns</h3><p>Soft, glossy buns with spicy fish and potato inside</p><div class="se-meta"><span class="se-price">Rs 120 <small>each</small></span><a class="se-order" href="https://wa.me/94776480144?text=Hi%20Bake%20Away%21%20I%27d%20like%20to%20order%20Fish%20buns." target="_blank" rel="noopener" aria-label="Order Fish buns on WhatsApp">Order</a></div></div></article>
+    <article class="se-card"><div class="se-photo"><img src="img/ai-se-sausage-rolls.webp" alt="Sausage rolls (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="se-body"><h3>Sausage rolls</h3><p>Chicken sausage wrapped in buttery puff pastry</p><div class="se-meta"><span class="se-price">Rs 180 <small>each</small></span><a class="se-order" href="https://wa.me/94776480144?text=Hi%20Bake%20Away%21%20I%27d%20like%20to%20order%20Sausage%20rolls." target="_blank" rel="noopener" aria-label="Order Sausage rolls on WhatsApp">Order</a></div></div></article>
+    <article class="se-card"><div class="se-photo"><img src="img/ai-se-vegetable-roti.webp" alt="Vegetable roti (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="se-body"><h3>Vegetable roti</h3><p>Folded roti stuffed with spiced potato and vegetables</p><div class="se-meta"><span class="se-price">Rs 120 <small>each</small></span><a class="se-order" href="https://wa.me/94776480144?text=Hi%20Bake%20Away%21%20I%27d%20like%20to%20order%20Vegetable%20roti." target="_blank" rel="noopener" aria-label="Order Vegetable roti on WhatsApp">Order</a></div></div></article>
+    <article class="se-card"><div class="se-photo"><img src="img/ai-se-patties.webp" alt="Patties (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="se-body"><h3>Patties</h3><p>Crimped pastry pockets with a vegetable or chicken filling</p><div class="se-meta"><span class="se-price">Rs 100 <small>each</small></span><a class="se-order" href="https://wa.me/94776480144?text=Hi%20Bake%20Away%21%20I%27d%20like%20to%20order%20Patties." target="_blank" rel="noopener" aria-label="Order Patties on WhatsApp">Order</a></div></div></article>
+    <article class="se-card"><div class="se-photo"><img src="img/ai-se-croissants.webp" alt="Croissants & Danish (AI-generated photo)" width="640" height="800" loading="lazy" decoding="async"></div><div class="se-body"><h3>Croissants &amp; Danish</h3><p>Butter croissants and fruit Danish, baked every morning</p><div class="se-meta"><span class="se-price">Rs 250 <small>each</small></span><a class="se-order" href="https://wa.me/94776480144?text=Hi%20Bake%20Away%21%20I%27d%20like%20to%20order%20Croissants%20%26%20Danish." target="_blank" rel="noopener" aria-label="Order Croissants and Danish on WhatsApp">Order</a></div></div></article>
+  </div>
+  <p class="se-note">Photos are AI-generated to show the style. Prices are per piece and confirmed when you order.</p>
+</section>
+<section class="pack" id="tea" aria-labelledby="tea-h">
+  <div class="pack-in">
+    <div class="pack-photo"><img src="img/ai-se-fish-buns.webp" alt="" width="640" height="800" loading="lazy" decoding="async"></div>
+    <div class="pack-copy">
+      <div class="eyebrow">Tea time</div>
+      <h2 id="tea-h">Tea-time box</h2>
+      <p>For home, a visit from friends or a quick bite with your evening tea.</p>
+      <ul><li>10 pieces of your choice</li><li>Mix rolls, cutlets, buns and puffs</li><li>Ready in about 30 minutes</li><li>Pickup in Nugegoda or delivery</li></ul>
+      <div class="pack-price">from Rs 1,300</div>
+      <div class="pack-ctas"><a class="btn" href="https://wa.me/94776480144?text=Hi%20Bake%20Away%21%20I%27d%20like%20a%20tea-time%20box%20%2810%20pieces%29." target="_blank" rel="noopener">Order on WhatsApp</a><a class="btn light" href="#menu">See what's on the menu</a></div>
+    </div>
+  </div>
+</section>
+<section class="pack alt" id="office" aria-labelledby="office-h">
+  <div class="pack-in">
+    <div class="pack-photo"><img src="img/ai-se-sausage-rolls.webp" alt="" width="640" height="800" loading="lazy" decoding="async"></div>
+    <div class="pack-copy">
+      <div class="eyebrow">Office &amp; meetings</div>
+      <h2 id="office-h">Office platter</h2>
+      <p>For team meetings, trainings and client visits. Neatly packed so it's easy to share.</p>
+      <ul><li>25 or 50 pieces</li><li>A balanced mix of savoury and sweet</li><li>Napkins and sauces included</li><li>Order by 4 pm the day before</li></ul>
+      <div class="pack-price">from Rs 3,500</div>
+      <div class="pack-ctas"><a class="btn" href="https://wa.me/94776480144?text=Hi%20Bake%20Away%21%20I%27d%20like%20an%20office%20platter%20for%20a%20meeting." target="_blank" rel="noopener">Order on WhatsApp</a><a class="btn light" href="#menu">See what's on the menu</a></div>
+    </div>
+  </div>
+</section>
+<section class="pack" id="party" aria-labelledby="party-h">
+  <div class="pack-in">
+    <div class="pack-photo"><img src="img/ai-se-patties.webp" alt="" width="640" height="800" loading="lazy" decoding="async"></div>
+    <div class="pack-copy">
+      <div class="eyebrow">Parties &amp; functions</div>
+      <h2 id="party-h">Party &amp; function trays</h2>
+      <p>For birthdays, weddings, alms-givings, religious events and family get-togethers.</p>
+      <ul><li>50 to 500+ pieces</li><li>Choose your own mix, or let us plan it</li><li>Add a cake or cupcakes from our dessert menu</li><li>Order 2 to 3 days ahead</li></ul>
+      <div class="pack-price">from Rs 6,500</div>
+      <div class="pack-ctas"><a class="btn" href="https://wa.me/94776480144?text=Hi%20Bake%20Away%21%20I%27d%20like%20trays%20of%20short%20eats%20for%20a%20party%20or%20function." target="_blank" rel="noopener">Order on WhatsApp</a><a class="btn light" href="#menu">See what's on the menu</a></div>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="hub-foot">Bake Away · Nugegoda, Sri Lanka · Open daily 8 am – 10 pm · <a href="https://wa.me/94776480144">+94 77 648 0144</a> · <a href="desserts.html">Desserts</a></footer>
+<a class="wa-fab" href="https://wa.me/94776480144?text=Hi%20Bake%20Away!" target="_blank" rel="noopener" aria-label="Chat with Bake Away on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.85 9.85 0 0 0 12.04 2zm0 18.15a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.23 8.23 0 1 1 6.98 3.86zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06a6.7 6.7 0 0 1-3.37-2.94c-.25-.44.25-.41.72-1.36.08-.17.04-.31-.02-.43-.06-.13-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.42h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.24 3.74 1.58.68 2.2.74 2.99.62.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg></a>
+</body>
+</html>
