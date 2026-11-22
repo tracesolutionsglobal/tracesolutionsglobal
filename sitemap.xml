@@ -7,6 +7,10 @@
   <url><loc>https://tracesolutionsglobal.com/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://tracesolutionsglobal.com/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://tracesolutionsglobal.com/demos/bake-away/</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://tracesolutionsglobal.com/demos/bake-away/desserts.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://tracesolutionsglobal.com/demos/bake-away/cakes.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://tracesolutionsglobal.com/demos/bake-away/pastries.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://tracesolutionsglobal.com/demos/bake-away/short-eats.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://tracesolutionsglobal.com/demos/lamp-login/</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
   <url><loc>https://tracesolutionsglobal.com/only-cafe/</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
 </urlset>
