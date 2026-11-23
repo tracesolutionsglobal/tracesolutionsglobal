@@ -1,0 +1,14 @@
+{
+  "name": "trace-reel-builder",
+  "private": true,
+  "description": "Vertical promo reels for Trace Solutions Global: 3D browser scene rendered frame by frame.",
+  "scripts": {
+    "one": "node make_video.js --index 0",
+    "all": "node make_video.js --all --skip-existing"
+  },
+  "dependencies": {
+    "@fontsource/poppins": "5.1.0",
+    "playwright": "^1.48.0",
+    "three": "0.169.0"
+  }
+}

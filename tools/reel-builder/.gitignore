@@ -1,0 +1,5 @@
+node_modules/
+output/
+voiceovers/
+*.mp4
+*.mp3
